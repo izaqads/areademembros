@@ -530,7 +530,29 @@ Certifique-se de que todos os textos seguem os limites de caracteres do Google A
 // ============================================
 // INICIAR SERVIDOR
 // ============================================
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+    // Criar aluno de teste automaticamente
+    try {
+        const { data } = await supabase
+            .from('alunos')
+            .select('*')
+            .eq('email', 'teste@exemplo.com')
+            .single();
+
+        if (!data) {
+            await supabase
+                .from('alunos')
+                .insert([{
+                    nome: 'Usuário Teste',
+                    email: 'teste@exemplo.com',
+                    senha: '123456'
+                }]);
+            console.log('✅ Aluno de teste criado!');
+        }
+    } catch (err) {
+        // Ignorar erros (aluno já pode existir)
+    }
+    
     console.log(`
 ╔════════════════════════════════════════════╗
 ║  🚀 Plataforma de Aulas iniciada!          ║
@@ -543,12 +565,11 @@ app.listen(PORT, () => {
   ✓ Recuperação de Senha
   ✓ Sistema de Avaliações ⭐
   ✓ Comentários e Feedback 💬
+  ✓ Gerador de Anúncios com IA 🤖
   ✓ Notificações por Email 📧
-  
-📧 EMAILS:
-  ${sgMail ? '✓ SendGrid configurado' : '⚠️  Para ativar emails reais:'}
-  ${sgMail ? '' : '  npm install @sendgrid/mail'}
-  ${sgMail ? '' : '  export SENDGRID_API_KEY="sua_chave_aqui"'}
-  ${sgMail ? '' : '  npm start'}
+
+🔐 DADOS DE TESTE:
+  Email: teste@exemplo.com
+  Senha: 123456
     `);
 });
