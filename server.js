@@ -1,1620 +1,634 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Área de Membros</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-blue: #4F7DFF;
-            --secondary-purple: #6B5FD9;
-            --accent-teal: #5EC4D7;
-            --dark-bg: #0F1419;
-            --card-bg: #1A1F2E;
-            --text-white: #FFFFFF;
-            --text-light: #D1D5E0;
-            --text-muted: #8B92A5;
-            --border-light: #2A3040;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a2e 50%, var(--dark-bg) 100%);
-            color: var(--text-white);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(ellipse at 20% 50%, rgba(79, 125, 255, 0.05) 0%, transparent 40%),
-                radial-gradient(ellipse at 80% 80%, rgba(107, 95, 217, 0.05) 0%, transparent 40%),
-                radial-gradient(ellipse at 40% 20%, rgba(94, 196, 215, 0.03) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0, 0, 0, 0)),
-                radial-gradient(2px 2px at 60px 70px, #fff, rgba(0, 0, 0, 0)),
-                radial-gradient(1px 1px at 50px 50px, #fff, rgba(0, 0, 0, 0)),
-                radial-gradient(1px 1px at 130px 80px, #fff, rgba(0, 0, 0, 0)),
-                radial-gradient(2px 2px at 90px 10px, #fff, rgba(0, 0, 0, 0));
-            background-repeat: repeat;
-            background-size: 200px 200px;
-            animation: twinkle 5s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.4;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 0.7; }
-        }
-
-        /* ===== LOADING ===== */
-        /* ===== LOGIN ===== */
-        .login-section {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex: 1;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .login-card {
-            background: rgba(26, 31, 46, 0.95);
-            border: 1px solid var(--border-light);
-            border-radius: 16px;
-            padding: 2.5rem;
-            max-width: 420px;
-            width: 100%;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .login-card:hover {
-            border-color: rgba(79, 125, 255, 0.2);
-            box-shadow: 0 25px 70px rgba(79, 125, 255, 0.1);
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .login-emoji {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            display: inline-block;
-            transition: transform 0.3s ease;
-        }
-
-        .login-card:hover .login-emoji {
-            transform: scale(1.1);
-        }
-
-        .login-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-white);
-        }
-
-        .login-subtitle {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border-light);
-            padding-bottom: 1rem;
-        }
-
-        .tab-button {
-            flex: 1;
-            padding: 0.8rem;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-weight: 500;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-
-        .tab-button:hover {
-            color: var(--text-light);
-        }
-
-        .tab-button.active {
-            color: var(--primary-blue);
-            border-bottom-color: var(--primary-blue);
-        }
-
-        .form-group {
-            margin-bottom: 1.3rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.85rem 1rem;
-            background: rgba(42, 48, 64, 0.5);
-            border: 1px solid var(--border-light);
-            border-radius: 8px;
-            color: var(--text-white);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .form-group input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            background: rgba(42, 48, 64, 0.8);
-            box-shadow: 0 0 0 3px rgba(79, 125, 255, 0.1);
-        }
-
-        .login-button {
-            width: 100%;
-            padding: 0.95rem 1.5rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-purple));
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 1.5rem;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .login-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(79, 125, 255, 0.3);
-        }
-
-        .back-link {
-            text-align: center;
-            margin-top: 1rem;
-            color: var(--text-muted);
-        }
-
-        .back-link button {
-            background: none;
-            border: none;
-            color: var(--primary-blue);
-            cursor: pointer;
-            font-weight: 500;
-            padding: 0;
-            text-decoration: underline;
-        }
-
-        .back-link button:hover {
-            color: var(--secondary-purple);
-        }
-
-        .error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #FFABAB;
-            padding: 0.9rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            display: none;
-            font-size: 0.9rem;
-        }
-
-        .error.show {
-            display: block;
-        }
-
-        .success {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            color: #86efac;
-            padding: 0.9rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            display: none;
-            font-size: 0.9rem;
-        }
-
-        .success.show {
-            display: block;
-        }
-
-        /* ===== AULAS ===== */
-        .aulas-section {
-            display: none;
-            flex: 1;
-            position: relative;
-            z-index: 1;
-        }
-
-        .aulas-section.active {
-            display: block;
-        }
-
-        .header {
-            background: rgba(15, 20, 25, 0.95);
-            border-bottom: 1px solid var(--border-light);
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-white);
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        #userName {
-            color: var(--primary-blue);
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-
-        .logout-btn {
-            background: transparent;
-            border: 1px solid var(--border-light);
-            color: var(--text-light);
-            cursor: pointer;
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .logout-btn:hover {
-            border-color: var(--primary-blue);
-            color: var(--primary-blue);
-            background: rgba(79, 125, 255, 0.05);
-        }
-
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-            width: 100%;
-        }
-
-        .container h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--text-white);
-        }
-
-        .container-subtitle {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .courses-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .course-card {
-            background: rgba(26, 31, 46, 0.7);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .course-card:hover {
-            border-color: rgba(79, 125, 255, 0.3);
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(79, 125, 255, 0.15);
-            background: rgba(26, 31, 46, 0.95);
-        }
-
-        .course-image {
-            aspect-ratio: 16/9;
-            background: linear-gradient(135deg, rgba(79, 125, 255, 0.08), rgba(107, 95, 217, 0.08));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3.5rem;
-            border-bottom: 1px solid var(--border-light);
-            transition: background 0.4s ease;
-        }
-
-        .course-card:hover .course-image {
-            background: linear-gradient(135deg, rgba(79, 125, 255, 0.12), rgba(107, 95, 217, 0.12));
-        }
-
-        .course-body {
-            padding: 1.5rem;
-        }
-
-        .course-title {
-            font-weight: 600;
-            margin-bottom: 0.7rem;
-            color: var(--text-white);
-            font-size: 1.1rem;
-            transition: color 0.3s ease;
-        }
-
-        .course-card:hover .course-title {
-            color: var(--primary-blue);
-        }
-
-        .course-desc {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-
-        .course-meta {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        /* ===== AULA PLAYER ===== */
-        .aula-header {
-            margin-bottom: 2rem;
-        }
-
-        .aula-header h2 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-white);
-        }
-
-        .aula-header p {
-            color: var(--text-light);
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-
-        .video-container {
-            background: rgba(26, 31, 46, 0.7);
-            border-radius: 12px;
-            border: 1px solid var(--border-light);
-            overflow: hidden;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .video-container iframe,
-        .video-container video {
-            width: 100%;
-            height: 500px;
-            display: block;
-        }
-
-        /* ===== AVALIAÇÕES ===== */
-        .rating-section {
-            background: rgba(26, 31, 46, 0.7);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .rating-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-white);
-        }
-
-        .stars-container {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .star {
-            font-size: 2.5rem;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            opacity: 0.3;
-        }
-
-        .star:hover {
-            transform: scale(1.2);
-            opacity: 0.6;
-        }
-
-        .star.active {
-            opacity: 1;
-            color: #fbbf24;
-        }
-
-        .rating-text {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-        }
-
-        .rating-button {
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-purple));
-            border: none;
-            border-radius: 6px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .rating-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79, 125, 255, 0.3);
-        }
-
-        .rating-display {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-top: 1rem;
-        }
-
-        /* ===== COMENTÁRIOS ===== */
-        .comments-section {
-            background: rgba(26, 31, 46, 0.7);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-
-        .comments-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: var(--text-white);
-        }
-
-        .comment-form {
-            margin-bottom: 2rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .comment-textarea {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(42, 48, 64, 0.5);
-            border: 1px solid var(--border-light);
-            border-radius: 8px;
-            color: var(--text-white);
-            font-size: 0.95rem;
-            font-family: inherit;
-            resize: vertical;
-            min-height: 100px;
-            transition: all 0.3s ease;
-            margin-bottom: 1rem;
-        }
-
-        .comment-textarea:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            background: rgba(42, 48, 64, 0.8);
-            box-shadow: 0 0 0 3px rgba(79, 125, 255, 0.1);
-        }
-
-        .comment-button {
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-purple));
-            border: none;
-            border-radius: 6px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-        }
-
-        .comment-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79, 125, 255, 0.3);
-        }
-
-        /* ===== GERADOR DE ANÚNCIOS ===== */
-        .ads-generator-section {
-            background: rgba(26, 31, 46, 0.7);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-
-        .ads-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: var(--text-white);
-        }
-
-        .ads-form {
-            display: grid;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .form-group-ads {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group-ads label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-light);
-        }
-
-        .form-group-ads input,
-        .form-group-ads select {
-            padding: 0.75rem;
-            background: rgba(42, 48, 64, 0.5);
-            border: 1px solid var(--border-light);
-            border-radius: 8px;
-            color: var(--text-white);
-            font-size: 0.95rem;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        .form-group-ads input:focus,
-        .form-group-ads select:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            background: rgba(42, 48, 64, 0.8);
-            box-shadow: 0 0 0 3px rgba(79, 125, 255, 0.1);
-        }
-
-        .ads-button {
-            padding: 0.85rem 2rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-purple));
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .ads-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79, 125, 255, 0.3);
-        }
-
-        .ads-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .ads-loading {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-muted);
-        }
-
-        .spinner-small {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(79, 125, 255, 0.2);
-            border-top-color: var(--primary-blue);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 0.5rem;
-        }
-
-        .ads-result {
-            background: rgba(42, 48, 64, 0.3);
-            border: 1px solid var(--border-light);
-            border-radius: 8px;
-            padding: 2rem;
-            margin-top: 1.5rem;
-            color: var(--text-light);
-            max-height: 1200px;
-            overflow-y: auto;
-        }
-
-        .ads-result-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary-blue);
-            margin-bottom: 1rem;
-        }
-
-        .ads-error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #ff6b6b;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-        }
-
-        /* ===== ESTILO PARA COLUNAS DE ANÚNCIOS ===== */
-        .ads-container-colunas {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .ads-secao {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .ads-secao h4 {
-            color: var(--primary-blue);
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin: 0;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid rgba(79, 125, 255, 0.2);
-        }
-
-        .ads-grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .ads-grid-2 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1rem;
-        }
-
-        .ads-grid-site-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .ads-item {
-            background: rgba(26, 31, 46, 0.8);
-            border: 1px solid rgba(79, 125, 255, 0.2);
-            border-radius: 8px;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .ads-label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--primary-blue);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .ads-texto {
-            font-size: 0.95rem;
-            color: var(--text-light);
-            line-height: 1.5;
-            word-wrap: break-word;
-            font-weight: 500;
-        }
-
-        .ads-counter {
-            font-size: 0.75rem;
-            color: rgba(107, 95, 217, 0.8);
-            margin-top: 0.5rem;
-            font-weight: 600;
-        }
-
-        .ads-site-link-card {
-            background: rgba(26, 31, 46, 0.6);
-            border: 2px solid rgba(79, 125, 255, 0.3);
-            border-radius: 10px;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .ads-site-link-numero {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--primary-blue);
-            text-transform: uppercase;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(79, 125, 255, 0.2);
-        }
-
-        .comments-list {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .comment-item {
-            padding: 1.2rem;
-            background: rgba(42, 48, 64, 0.3);
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border-left: 3px solid var(--primary-blue);
-        }
-
-        .comment-author {
-            font-weight: 600;
-            color: var(--primary-blue);
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .comment-text {
-            color: var(--text-light);
-            line-height: 1.6;
-            margin-bottom: 0.5rem;
-        }
-
-        .comment-date {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
-        .no-comments {
-            color: var(--text-muted);
-            text-align: center;
-            padding: 2rem 1rem;
-        }
-
-        .back-button {
-            padding: 0.9rem 2rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-purple));
-            border: none;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .back-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(79, 125, 255, 0.3);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .comments-list::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .comments-list::-webkit-scrollbar-track {
-            background: rgba(42, 48, 64, 0.3);
-            border-radius: 10px;
-        }
-
-        .comments-list::-webkit-scrollbar-thumb {
-            background: var(--primary-blue);
-            border-radius: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .login-card {
-                padding: 1.8rem;
-            }
-
-            .container h1 {
-                font-size: 1.6rem;
-            }
-
-            .courses-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .header {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
-            }
-
-            .header-right {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .video-container iframe,
-            .video-container video {
-                height: 300px;
-            }
-
-            .comments-section,
-            .rating-section {
-                padding: 1.5rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Login -->
-    <div class="login-section" id="loginSection">
-        <div class="login-card">
-            <div class="login-header">
-                <div class="login-emoji" id="logoEmoji">🚀</div>
-                <h1 class="login-title" id="platformaNome">Plataforma de Aulas</h1>
-                <p class="login-subtitle">By: <a href="https://instagram.com/izaqads" target="_blank" style="color: inherit; text-decoration: none; font-weight: 500; cursor: pointer;">@izaqads</a></p>
-            </div>
-
-            <div class="tabs">
-                <button class="tab-button active" id="loginTabBtn">Entrar</button>
-                <button class="tab-button" id="registerTabBtn">Registrar</button>
-            </div>
-
-            <!-- Login Form -->
-            <div id="loginForm">
-                <div class="error" id="loginError"></div>
-                <form onsubmit="handleLogin(event)">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="loginEmail" placeholder="seu@email.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Senha</label>
-                        <input type="password" id="loginPassword" placeholder="Sua senha" required>
-                    </div>
-                    <button type="submit" class="login-button">Entrar</button>
-                </form>
-                <div class="back-link" style="margin-top: 1.5rem;">
-                    <button onclick="toggleRecuperacao()" style="background: none; border: none; color: var(--primary-blue); cursor: pointer; font-weight: 500; padding: 0; text-decoration: underline;">Esqueceu sua senha? Recupere agora</button>
-                </div>
-            </div>
-
-            <!-- Register Form -->
-            <div id="registerForm" class="hidden">
-                <div class="error" id="registerError"></div>
-                <div class="success" id="registerSuccess"></div>
-                <form onsubmit="handleRegister(event)">
-                    <div class="form-group">
-                        <label>Nome</label>
-                        <input type="text" id="registerName" placeholder="Seu nome" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="registerEmail" placeholder="seu@email.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Senha</label>
-                        <input type="password" id="registerPassword" placeholder="Mínimo 6 caracteres" required minlength="6">
-                    </div>
-                    <div class="form-group">
-                        <label>Confirmar Senha</label>
-                        <input type="password" id="registerConfirmPassword" placeholder="Confirme a senha" required minlength="6">
-                    </div>
-                    <button type="submit" class="login-button">Criar Conta</button>
-                </form>
-            </div>
-
-            <!-- Reset Password Form (Hidden by default) -->
-            <div id="resetForm" class="hidden">
-                <div class="error" id="resetError"></div>
-                <div class="success" id="resetSuccess"></div>
-                <form onsubmit="handlePasswordReset(event)">
-                    <div class="form-group">
-                        <label>Email da Conta</label>
-                        <input type="email" id="resetEmail" placeholder="seu@email.com" required>
-                    </div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Você receberá um email com instruções para resetar sua senha.</p>
-                    <button type="submit" class="login-button">Enviar Email de Recuperação</button>
-                </form>
-                <div class="back-link">
-                    <button onclick="toggleRecuperacao()" style="background: none; border: none; color: var(--primary-blue); cursor: pointer; font-weight: 500; padding: 0; text-decoration: underline; margin-top: 1rem;">← Voltar para Login</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Aulas -->
-    <div class="aulas-section" id="aulasSection">
-        <div class="header">
-            <div class="header-title">Suas Aulas</div>
-            <div class="header-right">
-                <span id="userName"></span>
-                <button class="logout-btn" onclick="handleLogout()">Sair</button>
-            </div>
-        </div>
-
-        <div class="container">
-            <h1>Bem-vindo!</h1>
-            <p class="container-subtitle">Aulas disponíveis para você</p>
-            <div class="courses-grid" id="coursesGrid"></div>
-        </div>
-    </div>
-
-    <script>
-        const API_URL = 'https://areademembros-nfqo.onrender.com/api';
-        let config = {};
-        let currentUser = {};
-        let currentAulaId = null;
-
-        // ===== TAB SWITCHING =====
-        document.getElementById('loginTabBtn').addEventListener('click', () => {
-            document.getElementById('loginForm').classList.remove('hidden');
-            document.getElementById('registerForm').classList.add('hidden');
-            document.getElementById('resetForm').classList.add('hidden');
-            document.getElementById('loginTabBtn').classList.add('active');
-            document.getElementById('registerTabBtn').classList.remove('active');
+const express = require('express');
+const session = require('express-session');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+require('dotenv').config();
+const { createClient } = require('@supabase/supabase-js');
+
+// Anthropic para gerar anúncios
+let Anthropic;
+let anthropicClient = null;
+
+try {
+    Anthropic = require('@anthropic-ai/sdk');
+    if (process.env.ANTHROPIC_API_KEY) {
+        anthropicClient = new Anthropic({
+            apiKey: process.env.ANTHROPIC_API_KEY
         });
+        console.log('✅ Claude API configurada!');
+        console.log('🔑 API Key presente:', process.env.ANTHROPIC_API_KEY.substring(0, 20) + '...');
+    } else {
+        console.log('❌ ANTHROPIC_API_KEY não definida no .env ou Environment Variables!');
+        console.log('⚠️  Gerador de anúncios desativado.');
+    }
+} catch (e) {
+    console.log('⚠️  Anthropic SDK não instalado. Instale com: npm install @anthropic-ai/sdk');
+}
 
-        document.getElementById('registerTabBtn').addEventListener('click', () => {
-            document.getElementById('registerForm').classList.remove('hidden');
-            document.getElementById('loginForm').classList.add('hidden');
-            document.getElementById('resetForm').classList.add('hidden');
-            document.getElementById('registerTabBtn').classList.add('active');
-            document.getElementById('loginTabBtn').classList.remove('active');
+// SendGrid para emails
+let sgMail;
+try {
+    sgMail = require('@sendgrid/mail');
+    if (process.env.SENDGRID_API_KEY) {
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    }
+} catch (e) {
+    console.log('⚠️  SendGrid não instalado. Instale com: npm install @sendgrid/mail');
+}
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// ============================================
+// CONFIGURAÇÃO SUPABASE
+// ============================================
+const SUPABASE_URL = 'https://nuimrrobhvpzxgcuknhr.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_eT9uNZfmcgNIkScMUb_UAA_WaFSXjki';
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ============================================
+// MIDDLEWARE
+// ============================================
+app.use(cors({
+    origin: '*',
+    credentials: false
+}));
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Configurar sessões
+app.use(session({
+    secret: 'sua-chave-secreta-segura-mude-isso',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { 
+        secure: false,
+        httpOnly: false,
+        sameSite: 'none',
+        maxAge: 24 * 60 * 60 * 1000
+    }
+}));
+
+// ============================================
+// CARREGAR CONFIGURAÇÃO
+// ============================================
+function loadConfig() {
+    try {
+        const configPath = path.join(__dirname, 'config.json');
+        const data = fs.readFileSync(configPath, 'utf8');
+        return JSON.parse(data);
+    } catch (err) {
+        console.error('Erro ao carregar config.json:', err);
+        return {};
+    }
+}
+
+function saveConfig(config) {
+    try {
+        const configPath = path.join(__dirname, 'config.json');
+        fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+        return true;
+    } catch (err) {
+        console.error('Erro ao salvar config.json:', err);
+        return false;
+    }
+}
+
+// ============================================
+// FUNÇÕES AUXILIARES DE EMAIL
+// ============================================
+async function enviarEmail(para, assunto, html) {
+    if (!sgMail) {
+        console.log(`📧 EMAIL SIMULADO - Para: ${para}, Assunto: ${assunto}`);
+        return true;
+    }
+
+    try {
+        await sgMail.send({
+            to: para,
+            from: process.env.EMAIL_FROM || 'noreply@seudominio.com',
+            subject: assunto,
+            html: html
         });
+        console.log(`✓ Email enviado para ${para}`);
+        return true;
+    } catch (err) {
+        console.error('Erro ao enviar email:', err);
+        return false;
+    }
+}
 
-        // Toggle para recuperação de senha
-        function toggleRecuperacao() {
-            const loginForm = document.getElementById('loginForm');
-            const resetForm = document.getElementById('resetForm');
-            
-            if (resetForm.classList.contains('hidden')) {
-                resetForm.classList.remove('hidden');
-                loginForm.classList.add('hidden');
-            } else {
-                loginForm.classList.remove('hidden');
-                resetForm.classList.add('hidden');
-            }
+function gerarTokenRecuperacao() {
+    return crypto.randomBytes(32).toString('hex');
+}
+
+// ============================================
+// ROTAS DE AUTENTICAÇÃO
+// ============================================
+
+app.post('/api/auth/register', async (req, res) => {
+    try {
+        const { nome, email, senha } = req.body;
+
+        if (!nome || !email || !senha) {
+            return res.status(400).json({ error: 'Dados incompletos' });
         }
 
-        // ===== LOGIN =====
-        async function handleLogin(e) {
-            if (e) e.preventDefault();
-            
-            const email = document.getElementById('loginEmail').value.trim();
-            const senha = document.getElementById('loginPassword').value.trim();
+        const { data: existing } = await supabase
+            .from('alunos')
+            .select('*')
+            .eq('email', email)
+            .single();
 
-            if (!email || !senha) {
-                showError('loginError', 'Preencha email e senha!');
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_URL}/auth/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ email, senha })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    currentUser = data.user;
-                    document.getElementById('userName').textContent = `Olá, ${data.user.nome}`;
-                    console.log('✅ Login bem-sucedido!');
-                    loadAulas(); // CARREGA AS AULAS
-                } else {
-                    showError('loginError', data.error || 'Erro ao fazer login');
-                }
-            } catch (err) {
-                console.error('Erro no login:', err);
-                showError('loginError', 'Erro ao conectar com o servidor');
-            }
+        if (existing) {
+            return res.status(400).json({ error: 'Email já registrado' });
         }
 
-        // ===== REGISTER =====
-        async function handleRegister(e) {
-            e.preventDefault();
-            const nome = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
-            const senha = document.getElementById('registerPassword').value;
-            const confirmSenha = document.getElementById('registerConfirmPassword').value;
+        const { data, error } = await supabase
+            .from('alunos')
+            .insert([{ nome, email, senha }])
+            .select()
+            .single();
 
-            if (senha !== confirmSenha) {
-                showError('registerError', 'As senhas não coincidem');
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_URL}/auth/register`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ nome, email, senha })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    showSuccess('registerSuccess', '✓ Conta criada! Email de confirmação enviado. Você será redirecionado...');
-                    setTimeout(() => {
-                        currentUser = data.user;
-                        loadAulas();
-                    }, 2000);
-                } else {
-                    showError('registerError', data.error);
-                }
-            } catch (err) {
-                showError('registerError', 'Erro ao conectar');
-            }
+        if (error) {
+            return res.status(400).json({ error: 'Erro ao criar conta' });
         }
 
-        // ===== PASSWORD RESET =====
-        async function handlePasswordReset(e) {
-            e.preventDefault();
-            const email = document.getElementById('resetEmail').value;
+        req.session.userId = data.id;
+        req.session.userName = data.nome;
+        req.session.userEmail = data.email;
 
-            try {
-                const response = await fetch(`${API_URL}/auth/forgot-password`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ email })
-                });
+        // Enviar email de boas-vindas
+        const emailHTML = `
+            <h2>Bem-vindo à Plataforma! 🎉</h2>
+            <p>Olá <strong>${data.nome}</strong>,</p>
+            <p>Sua conta foi criada com sucesso!</p>
+            <p>Você já pode acessar todas as aulas disponíveis na plataforma.</p>
+            <p>Bom aprendizado!</p>
+            <hr>
+            <p style="color: #888; font-size: 12px;">Se você não criou essa conta, ignore este email.</p>
+        `;
+        await enviarEmail(data.email, 'Bem-vindo à Plataforma!', emailHTML);
 
-                const data = await response.json();
+        res.json({ success: true, user: { id: data.id, nome: data.nome, email: data.email } });
+    } catch (err) {
+        console.error('Erro no registro:', err);
+        res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
 
-                if (data.success) {
-                    showSuccess('resetSuccess', '✓ Email enviado! Verifique sua caixa de entrada para resetar a senha.');
-                    document.getElementById('resetEmail').value = '';
-                } else {
-                    showError('resetError', data.error || 'Email não encontrado');
-                }
-            } catch (err) {
-                showError('resetError', 'Erro ao enviar email. Tente novamente.');
-            }
+app.post('/api/auth/login', async (req, res) => {
+    try {
+        const { email, senha } = req.body;
+
+        if (!email || !senha) {
+            return res.status(400).json({ error: 'Email e senha são obrigatórios' });
         }
 
-        // ===== LOGOUT =====
-        async function handleLogout() {
-            await fetch(`${API_URL}/auth/logout`, {
-                method: 'POST',
-                credentials: 'include'
+        const { data, error } = await supabase
+            .from('alunos')
+            .select('*')
+            .eq('email', email)
+            .eq('senha', senha)
+            .single();
+
+        if (error || !data) {
+            return res.status(401).json({ error: 'Email ou senha inválidos' });
+        }
+
+        req.session.userId = data.id;
+        req.session.userName = data.nome;
+        req.session.userEmail = data.email;
+
+        res.json({ success: true, user: { id: data.id, nome: data.nome, email: data.email } });
+    } catch (err) {
+        console.error('Erro no login:', err);
+        res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/api/auth/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ error: 'Erro ao fazer logout' });
+        }
+        res.json({ success: true });
+    });
+});
+
+app.get('/api/auth/session', (req, res) => {
+    if (req.session.userId) {
+        res.json({
+            success: true,
+            user: {
+                id: req.session.userId,
+                nome: req.session.userName,
+                email: req.session.userEmail
+            }
+        });
+    } else {
+        res.status(401).json({ success: false, error: 'Não autenticado' });
+    }
+});
+
+// ============================================
+// ROTAS DE RECUPERAÇÃO DE SENHA
+// ============================================
+
+app.post('/api/auth/forgot-password', async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        const { data } = await supabase
+            .from('alunos')
+            .select('*')
+            .eq('email', email)
+            .single();
+
+        if (!data) {
+            return res.json({ success: false, error: 'Email não encontrado' });
+        }
+
+        // Gerar token de recuperação
+        const token = gerarTokenRecuperacao();
+        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+        // Salvar token (você pode usar arquivo ou banco de dados)
+        const resetPath = path.join(__dirname, 'password_resets.json');
+        let resets = {};
+        try {
+            resets = JSON.parse(fs.readFileSync(resetPath, 'utf-8'));
+        } catch (e) {}
+
+        resets[email] = { token, expiresAt: expiresAt.toISOString() };
+        fs.writeFileSync(resetPath, JSON.stringify(resets, null, 2));
+
+        // Enviar email com link de recuperação
+        const resetLink = `${process.env.SITE_URL || 'http://localhost:3000'}/reset-password.html?token=${token}&email=${encodeURIComponent(email)}`;
+
+        const emailHTML = `
+            <h2>Recuperação de Senha 🔐</h2>
+            <p>Recebemos uma solicitação para resetar sua senha.</p>
+            <p><a href="${resetLink}" style="background: #4F7DFF; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">Resetar Senha</a></p>
+            <p>Este link expira em 24 horas.</p>
+            <p style="color: #888; font-size: 12px;">Se você não solicitou isso, ignore este email.</p>
+        `;
+
+        await enviarEmail(email, 'Recuperação de Senha', emailHTML);
+
+        res.json({ success: true, message: 'Email de recuperação enviado!' });
+    } catch (err) {
+        res.json({ success: false, error: 'Erro ao processar solicitação' });
+    }
+});
+
+app.post('/api/auth/reset-password', async (req, res) => {
+    try {
+        const { token, email, novaSenha } = req.body;
+
+        const resetPath = path.join(__dirname, 'password_resets.json');
+        let resets = {};
+        try {
+            resets = JSON.parse(fs.readFileSync(resetPath, 'utf-8'));
+        } catch (e) {}
+
+        const reset = resets[email];
+
+        if (!reset || reset.token !== token) {
+            return res.json({ success: false, error: 'Token inválido ou expirado' });
+        }
+
+        if (new Date() > new Date(reset.expiresAt)) {
+            delete resets[email];
+            fs.writeFileSync(resetPath, JSON.stringify(resets, null, 2));
+            return res.json({ success: false, error: 'Token expirado' });
+        }
+
+        // Atualizar senha
+        const { error } = await supabase
+            .from('alunos')
+            .update({ senha: novaSenha })
+            .eq('email', email);
+
+        if (error) {
+            return res.json({ success: false, error: 'Erro ao atualizar senha' });
+        }
+
+        // Remover token usado
+        delete resets[email];
+        fs.writeFileSync(resetPath, JSON.stringify(resets, null, 2));
+
+        // Enviar confirmação
+        const emailHTML = `
+            <h2>Senha Resetada ✓</h2>
+            <p>Sua senha foi alterada com sucesso!</p>
+            <p>Se você não fez isso, contate o suporte imediatamente.</p>
+        `;
+        await enviarEmail(email, 'Senha Resetada', emailHTML);
+
+        res.json({ success: true, message: 'Senha atualizada!' });
+    } catch (err) {
+        res.json({ success: false, error: 'Erro ao resetar senha' });
+    }
+});
+
+// ============================================
+// ROTAS DE AVALIAÇÕES
+// ============================================
+
+app.post('/api/aulas/:aulaId/rating', async (req, res) => {
+    try {
+        if (!req.session.userId) {
+            return res.status(401).json({ error: 'Não autenticado' });
+        }
+
+        const { aulaId } = req.params;
+        const { rating } = req.body;
+
+        // Enviar notificação por email (opcional)
+        const emailHTML = `
+            <h2>Nova Avaliação Recebida ⭐</h2>
+            <p><strong>${req.session.userName}</strong> avaliou uma aula com <strong>${rating} estrela${rating > 1 ? 's' : ''}</strong>!</p>
+            <p>Email: ${req.session.userEmail}</p>
+            <p>Aula ID: ${aulaId}</p>
+        `;
+
+        await enviarEmail(
+            process.env.ADMIN_EMAIL || 'admin@seusite.com',
+            'Nova Avaliação Recebida',
+            emailHTML
+        );
+
+        res.json({ success: true, message: 'Avaliação registrada!' });
+    } catch (err) {
+        res.json({ success: false, error: 'Erro ao salvar avaliação' });
+    }
+});
+
+// ============================================
+// ROTAS DE COMENTÁRIOS
+// ============================================
+
+app.post('/api/aulas/:aulaId/comments', async (req, res) => {
+    try {
+        if (!req.session.userId) {
+            return res.status(401).json({ error: 'Não autenticado' });
+        }
+
+        const { aulaId } = req.params;
+        const { texto } = req.body;
+
+        // Enviar notificação por email
+        const emailHTML = `
+            <h2>Novo Comentário em Aula 💬</h2>
+            <p><strong>${req.session.userName}</strong> comentou:</p>
+            <p style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                "${texto}"
+            </p>
+            <p>Aula ID: ${aulaId}</p>
+            <p>Email: ${req.session.userEmail}</p>
+        `;
+
+        await enviarEmail(
+            process.env.ADMIN_EMAIL || 'admin@seusite.com',
+            'Novo Comentário em Aula',
+            emailHTML
+        );
+
+        res.json({ success: true, message: 'Comentário salvo!' });
+    } catch (err) {
+        res.json({ success: false, error: 'Erro ao salvar comentário' });
+    }
+});
+
+app.get('/api/config', (req, res) => {
+    const config = loadConfig();
+    res.json(config);
+});
+
+app.post('/api/config', (req, res) => {
+    const config = req.body;
+    
+    if (saveConfig(config)) {
+        res.json({ success: true, message: 'Configuração salva com sucesso!' });
+    } else {
+        res.status(500).json({ error: 'Erro ao salvar configuração' });
+    }
+});
+
+// ============================================
+// ROTAS DE AULAS E ALUNOS
+// ============================================
+
+app.get('/api/aulas', (req, res) => {
+    const config = loadConfig();
+    res.json(config.aulas || []);
+});
+
+app.get('/api/alunos', async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('alunos')
+            .select('id, nome, email, criado_em')
+            .order('criado_em', { ascending: false });
+
+        if (error) {
+            return res.status(400).json({ error: error.message });
+        }
+
+        res.json(data);
+    } catch (err) {
+        console.error('Erro ao buscar alunos:', err);
+        res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+// ============================================
+// GERADOR DE ANÚNCIOS COM CLAUDE (VERSÃO AVANÇADA)
+// ============================================
+app.post('/api/generate-ads', async (req, res) => {
+    try {
+        console.log('📨 Requisição recebida em /api/generate-ads');
+        
+        // Verificar se API Key existe
+        const apiKey = process.env.ANTHROPIC_API_KEY;
+        console.log('🔑 Verificando API Key...');
+        
+        if (!apiKey) {
+            console.error('❌ API Key não configurada!');
+            return res.status(400).json({ 
+                error: 'API Key do Claude não configurada' 
             });
-            location.reload();
         }
 
-        // ===== LOAD AULAS =====
-        async function loadAulas() {
-            const loginSection = document.getElementById('loginSection');
-            const aulasSection = document.getElementById('aulasSection');
-            const coursesGrid = document.getElementById('coursesGrid');
+        const { palavrasChave, idioma } = req.body;
+        console.log('📝 Dados recebidos:', { palavrasChave, idioma });
 
-            try {
-                // Carregar config
-                const configResponse = await fetch(`${API_URL}/config`);
-                if (!configResponse.ok) throw new Error('Erro ao carregar config');
-                
-                config = await configResponse.json(); // IMPORTANTE: Salvar em variável GLOBAL
-                console.log('✅ Config carregado:', config);
-
-                // Atualizar elementos
-                document.getElementById('logoEmoji').textContent = config.plataforma.logo;
-                document.getElementById('platformaNome').textContent = config.plataforma.nome;
-
-                // Renderizar aulas
-                coursesGrid.innerHTML = config.aulas.map(aula => `
-                    <div class="course-card" onclick="openAula(${aula.id})">
-                        <div class="course-image">${aula.emoji}</div>
-                        <div class="course-body">
-                            <div class="course-title">${aula.titulo}</div>
-                            <p class="course-desc">${aula.descricao}</p>
-                            <p class="course-meta">${aula.licoes.length} aula${aula.licoes.length > 1 ? 's' : ''} • ${aula.duracao}</p>
-                        </div>
-                    </div>
-                `).join('');
-
-                // Mostrar aulas, esconder login
-                if (loginSection) loginSection.classList.add('hidden');
-                if (aulasSection) aulasSection.classList.add('active');
-                console.log('✅ Aulas carregadas com sucesso!');
-                
-            } catch (err) {
-                console.error('❌ Erro ao carregar aulas:', err);
-                alert('Erro ao carregar aulas. Tente novamente.');
-            }
+        if (!palavrasChave || !idioma) {
+            return res.status(400).json({ error: 'Palavras-chave e idioma são obrigatórios' });
         }
 
-        // ===== RATINGS =====
-        function getRating(aulaId) {
-            return localStorage.getItem(`rating_${aulaId}`) || 0;
-        }
+        // Criar client com API Key
+        console.log('🤖 Criando cliente Anthropic...');
+        const Anthropic = require('@anthropic-ai/sdk');
+        const client = new Anthropic({ apiKey });
+        console.log('✅ Cliente criado com sucesso!');
 
-        function saveRating(aulaId, rating) {
-            localStorage.setItem(`rating_${aulaId}`, rating);
-            fetch(`${API_URL}/aulas/${aulaId}/rating`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ rating, user_id: currentUser.id })
-            }).catch(err => console.log('Email de avaliação será enviado'));
-        }
+        // PROMPT MUITO MAIS INTELIGENTE
+        const prompt = `Você é um ESPECIALISTA MÁSTER em Google Ads, copywriting de conversão e marketing digital.
 
-        function renderStars(aulaId) {
-            const rating = getRating(aulaId);
-            const starsContainer = document.getElementById('starsContainer');
-            
-            let starsHTML = '';
-            for (let i = 1; i <= 5; i++) {
-                starsHTML += `<span class="star ${i <= rating ? 'active' : ''}" onclick="setRating(${i})">★</span>`;
-            }
-            
-            starsContainer.innerHTML = starsHTML;
-            
-            const ratingDisplay = document.getElementById('ratingDisplay');
-            if (rating > 0) {
-                ratingDisplay.innerHTML = `<div class="rating-display">Você avaliou com ${rating} estrela${rating > 1 ? 's' : ''}!</div>`;
-            }
-        }
+TAREFA: Gerar anúncio de ALTA CONVERSÃO para Google Ads em ${idioma}.
 
-        function setRating(stars) {
-            saveRating(currentAulaId, stars);
-            renderStars(currentAulaId);
-        }
+PALAVRAS-CHAVE: "${palavrasChave}"
 
-        // ===== COMMENTS =====
-        function getComments(aulaId) {
-            const comments = localStorage.getItem(`comments_${aulaId}`);
-            return comments ? JSON.parse(comments) : [];
-        }
+⚠️ LIMITES DO GOOGLE ADS (OBRIGATÓRIO RESPEITAR):
+- TÍTULOS: MÁXIMO 30 caracteres CADA (contar espaços)
+- HEADLINES: MÁXIMO 30 caracteres CADA (contar espaços)
+- DESCRIÇÕES: MÁXIMO 90 caracteres CADA (contar espaços)
+- SITE LINK (texto): MÁXIMO 25 caracteres (contar espaços)
+- SITE LINK (descrição 1): MÁXIMO 35 caracteres (contar espaços)
+- SITE LINK (descrição 2): MÁXIMO 35 caracteres (contar espaços)
 
-        function saveComment(aulaId, comentario) {
-            const comments = getComments(aulaId);
-            comments.push({
-                autor: currentUser.nome,
-                texto: comentario,
-                data: new Date().toLocaleDateString('pt-BR')
-            });
-            localStorage.setItem(`comments_${aulaId}`, JSON.stringify(comments));
-            
-            fetch(`${API_URL}/aulas/${aulaId}/comments`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ texto: comentario, user_id: currentUser.id })
-            }).catch(err => console.log('Notificação de comentário será enviada'));
-        }
+ESTRUTURA DE RESPOSTA (EXATAMENTE ASSIM):
 
-        function renderComments(aulaId) {
-            const comments = getComments(aulaId);
-            const commentsList = document.getElementById('commentsList');
-            
-            if (comments.length === 0) {
-                commentsList.innerHTML = '<div class="no-comments">Nenhum comentário ainda. Seja o primeiro a comentar!</div>';
-                return;
-            }
+---TÍTULOS---
+1. [TÍTULO 1] (máx 30)
+2. [TÍTULO 2] (máx 30)
+3. [TÍTULO 3] (máx 30)
+4. [TÍTULO 4] (máx 30)
+5. [TÍTULO 5] (máx 30)
+6. [TÍTULO 6] (máx 30)
+7. [TÍTULO 7] (máx 30)
 
-            commentsList.innerHTML = comments.map(comment => `
-                <div class="comment-item">
-                    <div class="comment-author">${comment.autor}</div>
-                    <div class="comment-text">${comment.texto}</div>
-                    <div class="comment-date">${comment.data}</div>
-                </div>
-            `).join('');
-        }
+---HEADLINES---
+1. [HEADLINE 1] (máx 30)
+2. [HEADLINE 2] (máx 30)
+3. [HEADLINE 3] (máx 30)
+4. [HEADLINE 4] (máx 30)
+5. [HEADLINE 5] (máx 30)
+6. [HEADLINE 6] (máx 30)
+7. [HEADLINE 7] (máx 30)
 
-        // ===== OPEN AULA =====
-        function openAula(aulaId) {
-            // Validar que config existe
-            if (!config || !config.aulas) {
-                console.error('❌ Config não carregado');
-                alert('Erro ao carregar aulas. Recarregue a página.');
-                return;
-            }
+---DESCRIÇÕES---
+1. [DESCRIÇÃO 1] (máx 90)
+2. [DESCRIÇÃO 2] (máx 90)
+3. [DESCRIÇÃO 3] (máx 90)
+4. [DESCRIÇÃO 4] (máx 90)
+5. [DESCRIÇÃO 5] (máx 90)
 
-            currentAulaId = aulaId;
-            const aula = config.aulas.find(a => a.id === aulaId);
-            
-            if (!aula || !aula.licoes || aula.licoes.length === 0) {
-                alert('Aula sem conteúdo!');
-                return;
-            }
+---SITE LINKS---
+1. Texto: [TEXTO PRINCIPAL] (máx 25)
+   Descrição 1: [DESCRIÇÃO 1] (máx 35)
+   Descrição 2: [DESCRIÇÃO 2] (máx 35)
 
-            const primeiraLicao = aula.licoes[0];
-            
-            const html = `
-                <div class="aula-header">
-                    <h2>${primeiraLicao.titulo}</h2>
-                    <p>${primeiraLicao.descricao}</p>
-                </div>
+2. Texto: [TEXTO PRINCIPAL] (máx 25)
+   Descrição 1: [DESCRIÇÃO 1] (máx 35)
+   Descrição 2: [DESCRIÇÃO 2] (máx 35)
 
-                <div class="video-container">
-                    ${primeiraLicao.tipo === 'youtube' 
-                        ? `<iframe src="https://www.youtube.com/embed/${primeiraLicao.videoId}" frameborder="0" allowfullscreen></iframe>`
-                        : `<video controls><source src="${primeiraLicao.videoId}" type="video/mp4"></video>`
-                    }
-                </div>
+3. Texto: [TEXTO PRINCIPAL] (máx 25)
+   Descrição 1: [DESCRIÇÃO 1] (máx 35)
+   Descrição 2: [DESCRIÇÃO 2] (máx 35)
 
-                <div class="rating-section">
-                    <div class="rating-title">⭐ Avalie esta Aula</div>
-                    <div class="stars-container" id="starsContainer"></div>
-                    <p class="rating-text">Sua avaliação nos ajuda a melhorar!</p>
-                    <div id="ratingDisplay"></div>
-                </div>
+4. Texto: [TEXTO PRINCIPAL] (máx 25)
+   Descrição 1: [DESCRIÇÃO 1] (máx 35)
+   Descrição 2: [DESCRIÇÃO 2] (máx 35)
 
-                <div class="comments-section">
-                    <div class="comments-title">💬 Comentários e Feedback</div>
-                    
-                    <div class="comment-form">
-                        <textarea class="comment-textarea" id="commentInput" placeholder="Deixe seu feedback ou comentário..."></textarea>
-                        <button class="comment-button" onclick="submitComment()">Enviar Comentário</button>
-                    </div>
+REGRAS CRÍTICAS:
+✓ CONTAR CADA CARACTERE - se passar de 30, o anúncio será rejeitado!
+✓ Títulos magnéticos com urgência/benefício
+✓ Headlines focadas em BENEFÍCIO principal
+✓ Descrições que criam desejo e confiança
+✓ Site Links com ações claras (Saiba Mais, Comprar Agora, etc)
+✓ Cada descrição de Site Link deve complementar o texto principal
 
-                    <div class="comments-list" id="commentsList"></div>
-                </div>
+GATILHOS A USAR:
+- Urgência ("Hoje", "Agora", "Pronta Entrega")
+- Benefício ("Economize", "Ganhe", "Melhore")
+- Confiança ("Garantia", "Seguro", "Testado")
+- Escassez ("Limitado", "Últimas", "Exclusivo")
+- Números ("10k+", "4.9★", "100%")`;
 
-                <!-- GERADOR DE ANÚNCIOS -->
-                <div class="ads-generator-section">
-                    <div class="ads-title">🎯 Gerador de Anúncios Google Ads</div>
-                    
-                    <div class="ads-form">
-                        <div class="form-group-ads">
-                            <label for="adsKeywords">Palavras-chave do Anúncio</label>
-                            <input type="text" id="adsKeywords" placeholder="Ex: sapato confortável para mulheres" />
-                        </div>
-
-                        <div class="form-group-ads">
-                            <label for="adsLanguage">Idioma</label>
-                            <select id="adsLanguage">
-                                <option value="Português Brasileiro">Português Brasileiro</option>
-                                <option value="Inglês Americano">Inglês Americano</option>
-                                <option value="Espanhol">Espanhol</option>
-                                <option value="Francês">Francês</option>
-                                <option value="Italiano">Italiano</option>
-                                <option value="Alemão">Alemão</option>
-                            </select>
-                        </div>
-
-                        <button class="ads-button" onclick="gerarAnuncio()" id="adsGenerateBtn">Gerar Anúncio</button>
-                    </div>
-
-                    <div id="adsResult" style="display: none;">
-                        <div class="ads-result-title">📌 Seu Anúncio Gerado:</div>
-                        <div class="ads-result" id="adsContent"></div>
-                    </div>
-
-                    <div id="adsLoading" class="ads-loading" style="display: none;">
-                        <span class="spinner-small"></span>
-                        Gerando seu anúncio...
-                    </div>
-
-                    <div id="adsError" class="ads-error" style="display: none;"></div>
-                </div>
-
-                <button class="back-button" onclick="backToAulas()" style="margin-top: 2rem;">← Voltar às Aulas</button>
-            `;
-
-            const container = document.querySelector('.container');
-            container.innerHTML = html;
-            renderStars(aulaId);
-            renderComments(aulaId);
-        }
-
-        function submitComment() {
-            const input = document.getElementById('commentInput');
-            const comentario = input.value.trim();
-
-            if (!comentario) {
-                alert('Escreva um comentário antes de enviar!');
-                return;
-            }
-
-            saveComment(currentAulaId, comentario);
-            input.value = '';
-            renderComments(currentAulaId);
-        }
-
-        function backToAulas() {
-            // Restaura a estrutura original
-            const container = document.querySelector('.container');
-            container.innerHTML = `
-                <div class="header">
-                    <div>
-                        <h1 id="platformaNome" style="display: inline; margin-right: 1rem;"></h1>
-                        <span id="userName" style="color: var(--text-muted);"></span>
-                    </div>
-                    <button class="logout-btn" onclick="handleLogout()">Sair</button>
-                </div>
-                <div class="courses-grid" id="coursesGrid"></div>
-            `;
-            
-            // Recarrega as aulas
-            loadAulas();
-        }
-
-        // ===== GERADOR DE ANÚNCIOS =====
-        async function gerarAnuncio() {
-            const palavrasChave = document.getElementById('adsKeywords').value.trim();
-            const idioma = document.getElementById('adsLanguage').value;
-
-            if (!palavrasChave) {
-                mostrarErroAnuncio('Preencha as palavras-chave!');
-                return;
-            }
-
-            // Mostrar loading
-            document.getElementById('adsLoading').style.display = 'block';
-            document.getElementById('adsResult').style.display = 'none';
-            document.getElementById('adsError').style.display = 'none';
-            document.getElementById('adsGenerateBtn').disabled = true;
-
-            try {
-                const response = await fetch(`${API_URL}/generate-ads`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ 
-                        palavrasChave: palavrasChave,
-                        idioma: idioma 
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.sucesso || data.anuncio) {
-                    const htmlFormatado = formatarAnuncioEmColunas(data.anuncio);
-                    document.getElementById('adsContent').innerHTML = htmlFormatado;
-                    document.getElementById('adsResult').style.display = 'block';
-                } else {
-                    mostrarErroAnuncio(data.error || 'Erro ao gerar anúncio');
+        console.log('🚀 Chamando Claude Opus 4 (modelo mais avançado)...');
+        const message = await client.messages.create({
+            model: 'claude-opus-4-20250514', // ✨ MODELO MAIS NOVO E INTELIGENTE
+            max_tokens: 3000, // Aumentado para mais qualidade
+            messages: [
+                {
+                    role: 'user',
+                    content: prompt
                 }
-            } catch (err) {
-                console.error('Erro:', err);
-                mostrarErroAnuncio('Erro ao conectar com o servidor: ' + err.message);
-            } finally {
-                document.getElementById('adsLoading').style.display = 'none';
-                document.getElementById('adsGenerateBtn').disabled = false;
-            }
-        }
-
-        function formatarAnuncioEmColunas(textoAnuncio) {
-            // Separar as seções
-            const secoes = {};
-            const regex = /---(TÍTULOS|HEADLINES|DESCRIÇÕES|SITE LINKS)---/g;
-            const partes = textoAnuncio.split(regex);
-            
-            for (let i = 1; i < partes.length; i += 2) {
-                const nomeSeccao = partes[i].trim();
-                const conteudoSeccao = partes[i + 1] ? partes[i + 1].trim() : '';
-                secoes[nomeSeccao] = conteudoSeccao;
-            }
-
-            // Função auxiliar para contar caracteres
-            function contarChars(texto) {
-                return texto.length;
-            }
-
-            // Função para extrair números e textos
-            function extrairItens(texto) {
-                const linhas = texto.split('\n').filter(l => l.trim());
-                return linhas.map(linha => linha.replace(/^\d+\.\s*/, '').trim()).filter(l => l);
-            }
-
-            // Gerar HTML formatado
-            let html = '<div class="ads-container-colunas">';
-
-            // TÍTULOS (7 colunas)
-            if (secoes.TÍTULOS) {
-                const titulos = extrairItens(secoes.TÍTULOS);
-                html += '<div class="ads-secao"><h4>📌 TÍTULOS (máx 30 caracteres)</h4><div class="ads-grid-3">';
-                titulos.forEach(t => {
-                    const chars = contarChars(t);
-                    const cor = chars <= 30 ? '#4F7DFF' : '#ff6b6b';
-                    html += `<div class="ads-item" style="border-left: 4px solid ${cor}">
-                        <div class="ads-texto">${t}</div>
-                        <div class="ads-counter">${chars}/30 ${chars > 30 ? '❌ ACIMA!' : '✓'}</div>
-                    </div>`;
-                });
-                html += '</div></div>';
-            }
-
-            // HEADLINES (7 colunas)
-            if (secoes.HEADLINES) {
-                const headlines = extrairItens(secoes.HEADLINES);
-                html += '<div class="ads-secao"><h4>🎯 HEADLINES (máx 30 caracteres)</h4><div class="ads-grid-3">';
-                headlines.forEach(h => {
-                    const chars = contarChars(h);
-                    const cor = chars <= 30 ? '#6B5FD9' : '#ff6b6b';
-                    html += `<div class="ads-item" style="border-left: 4px solid ${cor}">
-                        <div class="ads-texto">${h}</div>
-                        <div class="ads-counter">${chars}/30 ${chars > 30 ? '❌ ACIMA!' : '✓'}</div>
-                    </div>`;
-                });
-                html += '</div></div>';
-            }
-
-            // DESCRIÇÕES (5 colunas)
-            if (secoes.DESCRIÇÕES) {
-                const descricoes = extrairItens(secoes.DESCRIÇÕES);
-                html += '<div class="ads-secao"><h4>📝 DESCRIÇÕES (máx 90 caracteres)</h4><div class="ads-grid-2">';
-                descricoes.forEach(d => {
-                    const chars = contarChars(d);
-                    const cor = chars <= 90 ? '#10b981' : '#ff6b6b';
-                    html += `<div class="ads-item" style="border-left: 4px solid ${cor}">
-                        <div class="ads-texto">${d}</div>
-                        <div class="ads-counter">${chars}/90 ${chars > 90 ? '❌ ACIMA!' : '✓'}</div>
-                    </div>`;
-                });
-                html += '</div></div>';
-            }
-
-            // SITE LINKS (com 2 descrições)
-            if (secoes['SITE LINKS']) {
-                const siteLinksTexto = secoes['SITE LINKS'];
-                html += '<div class="ads-secao"><h4>🔗 SITE LINKS (Texto + 2 Descrições)</h4>';
-                
-                // Separar cada site link (começam com número.)
-                const linhas = siteLinksTexto.split('\n').filter(l => l.trim());
-                let siteAtual = null;
-                
-                linhas.forEach(linha => {
-                    if (linha.match(/^\d+\.\s*Texto:/)) {
-                        siteAtual = { texto: '', desc1: '', desc2: '' };
-                    }
-                    
-                    if (linha.includes('Texto:')) {
-                        siteAtual.texto = linha.replace(/^\d+\.\s*Texto:\s*/, '').trim();
-                    } else if (linha.includes('Descrição 1:')) {
-                        siteAtual.desc1 = linha.replace(/Descrição 1:\s*/, '').trim();
-                    } else if (linha.includes('Descrição 2:')) {
-                        siteAtual.desc2 = linha.replace(/Descrição 2:\s*/, '').trim();
-                    }
-                });
-
-                // Exibir site links
-                html += '<div class="ads-grid-site-links">';
-                const linkMatches = siteLinksTexto.match(/\d+\.\s*Texto:(.+?)(?=\n\d+\.|\Z)/gs);
-                
-                if (linkMatches) {
-                    linkMatches.forEach((match, idx) => {
-                        const textoMatch = match.match(/Texto:\s*(.+?)(?=\n|Descrição)/);
-                        const desc1Match = match.match(/Descrição 1:\s*(.+?)(?=\n|Descrição)/);
-                        const desc2Match = match.match(/Descrição 2:\s*(.+?)(?=\n|$)/);
-                        
-                        const texto = textoMatch ? textoMatch[1].trim() : '';
-                        const desc1 = desc1Match ? desc1Match[1].trim() : '';
-                        const desc2 = desc2Match ? desc2Match[1].trim() : '';
-                        
-                        const charTexto = contarChars(texto);
-                        const charDesc1 = contarChars(desc1);
-                        const charDesc2 = contarChars(desc2);
-                        
-                        const corTexto = charTexto <= 25 ? '#4F7DFF' : '#ff6b6b';
-                        const corDesc1 = charDesc1 <= 35 ? '#6B5FD9' : '#ff6b6b';
-                        const corDesc2 = charDesc2 <= 35 ? '#6B5FD9' : '#ff6b6b';
-                        
-                        html += `<div class="ads-site-link-card">
-                            <div class="ads-site-link-numero">Link ${idx + 1}</div>
-                            <div class="ads-item" style="border-left: 4px solid ${corTexto}">
-                                <div class="ads-label">Texto Principal:</div>
-                                <div class="ads-texto">${texto || '(vazio)'}</div>
-                                <div class="ads-counter">${charTexto}/25 ${charTexto > 25 ? '❌' : '✓'}</div>
-                            </div>
-                            <div class="ads-item" style="border-left: 4px solid ${corDesc1}">
-                                <div class="ads-label">Descrição 1:</div>
-                                <div class="ads-texto">${desc1 || '(vazio)'}</div>
-                                <div class="ads-counter">${charDesc1}/35 ${charDesc1 > 35 ? '❌' : '✓'}</div>
-                            </div>
-                            <div class="ads-item" style="border-left: 4px solid ${corDesc2}">
-                                <div class="ads-label">Descrição 2:</div>
-                                <div class="ads-texto">${desc2 || '(vazio)'}</div>
-                                <div class="ads-counter">${charDesc2}/35 ${charDesc2 > 35 ? '❌' : '✓'}</div>
-                            </div>
-                        </div>`;
-                    });
-                }
-                html += '</div></div>';
-            }
-
-            html += '</div>';
-            return html;
-        }
-            const errorDiv = document.getElementById('adsError');
-            errorDiv.textContent = mensagem;
-            errorDiv.style.display = 'block';
-            document.getElementById('adsResult').style.display = 'none';
-            
-            // Se for erro de API não disponível, desabilitar botão
-            if (mensagem.includes('não disponível') || mensagem.includes('Configure')) {
-                document.getElementById('adsGenerateBtn').disabled = true;
-                document.getElementById('adsGenerateBtn').textContent = '⚠️ Serviço indisponível';
-            }
-        }
-
-        // ===== HELPERS =====
-        function showError(elementId, message) {
-            const element = document.getElementById(elementId);
-            element.textContent = message;
-            element.classList.add('show');
-            setTimeout(() => element.classList.remove('show'), 5000);
-        }
-
-        function showSuccess(elementId, message) {
-            const element = document.getElementById(elementId);
-            element.textContent = message;
-            element.classList.add('show');
-            setTimeout(() => element.classList.remove('show'), 5000);
-        }
-
-        window.addEventListener('load', () => {
-            // Mostrar login na inicialização
-            const loginSection = document.getElementById('loginSection');
-            const aulasSection = document.getElementById('aulasSection');
-            
-            if (loginSection) {
-                loginSection.style.display = 'flex';
-                loginSection.classList.remove('hidden');
-            }
-            
-            if (aulasSection) {
-                aulasSection.style.display = 'none';
-                aulasSection.classList.remove('active');
-            }
+            ]
         });
-    </script>
-</body>
-</html>
+
+        const anuncio = message.content[0].text;
+        console.log('✅ Anúncio gerado com sucesso com Claude Opus 4!');
+
+        res.json({
+            sucesso: true,
+            anuncio: anuncio,
+            palavrasChave: palavrasChave,
+            idioma: idioma,
+            modelo: 'Claude Opus 4 (Avançado)'
+        });
+
+    } catch (err) {
+        console.error('❌ ERRO DETALHADO:', err);
+        console.error('Tipo de erro:', err.constructor.name);
+        console.error('Mensagem:', err.message);
+        
+        res.status(500).json({ 
+            error: 'Erro ao gerar anúncio: ' + err.message,
+            tipo: err.constructor.name
+        });
+    }
+});
+
+// ============================================
+// INICIAR SERVIDOR
+// ============================================
+app.listen(PORT, async () => {
+    // Criar aluno de teste automaticamente
+    try {
+        const { data } = await supabase
+            .from('alunos')
+            .select('*')
+            .eq('email', 'teste@exemplo.com')
+            .single();
+
+        if (!data) {
+            await supabase
+                .from('alunos')
+                .insert([{
+                    nome: 'Usuário Teste',
+                    email: 'teste@exemplo.com',
+                    senha: '123456'
+                }]);
+            console.log('✅ Aluno de teste criado!');
+        }
+    } catch (err) {
+        // Ignorar erros (aluno já pode existir)
+    }
+    
+    console.log(`
+╔════════════════════════════════════════════╗
+║  🚀 Plataforma de Aulas iniciada!          ║
+║  🌐 http://localhost:${PORT}                  ║
+║  📊 Admin: http://localhost:${PORT}/admin.html ║
+╚════════════════════════════════════════════╝
+
+✨ FUNCIONALIDADES:
+  ✓ Login/Registro com Supabase
+  ✓ Recuperação de Senha
+  ✓ Sistema de Avaliações ⭐
+  ✓ Comentários e Feedback 💬
+  ✓ Gerador de Anúncios com IA 🤖
+  ✓ Notificações por Email 📧
+
+🔐 DADOS DE TESTE:
+  Email: teste@exemplo.com
+  Senha: 123456
+    `);
+});
