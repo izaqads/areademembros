@@ -478,61 +478,78 @@ app.post('/api/generate-ads', async (req, res) => {
         console.log('✅ Cliente criado com sucesso!');
 
         // PROMPT MUITO MAIS INTELIGENTE
-        const prompt = `Você é um ESPECIALISTA MÁSTER em Google Ads, copywriting de conversão, psicologia do consumidor e marketing digital. 
+        const prompt = `Você é um ESPECIALISTA MÁSTER em Google Ads, copywriting de conversão e marketing digital.
 
-Sua tarefa é gerar um anúncio EXTREMAMENTE PERSUASIVO e de alta conversão para Google Ads.
+TAREFA: Gerar anúncio de ALTA CONVERSÃO para Google Ads em ${idioma}.
 
-CONTEXTO DO PRODUTO:
-- Palavras-chave: "${palavrasChave}"
-- Idioma: ${idioma}
-- Objetivo: MAXIMIZAR CLIQUES E CONVERSÕES
-- Público: Consumidores buscando essa solução
+PALAVRAS-CHAVE: "${palavrasChave}"
 
-REGRAS OBRIGATÓRIAS:
-1. TÍTULOS devem ser MAGNÉTICOS - usar gatilhos psicológicos (urgência, escassez, benefício)
-2. HEADLINES devem FOCAR EM BENEFÍCIO PRINCIPAL - não em features
-3. DESCRIÇÕES devem criar DESEJO e CONFIANÇA
-4. SITE LINKS devem guiar para ações específicas
+⚠️ LIMITES DO GOOGLE ADS (OBRIGATÓRIO RESPEITAR):
+- TÍTULOS: MÁXIMO 30 caracteres CADA (contar espaços)
+- HEADLINES: MÁXIMO 30 caracteres CADA (contar espaços)
+- DESCRIÇÕES: MÁXIMO 90 caracteres CADA (contar espaços)
+- SITE LINK (texto): MÁXIMO 25 caracteres (contar espaços)
+- SITE LINK (descrição 1): MÁXIMO 35 caracteres (contar espaços)
+- SITE LINK (descrição 2): MÁXIMO 35 caracteres (contar espaços)
 
-GATILHOS PSICOLÓGICOS A USAR:
-✓ Urgência ("Hoje", "Agora", "Limite")
-✓ Benefício específico ("Economize X%", "Ganhe Y")
-✓ Prova social ("10k clientes", "Avaliação 4.9★")
-✓ Confiança ("Garantia", "Sem risco", "100% seguro")
-✓ Escassez ("Estoque limitado", "Últimas vagas")
+ESTRUTURA DE RESPOSTA (EXATAMENTE ASSIM):
 
-ESTRUTURA DE RESPOSTA:
+---TÍTULOS---
+1. [TÍTULO 1] (máx 30)
+2. [TÍTULO 2] (máx 30)
+3. [TÍTULO 3] (máx 30)
+4. [TÍTULO 4] (máx 30)
+5. [TÍTULO 5] (máx 30)
+6. [TÍTULO 6] (máx 30)
+7. [TÍTULO 7] (máx 30)
 
----TÍTULOS (MAGNÉTICOS)---
-1. [Título 1 - máx 30 chars] - use gatilho psicológico
-2. [Título 2 - máx 30 chars] - abordagem diferente
-3. [Título 3 - máx 30 chars]
-... até 10 opções
+---HEADLINES---
+1. [HEADLINE 1] (máx 30)
+2. [HEADLINE 2] (máx 30)
+3. [HEADLINE 3] (máx 30)
+4. [HEADLINE 4] (máx 30)
+5. [HEADLINE 5] (máx 30)
+6. [HEADLINE 6] (máx 30)
+7. [HEADLINE 7] (máx 30)
 
----HEADLINES (BENEFIT-DRIVEN)---
-1. [Headline 1 - máx 30 chars] - benefício #1
-2. [Headline 2 - máx 30 chars] - benefício #2
-3. [Headline 3 - máx 30 chars] - prova social
-... até 10 opções
+---DESCRIÇÕES---
+1. [DESCRIÇÃO 1] (máx 90)
+2. [DESCRIÇÃO 2] (máx 90)
+3. [DESCRIÇÃO 3] (máx 90)
+4. [DESCRIÇÃO 4] (máx 90)
+5. [DESCRIÇÃO 5] (máx 90)
 
----DESCRIÇÕES (PERSUASIVAS)---
-1. [Descrição 1 - máx 90 chars] - benefício + gatilho
-2. [Descrição 2 - máx 90 chars] - confiança + garantia
-3. [Descrição 3 - máx 90 chars] - urgência
-... até 7 opções
+---SITE LINKS---
+1. Texto: [TEXTO PRINCIPAL] (máx 25)
+   Descrição 1: [DESCRIÇÃO 1] (máx 35)
+   Descrição 2: [DESCRIÇÃO 2] (máx 35)
 
----SITE LINKS (AÇÃO)---
-1. [Link 1 - máx 25 chars] → descrição da ação
-2. [Link 2 - máx 25 chars] → descrição da ação
-3. [Link 3 - máx 25 chars] → descrição da ação
-... até 5 opções
+2. Texto: [TEXTO PRINCIPAL] (máx 25)
+   Descrição 1: [DESCRIÇÃO 1] (máx 35)
+   Descrição 2: [DESCRIÇÃO 2] (máx 35)
 
-LEMBRE-SE:
-- Cada texto deve passar EMOÇÃO e não apenas informação
-- Evitar clichês genéricos
-- Usar números específicos quando possível
-- Direcionar para ação clara
-- Manter tom conversacional e confiável`;
+3. Texto: [TEXTO PRINCIPAL] (máx 25)
+   Descrição 1: [DESCRIÇÃO 1] (máx 35)
+   Descrição 2: [DESCRIÇÃO 2] (máx 35)
+
+4. Texto: [TEXTO PRINCIPAL] (máx 25)
+   Descrição 1: [DESCRIÇÃO 1] (máx 35)
+   Descrição 2: [DESCRIÇÃO 2] (máx 35)
+
+REGRAS CRÍTICAS:
+✓ CONTAR CADA CARACTERE - se passar de 30, o anúncio será rejeitado!
+✓ Títulos magnéticos com urgência/benefício
+✓ Headlines focadas em BENEFÍCIO principal
+✓ Descrições que criam desejo e confiança
+✓ Site Links com ações claras (Saiba Mais, Comprar Agora, etc)
+✓ Cada descrição de Site Link deve complementar o texto principal
+
+GATILHOS A USAR:
+- Urgência ("Hoje", "Agora", "Pronta Entrega")
+- Benefício ("Economize", "Ganhe", "Melhore")
+- Confiança ("Garantia", "Seguro", "Testado")
+- Escassez ("Limitado", "Últimas", "Exclusivo")
+- Números ("10k+", "4.9★", "100%")`;
 
         console.log('🚀 Chamando Claude Opus 4 (modelo mais avançado)...');
         const message = await client.messages.create({
