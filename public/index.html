@@ -1132,16 +1132,26 @@
         }
 
         function backToAulas() {
-            // Limpa a aula aberta
-            document.getElementById('aulaDetail').classList.remove('active');
-            document.getElementById('aulasSection').classList.add('active');
-            document.getElementById('comentariosSection').classList.remove('active');
-            
-            // Reseta os dados
-            currentAula = null;
-            
-            // Recarrega as aulas
-            loadAulas();
+            try {
+                // Limpa a aula aberta
+                const aulaDetail = document.getElementById('aulaDetail');
+                const aulasSection = document.getElementById('aulasSection');
+                const comentariosSection = document.getElementById('comentariosSection');
+                
+                if (aulaDetail) aulaDetail.classList.remove('active');
+                if (aulasSection) aulasSection.classList.add('active');
+                if (comentariosSection) comentariosSection.classList.remove('active');
+                
+                // Reseta os dados
+                currentAula = null;
+                currentAulaId = null;
+                
+                // Recarrega as aulas
+                loadAulas();
+            } catch(err) {
+                console.error('Erro ao voltar:', err);
+                loadAulas();
+            }
         }
 
         // ===== HELPERS =====
