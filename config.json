@@ -1,0 +1,48 @@
+{
+  "plataforma": {
+    "nome": "Aulas no Claude",
+    "descricao": "Plataforma criada com Claude By",
+    "logo": "🚀",
+    "cor_primaria": "#3b82f6",
+    "cor_secundaria": "#06b6d4",
+    "email_admin": "seu-email@gmail.com"
+  },
+  "aulas": [
+    {
+      "id": 1,
+      "titulo": "AULAO - Páginas no Claude",
+      "descricao": "Aprenda a criar páginas incríveis usando Claude",
+      "emoji": "🚀",
+      "duracao": "2 horas",
+      "nivel": "Iniciante",
+      "acessos": 0,
+      "ativa": true,
+      "licoes": [
+        {
+          "id": 1,
+          "titulo": "AULAO - Páginas no Claude",
+          "duracao": "40:00",
+          "tipo": "youtube",
+          "videoId": "kSCVRFuSrTs",
+          "descricao": "Aula completa sobre como criar páginas no Claude",
+          "assistida": false
+        }
+      ]
+    }
+  ],
+  "configuracoes": {
+    "permitir_registro": true,
+    "requer_email_verificacao": false,
+    "modo_manutencao": false,
+    "mensagem_manutencao": "Plataforma em manutenção. Volte em breve!",
+    "sessao_duracao_horas": 24,
+    "mostrar_certificado": true,
+    "mostrar_forum": false
+  },
+  "redes_sociais": {
+    "instagram": "https://instagram.com",
+    "youtube": "https://youtube.com",
+    "whatsapp": "https://wa.me/55",
+    "linkedin": "https://linkedin.com"
+  }
+}

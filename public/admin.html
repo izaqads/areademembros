@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Plataforma de Aulas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #0f172a;
+            --secondary-dark: #1e293b;
+            --tertiary-dark: #334155;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --text-white: #ffffff;
+            --text-light: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #475569;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 50%, var(--primary-dark) 100%);
+            color: var(--text-white);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: rgba(15, 23, 42, 0.95);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1rem;
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--accent-blue);
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .menu-item {
+            padding: 0.75rem 1rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 0.5rem;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .menu-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--text-white);
+        }
+
+        .menu-item.active {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--accent-blue);
+        }
+
+        .main {
+            margin-left: 250px;
+            flex: 1;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .header {
+            background: rgba(30, 41, 59, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .container {
+            padding: 2rem;
+            max-width: 1200px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            color: var(--text-white);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            margin-top: 1rem;
+        }
+
+        .table th {
+            padding: 1rem;
+            text-align: left;
+            background: rgba(51, 65, 85, 0.5);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background: rgba(34, 197, 94, 0.1);
+            color: #86efac;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+        }
+
+        .card-title {
+            color: var(--accent-blue);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-title">⚙️ Admin</div>
+        <div class="sidebar-menu">
+            <button class="menu-item active" onclick="showSection('dashboard')">📊 Dashboard</button>
+            <button class="menu-item" onclick="showSection('aulas')">📚 Aulas</button>
+            <button class="menu-item" onclick="showSection('alunos')">👥 Alunos</button>
+            <button class="menu-item" onclick="showSection('config')">⚙️ Configurações</button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+        <div class="header">
+            <div class="header-title" id="sectionTitle">Dashboard</div>
+        </div>
+
+        <div class="container">
+            <!-- Dashboard -->
+            <div id="dashboard" class="section active">
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-title">Total de Alunos</div>
+                        <div class="card-value" id="statsAlunos">0</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Total de Aulas</div>
+                        <div class="card-value" id="statsAulas">0</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Status</div>
+                        <div class="card-value" style="color: #86efac;">🟢 Online</div>
+                    </div>
+                </div>
+
+                <h2 style="margin-bottom: 1rem;">Últimos Alunos</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentAlunos"></tbody>
+                </table>
+            </div>
+
+            <!-- Aulas -->
+            <div id="aulas" class="section">
+                <h2 style="margin-bottom: 1rem;">Minhas Aulas</h2>
+                <div id="aulasContainer"></div>
+            </div>
+
+            <!-- Alunos -->
+            <div id="alunos" class="section">
+                <h2 style="margin-bottom: 1rem;">Lista de Alunos</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody id="alunosTable"></tbody>
+                </table>
+            </div>
+
+            <!-- Configurações -->
+            <div id="config" class="section">
+                <div class="message" id="configMessage"></div>
+                <h2 style="margin-bottom: 1rem;">Configurações da Plataforma</h2>
+
+                <form onsubmit="saveConfig(event)">
+                    <div class="form-group">
+                        <label>Nome da Plataforma</label>
+                        <input type="text" id="configNome" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <textarea id="configDescricao"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Admin</label>
+                        <input type="email" id="configEmail">
+                    </div>
+                    <button type="submit" class="btn">💾 Salvar Configurações</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api';
+        let configGlobal = {};
+
+        window.addEventListener('load', async () => {
+            await loadConfig();
+            await loadAlunos();
+        });
+
+        function showSection(section) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(section).classList.add('active');
+
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const titles = {
+                dashboard: '📊 Dashboard',
+                aulas: '📚 Aulas',
+                alunos: '👥 Alunos',
+                config: '⚙️ Configurações'
+            };
+            document.getElementById('sectionTitle').textContent = titles[section];
+
+            if (section === 'alunos') loadAlunos();
+        }
+
+        async function loadConfig() {
+            try {
+                const response = await fetch(`${API_URL}/config`);
+                configGlobal = await response.json();
+
+                document.getElementById('configNome').value = configGlobal.plataforma.nome;
+                document.getElementById('configDescricao').value = configGlobal.plataforma.descricao;
+                document.getElementById('configEmail').value = configGlobal.plataforma.email_admin;
+
+                document.getElementById('statsAulas').textContent = configGlobal.aulas.length;
+            } catch (err) {
+                console.error('Erro:', err);
+            }
+        }
+
+        async function loadAlunos() {
+            try {
+                const response = await fetch(`${API_URL}/alunos`);
+                const alunos = await response.json();
+
+                document.getElementById('statsAlunos').textContent = alunos.length;
+
+                const tbody = document.getElementById('alunosTable');
+                tbody.innerHTML = alunos.map(a => `
+                    <tr>
+                        <td>${a.nome}</td>
+                        <td>${a.email}</td>
+                        <td>${new Date(a.criado_em).toLocaleDateString('pt-BR')}</td>
+                    </tr>
+                `).join('');
+
+                const recent = document.getElementById('recentAlunos');
+                recent.innerHTML = alunos.slice(0, 5).map(a => `
+                    <tr>
+                        <td>${a.nome}</td>
+                        <td>${a.email}</td>
+                        <td>${new Date(a.criado_em).toLocaleDateString('pt-BR')}</td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('Erro:', err);
+            }
+        }
+
+        async function saveConfig(e) {
+            e.preventDefault();
+
+            configGlobal.plataforma.nome = document.getElementById('configNome').value;
+            configGlobal.plataforma.descricao = document.getElementById('configDescricao').value;
+            configGlobal.plataforma.email_admin = document.getElementById('configEmail').value;
+
+            try {
+                const response = await fetch(`${API_URL}/config`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(configGlobal)
+                });
+
+                const data = await response.json();
+                showMessage('✅ Salvo com sucesso!', 'success');
+            } catch (err) {
+                showMessage('❌ Erro ao salvar', 'error');
+            }
+        }
+
+        function showMessage(text, type) {
+            const el = document.getElementById('configMessage');
+            el.textContent = text;
+            el.className = `message show ${type}`;
+            setTimeout(() => el.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>
