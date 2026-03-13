@@ -75,338 +75,271 @@
             50% { opacity: 0.7; }
         }
 
-        /* ===== LOADING ===== */
-        .loading-spinner {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a2e 50%, var(--dark-bg) 100%);
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
             position: relative;
             z-index: 1;
-        }
-
-        .spinner {
-            width: 45px;
-            height: 45px;
-            border: 3px solid rgba(79, 125, 255, 0.15);
-            border-top-color: var(--primary-blue);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* ===== LOGIN ===== */
-        .login-section {
-            display: flex;
-            align-items: center;
-            justify-content: center;
             flex: 1;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ===== LOGIN SECTION ===== */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh;
         }
 
         .login-card {
-            background: rgba(26, 31, 46, 0.95);
-            border: 1px solid var(--border-light);
+            background: var(--card-bg);
             border-radius: 16px;
             padding: 2.5rem;
-            max-width: 420px;
             width: 100%;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .login-card:hover {
-            border-color: rgba(79, 125, 255, 0.2);
-            box-shadow: 0 25px 70px rgba(79, 125, 255, 0.1);
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .login-emoji {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            display: inline-block;
-            transition: transform 0.3s ease;
-        }
-
-        .login-card:hover .login-emoji {
-            transform: scale(1.1);
+            max-width: 420px;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .login-title {
             font-size: 1.8rem;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 0.5rem;
-            color: var(--text-white);
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .login-subtitle {
+            font-size: 0.95rem;
             color: var(--text-muted);
-            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
         }
 
-        .tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border-light);
-            padding-bottom: 1rem;
-        }
-
-        .tab-button {
-            flex: 1;
-            padding: 0.8rem;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
+        .login-subtitle a {
+            color: inherit;
+            text-decoration: none;
             font-weight: 500;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
+            cursor: pointer;
         }
 
-        .tab-button:hover {
-            color: var(--text-light);
-        }
-
-        .tab-button.active {
-            color: var(--primary-blue);
-            border-bottom-color: var(--primary-blue);
+        .login-subtitle a:hover {
+            color: var(--accent-teal);
         }
 
         .form-group {
-            margin-bottom: 1.3rem;
+            margin-bottom: 1.2rem;
         }
 
-        .form-group label {
+        label {
             display: block;
-            font-weight: 500;
+            font-size: 0.9rem;
+            font-weight: 600;
             margin-bottom: 0.5rem;
             color: var(--text-light);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-white);
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background: rgba(79, 125, 255, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-purple));
+            color: var(--text-white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 125, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(79, 125, 255, 0.1);
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(79, 125, 255, 0.2);
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            border: 1px solid var(--border-light);
+            padding: 0.75rem 1.5rem;
+            width: auto;
+            margin-top: 1.5rem;
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 1.2rem;
             font-size: 0.9rem;
         }
 
-        .form-group input {
-            width: 100%;
-            padding: 0.85rem 1rem;
-            background: rgba(42, 48, 64, 0.5);
-            border: 1px solid var(--border-light);
-            border-radius: 8px;
-            color: var(--text-white);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .form-group input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            background: rgba(42, 48, 64, 0.8);
-            box-shadow: 0 0 0 3px rgba(79, 125, 255, 0.1);
-        }
-
-        .login-button {
-            width: 100%;
-            padding: 0.95rem 1.5rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-purple));
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 1.5rem;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .login-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(79, 125, 255, 0.3);
-        }
-
-        .back-link {
-            text-align: center;
-            margin-top: 1rem;
-            color: var(--text-muted);
-        }
-
-        .back-link button {
-            background: none;
-            border: none;
+        .toggle-form a {
             color: var(--primary-blue);
             cursor: pointer;
-            font-weight: 500;
-            padding: 0;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .toggle-form a:hover {
             text-decoration: underline;
         }
 
-        .back-link button:hover {
-            color: var(--secondary-purple);
+        .error-message, .success-message {
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            animation: slideDown 0.3s ease;
         }
 
-        .error {
+        .error-message {
             background: rgba(239, 68, 68, 0.1);
+            color: #ff6b6b;
             border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #FFABAB;
-            padding: 0.9rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            display: none;
-            font-size: 0.9rem;
         }
 
-        .error.show {
-            display: block;
-        }
-
-        .success {
+        .success-message {
             background: rgba(34, 197, 94, 0.1);
+            color: #51cf66;
             border: 1px solid rgba(34, 197, 94, 0.3);
-            color: #86efac;
-            padding: 0.9rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            display: none;
-            font-size: 0.9rem;
         }
 
-        .success.show {
+        .error-message.show, .success-message.show {
             display: block;
         }
 
-        /* ===== AULAS ===== */
-        .aulas-section {
-            display: none;
-            flex: 1;
-            position: relative;
-            z-index: 1;
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .aulas-section.active {
-            display: block;
-        }
-
+        /* ===== AULAS SECTION ===== */
         .header {
-            background: rgba(15, 20, 25, 0.95);
-            border-bottom: 1px solid var(--border-light);
-            padding: 1.5rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
         }
 
         .header-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-white);
-        }
-
-        .header-right {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
-        #userName {
-            color: var(--primary-blue);
-            font-weight: 500;
-            font-size: 0.95rem;
+        .logo-emoji {
+            font-size: 2.5rem;
+        }
+
+        .title-text h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .title-text p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
         .logout-btn {
-            background: transparent;
-            border: 1px solid var(--border-light);
-            color: var(--text-light);
-            cursor: pointer;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ff6b6b;
+            border: 1px solid rgba(239, 68, 68, 0.3);
             padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            font-weight: 500;
-            font-size: 0.9rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
             transition: all 0.3s ease;
         }
 
         .logout-btn:hover {
-            border-color: var(--primary-blue);
-            color: var(--primary-blue);
-            background: rgba(79, 125, 255, 0.05);
-        }
-
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-            width: 100%;
-        }
-
-        .container h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--text-white);
-        }
-
-        .container-subtitle {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 2.5rem;
+            background: rgba(239, 68, 68, 0.2);
         }
 
         .courses-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
 
         .course-card {
-            background: rgba(26, 31, 46, 0.7);
-            border: 1px solid var(--border-light);
+            background: var(--card-bg);
             border-radius: 12px;
             overflow: hidden;
+            border: 1px solid var(--border-light);
             cursor: pointer;
-            transition: all 0.4s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
         }
 
         .course-card:hover {
-            border-color: rgba(79, 125, 255, 0.3);
             transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(79, 125, 255, 0.15);
-            background: rgba(26, 31, 46, 0.95);
+            border-color: var(--primary-blue);
+            box-shadow: 0 12px 32px rgba(79, 125, 255, 0.15);
         }
 
         .course-image {
-            aspect-ratio: 16/9;
-            background: linear-gradient(135deg, rgba(79, 125, 255, 0.08), rgba(107, 95, 217, 0.08));
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-size: 3.5rem;
-            border-bottom: 1px solid var(--border-light);
-            transition: background 0.4s ease;
-        }
-
-        .course-card:hover .course-image {
-            background: linear-gradient(135deg, rgba(79, 125, 255, 0.12), rgba(107, 95, 217, 0.12));
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(79, 125, 255, 0.1), rgba(107, 95, 217, 0.1));
+            text-align: center;
         }
 
         .course-body {
@@ -414,76 +347,66 @@
         }
 
         .course-title {
-            font-weight: 600;
-            margin-bottom: 0.7rem;
-            color: var(--text-white);
             font-size: 1.1rem;
-            transition: color 0.3s ease;
-        }
-
-        .course-card:hover .course-title {
-            color: var(--primary-blue);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
         }
 
         .course-desc {
             color: var(--text-muted);
             font-size: 0.9rem;
             margin-bottom: 1rem;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         .course-meta {
-            color: var(--text-muted);
             font-size: 0.85rem;
+            color: var(--text-light);
         }
 
-        /* ===== AULA PLAYER ===== */
+        /* ===== AULA DETAIL SECTION ===== */
         .aula-header {
             margin-bottom: 2rem;
         }
 
         .aula-header h2 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             margin-bottom: 0.5rem;
-            color: var(--text-white);
         }
 
         .aula-header p {
-            color: var(--text-light);
-            line-height: 1.8;
-            font-size: 1.05rem;
+            color: var(--text-muted);
+            font-size: 1rem;
         }
 
         .video-container {
-            background: rgba(26, 31, 46, 0.7);
-            border-radius: 12px;
-            border: 1px solid var(--border-light);
-            overflow: hidden;
+            width: 100%;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
         }
 
         .video-container iframe,
         .video-container video {
             width: 100%;
-            height: 500px;
+            height: auto;
             display: block;
+            aspect-ratio: 16 / 9;
         }
 
-        /* ===== AVALIAÇÕES ===== */
         .rating-section {
-            background: rgba(26, 31, 46, 0.7);
-            border: 1px solid var(--border-light);
+            background: var(--card-bg);
+            padding: 1.5rem;
             border-radius: 12px;
-            padding: 2rem;
-            margin: 2rem 0;
+            border: 1px solid var(--border-light);
+            margin-bottom: 2rem;
         }
 
         .rating-title {
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 1rem;
-            color: var(--text-white);
         }
 
         .stars-container {
@@ -493,196 +416,98 @@
         }
 
         .star {
-            font-size: 2.5rem;
+            font-size: 2rem;
             cursor: pointer;
-            transition: transform 0.2s ease;
-            opacity: 0.3;
+            transition: all 0.2s ease;
+            filter: grayscale(100%);
         }
 
-        .star:hover {
-            transform: scale(1.2);
-            opacity: 0.6;
-        }
-
-        .star.active {
-            opacity: 1;
-            color: #fbbf24;
+        .star:hover, .star.active {
+            filter: grayscale(0%);
+            transform: scale(1.1);
         }
 
         .rating-text {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-        }
-
-        .rating-button {
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-purple));
-            border: none;
-            border-radius: 6px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .rating-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79, 125, 255, 0.3);
-        }
-
-        .rating-display {
             color: var(--text-muted);
             font-size: 0.9rem;
-            margin-top: 1rem;
         }
 
-        /* ===== COMENTÁRIOS ===== */
         .comments-section {
-            background: rgba(26, 31, 46, 0.7);
-            border: 1px solid var(--border-light);
+            background: var(--card-bg);
+            padding: 1.5rem;
             border-radius: 12px;
-            padding: 2rem;
-            margin-top: 2rem;
+            border: 1px solid var(--border-light);
+            margin-bottom: 2rem;
         }
 
         .comments-title {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
-            color: var(--text-white);
         }
 
         .comment-form {
-            margin-bottom: 2rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 1.5rem;
         }
 
         .comment-textarea {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(42, 48, 64, 0.5);
-            border: 1px solid var(--border-light);
-            border-radius: 8px;
-            color: var(--text-white);
-            font-size: 0.95rem;
-            font-family: inherit;
-            resize: vertical;
             min-height: 100px;
-            transition: all 0.3s ease;
-            margin-bottom: 1rem;
-        }
-
-        .comment-textarea:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            background: rgba(42, 48, 64, 0.8);
-            box-shadow: 0 0 0 3px rgba(79, 125, 255, 0.1);
+            resize: vertical;
         }
 
         .comment-button {
-            padding: 0.75rem 1.5rem;
+            margin-top: 0.75rem;
             background: linear-gradient(135deg, var(--primary-blue), var(--secondary-purple));
+            color: var(--text-white);
             border: none;
-            border-radius: 6px;
-            color: white;
-            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-weight: 600;
             transition: all 0.3s ease;
         }
 
         .comment-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79, 125, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(79, 125, 255, 0.3);
         }
 
         .comments-list {
-            max-height: 400px;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
         .comment-item {
-            padding: 1.2rem;
-            background: rgba(42, 48, 64, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
             border-radius: 8px;
-            margin-bottom: 1rem;
             border-left: 3px solid var(--primary-blue);
         }
 
-        .comment-author {
+        .comment-user {
             font-weight: 600;
-            color: var(--primary-blue);
             margin-bottom: 0.5rem;
-            font-size: 0.9rem;
         }
 
         .comment-text {
             color: var(--text-light);
-            line-height: 1.6;
-            margin-bottom: 0.5rem;
+            line-height: 1.5;
         }
 
-        .comment-date {
-            color: var(--text-muted);
+        .comment-time {
             font-size: 0.8rem;
-        }
-
-        .no-comments {
             color: var(--text-muted);
-            text-align: center;
-            padding: 2rem 1rem;
-        }
-
-        .back-button {
-            padding: 0.9rem 2rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-purple));
-            border: none;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .back-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(79, 125, 255, 0.3);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .comments-list::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .comments-list::-webkit-scrollbar-track {
-            background: rgba(42, 48, 64, 0.3);
-            border-radius: 10px;
-        }
-
-        .comments-list::-webkit-scrollbar-thumb {
-            background: var(--primary-blue);
-            border-radius: 10px;
+            margin-top: 0.5rem;
         }
 
         @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
             .login-card {
-                padding: 1.8rem;
-            }
-
-            .container h1 {
-                font-size: 1.6rem;
-            }
-
-            .courses-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
+                padding: 1.5rem;
             }
 
             .header {
@@ -691,163 +516,185 @@
                 align-items: flex-start;
             }
 
-            .header-right {
-                width: 100%;
-                justify-content: space-between;
+            .courses-grid {
+                grid-template-columns: 1fr;
             }
 
-            .video-container iframe,
-            .video-container video {
-                height: 300px;
-            }
-
-            .comments-section,
-            .rating-section {
-                padding: 1.5rem;
+            .aula-header h2 {
+                font-size: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Loading -->
-    <div class="loading-spinner" id="loadingSpinner">
-        <div class="spinner"></div>
-    </div>
+    <div class="container">
+        <!-- LOGIN SECTION -->
+        <div id="loginSection" class="section active">
+            <div class="login-container">
+                <div class="login-card">
+                    <h1 class="login-title" id="platformaNome">Plataforma de Aulas</h1>
+                    <p class="login-subtitle">By: <a href="https://instagram.com/izaqads" target="_blank" style="color: inherit; text-decoration: none; font-weight: 500; cursor: pointer;">@izaqads</a></p>
 
-    <!-- Login -->
-    <div class="login-section" id="loginSection">
-        <div class="login-card">
-            <div class="login-header">
-                <div class="login-emoji" id="logoEmoji">🚀</div>
-                <h1 class="login-title" id="platformaNome">Plataforma de Aulas</h1>
-                <p class="login-subtitle">By: <a href="https://instagram.com/izaqads" target="_blank" style="color: inherit; text-decoration: none; font-weight: 500; cursor: pointer;">@izaqads</a></p>
-            </div>
+                    <!-- LOGIN FORM -->
+                    <div id="loginForm">
+                        <div id="loginError" class="error-message"></div>
 
-            <div class="tabs">
-                <button class="tab-button active" id="loginTabBtn">Entrar</button>
-                <button class="tab-button" id="registerTabBtn">Registrar</button>
-            </div>
+                        <div class="form-group">
+                            <label for="loginEmail">Email</label>
+                            <input type="email" id="loginEmail" placeholder="seu@email.com">
+                        </div>
 
-            <!-- Login Form -->
-            <div id="loginForm">
-                <div class="error" id="loginError"></div>
-                <form onsubmit="handleLogin(event)">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="loginEmail" placeholder="seu@email.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Senha</label>
-                        <input type="password" id="loginPassword" placeholder="Sua senha" required>
-                    </div>
-                    <button type="submit" class="login-button">Entrar</button>
-                </form>
-                <div class="back-link" style="margin-top: 1.5rem;">
-                    <button onclick="toggleRecuperacao()" style="background: none; border: none; color: var(--primary-blue); cursor: pointer; font-weight: 500; padding: 0; text-decoration: underline;">Esqueceu sua senha? Recupere agora</button>
-                </div>
-            </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Senha</label>
+                            <input type="password" id="loginPassword" placeholder="Sua senha">
+                        </div>
 
-            <!-- Register Form -->
-            <div id="registerForm" class="hidden">
-                <div class="error" id="registerError"></div>
-                <div class="success" id="registerSuccess"></div>
-                <form onsubmit="handleRegister(event)">
-                    <div class="form-group">
-                        <label>Nome</label>
-                        <input type="text" id="registerName" placeholder="Seu nome" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="registerEmail" placeholder="seu@email.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Senha</label>
-                        <input type="password" id="registerPassword" placeholder="Mínimo 6 caracteres" required minlength="6">
-                    </div>
-                    <div class="form-group">
-                        <label>Confirmar Senha</label>
-                        <input type="password" id="registerConfirmPassword" placeholder="Confirme a senha" required minlength="6">
-                    </div>
-                    <button type="submit" class="login-button">Criar Conta</button>
-                </form>
-            </div>
+                        <button class="btn btn-primary" onclick="handleLogin()">Entrar</button>
 
-            <!-- Reset Password Form (Hidden by default) -->
-            <div id="resetForm" class="hidden">
-                <div class="error" id="resetError"></div>
-                <div class="success" id="resetSuccess"></div>
-                <form onsubmit="handlePasswordReset(event)">
-                    <div class="form-group">
-                        <label>Email da Conta</label>
-                        <input type="email" id="resetEmail" placeholder="seu@email.com" required>
+                        <div class="toggle-form">
+                            Não tem conta? <a onclick="toggleForm()">Registre-se</a>
+                        </div>
+
+                        <button class="btn btn-secondary" onclick="toggleRecuperacao()" style="margin-top: 1rem;">🔐 Recuperar Senha</button>
                     </div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Você receberá um email com instruções para resetar sua senha.</p>
-                    <button type="submit" class="login-button">Enviar Email de Recuperação</button>
-                </form>
-                <div class="back-link">
-                    <button onclick="toggleRecuperacao()" style="background: none; border: none; color: var(--primary-blue); cursor: pointer; font-weight: 500; padding: 0; text-decoration: underline; margin-top: 1rem;">← Voltar para Login</button>
+
+                    <!-- REGISTER FORM -->
+                    <div id="registerForm" style="display: none;">
+                        <div id="registerError" class="error-message"></div>
+
+                        <div class="form-group">
+                            <label for="registerName">Nome</label>
+                            <input type="text" id="registerName" placeholder="Seu nome">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registerEmail">Email</label>
+                            <input type="email" id="registerEmail" placeholder="seu@email.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registerPassword">Senha</label>
+                            <input type="password" id="registerPassword" placeholder="Mínimo 6 caracteres">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registerConfirmPassword">Confirmar Senha</label>
+                            <input type="password" id="registerConfirmPassword" placeholder="Confirme sua senha">
+                        </div>
+
+                        <button class="btn btn-primary" onclick="handleRegister()">Criar Conta</button>
+
+                        <div class="toggle-form">
+                            Já tem conta? <a onclick="toggleForm()">Faça login</a>
+                        </div>
+                    </div>
+
+                    <!-- PASSWORD RESET FORM -->
+                    <div id="resetForm" style="display: none;">
+                        <div id="resetError" class="error-message"></div>
+                        <div id="resetSuccess" class="success-message"></div>
+
+                        <div class="form-group">
+                            <label for="resetEmail">Email para recuperação</label>
+                            <input type="email" id="resetEmail" placeholder="seu@email.com">
+                        </div>
+
+                        <button class="btn btn-primary" onclick="handlePasswordReset()">Enviar Link de Recuperação</button>
+
+                        <button class="btn btn-secondary" onclick="toggleRecuperacao()" style="margin-top: 1rem;">← Voltar para Login</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Aulas -->
-    <div class="aulas-section" id="aulasSection">
-        <div class="header">
-            <div class="header-title">Suas Aulas</div>
-            <div class="header-right">
-                <span id="userName"></span>
-                <button class="logout-btn" onclick="handleLogout()">Sair</button>
+        <!-- AULAS SECTION -->
+        <div id="aulasSection" class="section">
+            <div class="header">
+                <div class="header-title">
+                    <div class="logo-emoji" id="logoEmoji">🚀</div>
+                    <div class="title-text">
+                        <h1 id="platformaNome2">Plataforma de Aulas</h1>
+                        <p id="userName">Olá, Visitante</p>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">🚪 Sair</button>
+            </div>
+
+            <div class="courses-grid" id="coursesGrid">
+                <!-- Aulas vão aparecer aqui -->
             </div>
         </div>
 
-        <div class="container">
-            <h1>Bem-vindo!</h1>
-            <p class="container-subtitle">Aulas disponíveis para você</p>
-            <div class="courses-grid" id="coursesGrid"></div>
+        <!-- AULA DETAIL SECTION -->
+        <div id="aulaDetailSection" class="section">
+            <button class="btn btn-back" onclick="backToAulas()">← Voltar às Aulas</button>
+
+            <div class="aula-header">
+                <h2 id="aulaTitle">Título da Aula</h2>
+                <p id="aulaDescription">Descrição da aula</p>
+            </div>
+
+            <div class="video-container" id="videoContainer">
+                <!-- Vídeo vai aparecer aqui -->
+            </div>
+
+            <div class="rating-section">
+                <div class="rating-title">⭐ Avalie esta Aula</div>
+                <div class="stars-container" id="starsContainer"></div>
+                <p class="rating-text">Sua avaliação nos ajuda a melhorar!</p>
+                <div id="ratingDisplay"></div>
+            </div>
+
+            <div class="comments-section">
+                <div class="comments-title">💬 Comentários e Feedback</div>
+                
+                <div class="comment-form">
+                    <textarea class="comment-textarea" id="commentInput" placeholder="Deixe seu feedback ou comentário..."></textarea>
+                    <button class="comment-button" onclick="submitComment()">Enviar Comentário</button>
+                </div>
+
+                <div class="comments-list" id="commentsList"></div>
+            </div>
+
+            <button class="btn btn-back" onclick="backToAulas()">← Voltar às Aulas</button>
         </div>
     </div>
 
     <script>
-        const API_URL = 'https://areademembros-nfqo.onrender.com/api';
-        let config = {};
-        let currentUser = {};
+        const API_URL = '/api';
+
+        let currentUser = null;
         let currentAulaId = null;
+        let config = null;
 
-        // ===== TAB SWITCHING =====
-        document.getElementById('loginTabBtn').addEventListener('click', () => {
-            document.getElementById('loginForm').classList.remove('hidden');
-            document.getElementById('registerForm').classList.add('hidden');
-            document.getElementById('resetForm').classList.add('hidden');
-            document.getElementById('loginTabBtn').classList.add('active');
-            document.getElementById('registerTabBtn').classList.remove('active');
-        });
+        // ===== TOGGLE FORMS =====
+        function toggleForm() {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const resetForm = document.getElementById('resetForm');
 
-        document.getElementById('registerTabBtn').addEventListener('click', () => {
-            document.getElementById('registerForm').classList.remove('hidden');
-            document.getElementById('loginForm').classList.add('hidden');
-            document.getElementById('resetForm').classList.add('hidden');
-            document.getElementById('registerTabBtn').classList.add('active');
-            document.getElementById('loginTabBtn').classList.remove('active');
-        });
+            loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
+            registerForm.style.display = registerForm.style.display === 'none' ? 'block' : 'none';
+            resetForm.style.display = 'none';
 
-        // Toggle para recuperação de senha
+            // Limpa erros
+            document.getElementById('loginError').classList.remove('show');
+            document.getElementById('registerError').classList.remove('show');
+        }
+
         function toggleRecuperacao() {
             const loginForm = document.getElementById('loginForm');
             const resetForm = document.getElementById('resetForm');
-            
-            if (resetForm.classList.contains('hidden')) {
-                resetForm.classList.remove('hidden');
-                loginForm.classList.add('hidden');
-            } else {
-                loginForm.classList.remove('hidden');
-                resetForm.classList.add('hidden');
-            }
+
+            loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
+            resetForm.style.display = resetForm.style.display === 'none' ? 'block' : 'none';
+
+            document.getElementById('registerForm').style.display = 'none';
         }
 
         // ===== LOGIN =====
         async function handleLogin(e) {
-            e.preventDefault();
+            if (e) e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const senha = document.getElementById('loginPassword').value;
 
@@ -874,14 +721,14 @@
 
         // ===== REGISTER =====
         async function handleRegister(e) {
-            e.preventDefault();
+            if (e) e.preventDefault();
             const nome = document.getElementById('registerName').value;
             const email = document.getElementById('registerEmail').value;
             const senha = document.getElementById('registerPassword').value;
             const confirmSenha = document.getElementById('registerConfirmPassword').value;
 
             if (senha !== confirmSenha) {
-                showError('registerError', 'As senhas não coincidem');
+                showError('registerError', 'Senhas não coincidem!');
                 return;
             }
 
@@ -896,22 +743,19 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    showSuccess('registerSuccess', '✓ Conta criada! Email de confirmação enviado. Você será redirecionado...');
-                    setTimeout(() => {
-                        currentUser = data.user;
-                        loadAulas();
-                    }, 2000);
+                    currentUser = data.user;
+                    loadAulas();
                 } else {
                     showError('registerError', data.error);
                 }
             } catch (err) {
-                showError('registerError', 'Erro ao conectar');
+                showError('registerError', 'Erro ao registrar');
             }
         }
 
         // ===== PASSWORD RESET =====
         async function handlePasswordReset(e) {
-            e.preventDefault();
+            if (e) e.preventDefault();
             const email = document.getElementById('resetEmail').value;
 
             try {
@@ -954,38 +798,73 @@
                 if (sessionResponse.ok) {
                     const session = await sessionResponse.json();
                     currentUser = session.user;
-                    document.getElementById('userName').textContent = `Olá, ${session.user.nome}`;
 
                     const configResponse = await fetch(`${API_URL}/config`);
                     config = await configResponse.json();
 
                     document.getElementById('logoEmoji').textContent = config.plataforma.logo;
-                    document.getElementById('platformaNome').textContent = config.plataforma.nome;
+                    document.getElementById('platformaNome2').textContent = config.plataforma.nome;
+                    document.getElementById('userName').textContent = `Olá, ${session.user.nome}`;
 
-                    const grid = document.getElementById('coursesGrid');
-                    grid.innerHTML = config.aulas.map(aula => `
-                        <div class="course-card" onclick="openAula(${aula.id})">
-                            <div class="course-image">${aula.emoji}</div>
-                            <div class="course-body">
-                                <div class="course-title">${aula.titulo}</div>
-                                <p class="course-desc">${aula.descricao}</p>
-                                <p class="course-meta">${aula.licoes.length} aula${aula.licoes.length > 1 ? 's' : ''} • ${aula.duracao}</p>
-                            </div>
-                        </div>
-                    `).join('');
+                    renderAulas();
 
-                    document.getElementById('loadingSpinner').classList.add('hidden');
-                    document.getElementById('loginSection').classList.add('hidden');
-                    document.getElementById('aulasSection').classList.add('active');
+                    showSection('aulasSection');
                 } else {
-                    document.getElementById('loadingSpinner').classList.add('hidden');
-                    document.getElementById('loginSection').classList.remove('hidden');
+                    showSection('loginSection');
                 }
             } catch (err) {
                 console.error('Erro ao carregar aulas:', err);
-                document.getElementById('loadingSpinner').classList.add('hidden');
-                document.getElementById('loginSection').classList.remove('hidden');
+                showSection('loginSection');
             }
+        }
+
+        // ===== RENDER AULAS =====
+        function renderAulas() {
+            const grid = document.getElementById('coursesGrid');
+            grid.innerHTML = config.aulas.map(aula => `
+                <div class="course-card" onclick="openAula(${aula.id})">
+                    <div class="course-image">${aula.emoji}</div>
+                    <div class="course-body">
+                        <div class="course-title">${aula.titulo}</div>
+                        <p class="course-desc">${aula.descricao}</p>
+                        <p class="course-meta">${aula.licoes.length} aula${aula.licoes.length > 1 ? 's' : ''} • ${aula.duracao}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== OPEN AULA =====
+        function openAula(aulaId) {
+            currentAulaId = aulaId;
+            const aula = config.aulas.find(a => a.id === aulaId);
+
+            if (!aula || !aula.licoes || aula.licoes.length === 0) {
+                alert('Aula sem conteúdo!');
+                return;
+            }
+
+            const licao = aula.licoes[0];
+
+            document.getElementById('aulaTitle').textContent = licao.titulo;
+            document.getElementById('aulaDescription').textContent = licao.descricao;
+
+            const videoContainer = document.getElementById('videoContainer');
+            if (licao.tipo === 'youtube') {
+                videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${licao.videoId}" frameborder="0" allowfullscreen></iframe>`;
+            } else {
+                videoContainer.innerHTML = `<video controls><source src="${licao.videoId}" type="video/mp4"></video>`;
+            }
+
+            renderStars(aulaId);
+            renderComments(aulaId);
+
+            showSection('aulaDetailSection');
+        }
+
+        // ===== BACK TO AULAS =====
+        function backToAulas() {
+            currentAulaId = null;
+            showSection('aulasSection');
         }
 
         // ===== RATINGS =====
@@ -995,163 +874,79 @@
 
         function saveRating(aulaId, rating) {
             localStorage.setItem(`rating_${aulaId}`, rating);
+            renderStars(aulaId);
+
             fetch(`${API_URL}/aulas/${aulaId}/rating`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify({ rating, user_id: currentUser.id })
-            }).catch(err => console.log('Email de avaliação será enviado'));
+                body: JSON.stringify({ rating })
+            }).catch(err => console.error('Erro ao salvar avaliação:', err));
         }
 
         function renderStars(aulaId) {
-            const rating = getRating(aulaId);
-            const starsContainer = document.getElementById('starsContainer');
-            
-            let starsHTML = '';
-            for (let i = 1; i <= 5; i++) {
-                starsHTML += `<span class="star ${i <= rating ? 'active' : ''}" onclick="setRating(${i})">★</span>`;
-            }
-            
-            starsContainer.innerHTML = starsHTML;
-            
-            const ratingDisplay = document.getElementById('ratingDisplay');
-            if (rating > 0) {
-                ratingDisplay.innerHTML = `<div class="rating-display">Você avaliou com ${rating} estrela${rating > 1 ? 's' : ''}!</div>`;
-            }
-        }
+            const container = document.getElementById('starsContainer');
+            const currentRating = getRating(aulaId);
 
-        function setRating(stars) {
-            saveRating(currentAulaId, stars);
-            renderStars(currentAulaId);
+            container.innerHTML = Array(5).fill(0).map((_, i) => {
+                const starValue = i + 1;
+                return `<span class="star ${starValue <= currentRating ? 'active' : ''}" onclick="saveRating(${aulaId}, ${starValue})">★</span>`;
+            }).join('');
         }
 
         // ===== COMMENTS =====
         function getComments(aulaId) {
-            const comments = localStorage.getItem(`comments_${aulaId}`);
-            return comments ? JSON.parse(comments) : [];
+            return JSON.parse(localStorage.getItem(`comments_${aulaId}`) || '[]');
         }
 
-        function saveComment(aulaId, comentario) {
+        function saveComment(aulaId, text) {
             const comments = getComments(aulaId);
             comments.push({
-                autor: currentUser.nome,
-                texto: comentario,
-                data: new Date().toLocaleDateString('pt-BR')
+                text,
+                timestamp: new Date().toLocaleString('pt-BR')
             });
             localStorage.setItem(`comments_${aulaId}`, JSON.stringify(comments));
-            
+            renderComments(aulaId);
+
             fetch(`${API_URL}/aulas/${aulaId}/comments`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify({ texto: comentario, user_id: currentUser.id })
-            }).catch(err => console.log('Notificação de comentário será enviada'));
+                body: JSON.stringify({ comentario: text })
+            }).catch(err => console.error('Erro ao salvar comentário:', err));
         }
 
         function renderComments(aulaId) {
             const comments = getComments(aulaId);
-            const commentsList = document.getElementById('commentsList');
-            
-            if (comments.length === 0) {
-                commentsList.innerHTML = '<div class="no-comments">Nenhum comentário ainda. Seja o primeiro a comentar!</div>';
-                return;
-            }
+            const container = document.getElementById('commentsList');
 
-            commentsList.innerHTML = comments.map(comment => `
+            container.innerHTML = comments.map((comment, index) => `
                 <div class="comment-item">
-                    <div class="comment-author">${comment.autor}</div>
-                    <div class="comment-text">${comment.texto}</div>
-                    <div class="comment-date">${comment.data}</div>
+                    <div class="comment-user">Você</div>
+                    <div class="comment-text">${comment.text}</div>
+                    <div class="comment-time">${comment.timestamp}</div>
                 </div>
             `).join('');
         }
 
-        // ===== OPEN AULA =====
-        function openAula(aulaId) {
-            currentAulaId = aulaId;
-            const aula = config.aulas.find(a => a.id === aulaId);
-            if (!aula || !aula.licoes || aula.licoes.length === 0) {
-                alert('Aula sem conteúdo!');
-                return;
-            }
-
-            const primeiraLicao = aula.licoes[0];
-            
-            const html = `
-                <div class="aula-header">
-                    <h2>${primeiraLicao.titulo}</h2>
-                    <p>${primeiraLicao.descricao}</p>
-                </div>
-
-                <div class="video-container">
-                    ${primeiraLicao.tipo === 'youtube' 
-                        ? `<iframe src="https://www.youtube.com/embed/${primeiraLicao.videoId}" frameborder="0" allowfullscreen></iframe>`
-                        : `<video controls><source src="${primeiraLicao.videoId}" type="video/mp4"></video>`
-                    }
-                </div>
-
-                <div class="rating-section">
-                    <div class="rating-title">⭐ Avalie esta Aula</div>
-                    <div class="stars-container" id="starsContainer"></div>
-                    <p class="rating-text">Sua avaliação nos ajuda a melhorar!</p>
-                    <div id="ratingDisplay"></div>
-                </div>
-
-                <div class="comments-section">
-                    <div class="comments-title">💬 Comentários e Feedback</div>
-                    
-                    <div class="comment-form">
-                        <textarea class="comment-textarea" id="commentInput" placeholder="Deixe seu feedback ou comentário..."></textarea>
-                        <button class="comment-button" onclick="submitComment()">Enviar Comentário</button>
-                    </div>
-
-                    <div class="comments-list" id="commentsList"></div>
-                </div>
-
-                <button class="back-button" onclick="backToAulas()" style="margin-top: 2rem;">← Voltar às Aulas</button>
-            `;
-
-            const container = document.querySelector('.container');
-            container.innerHTML = html;
-            renderStars(aulaId);
-            renderComments(aulaId);
-        }
-
         function submitComment() {
             const input = document.getElementById('commentInput');
-            const comentario = input.value.trim();
+            const text = input.value.trim();
 
-            if (!comentario) {
+            if (!text) {
                 alert('Escreva um comentário antes de enviar!');
                 return;
             }
 
-            saveComment(currentAulaId, comentario);
+            saveComment(currentAulaId, text);
             input.value = '';
-            renderComments(currentAulaId);
         }
 
-        function backToAulas() {
-            try {
-                // Limpa a aula aberta
-                const aulaDetail = document.getElementById('aulaDetail');
-                const aulasSection = document.getElementById('aulasSection');
-                const comentariosSection = document.getElementById('comentariosSection');
-                
-                if (aulaDetail) aulaDetail.classList.remove('active');
-                if (aulasSection) aulasSection.classList.add('active');
-                if (comentariosSection) comentariosSection.classList.remove('active');
-                
-                // Reseta os dados
-                currentAula = null;
-                currentAulaId = null;
-                
-                // Recarrega as aulas
-                loadAulas();
-            } catch(err) {
-                console.error('Erro ao voltar:', err);
-                loadAulas();
-            }
+        // ===== SHOW SECTION =====
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
         }
 
         // ===== HELPERS =====
@@ -1169,6 +964,7 @@
             setTimeout(() => element.classList.remove('show'), 5000);
         }
 
+        // ===== INIT =====
         window.addEventListener('load', loadAulas);
     </script>
 </body>
