@@ -453,14 +453,11 @@ app.post('/api/generate-ads', async (req, res) => {
     try {
         console.log('📨 Requisição recebida em /api/generate-ads');
         
-        // Verificar se API Key existe
-        const apiKey = process.env.ANTHROPIC_API_KEY;
-        console.log('🔑 Verificando API Key...');
-        
-        if (!apiKey) {
-            console.error('❌ API Key não configurada!');
+        // Verificar se client já foi criado globalmente
+        if (!anthropicClient) {
+            console.error('❌ Anthropic client não configurado!');
             return res.status(400).json({ 
-                error: 'API Key do Claude não configurada' 
+                error: 'Serviço de IA não disponível. Configure ANTHROPIC_API_KEY' 
             });
         }
 
@@ -470,12 +467,6 @@ app.post('/api/generate-ads', async (req, res) => {
         if (!palavrasChave || !idioma) {
             return res.status(400).json({ error: 'Palavras-chave e idioma são obrigatórios' });
         }
-
-        // Criar client com API Key
-        console.log('🤖 Criando cliente Anthropic...');
-        const Anthropic = require('@anthropic-ai/sdk');
-        const client = new Anthropic({ apiKey });
-        console.log('✅ Cliente criado com sucesso!');
 
         // PROMPT MUITO MAIS INTELIGENTE
         const prompt = `Você é um ESPECIALISTA MÁSTER em Google Ads, copywriting de conversão e marketing digital.
@@ -552,9 +543,9 @@ GATILHOS A USAR:
 - Números ("10k+", "4.9★", "100%")`;
 
         console.log('🚀 Chamando Claude Opus 4 (modelo mais avançado)...');
-        const message = await client.messages.create({
+        const message = await anthropicClient.messages.create({
             model: 'claude-opus-4-20250514', // ✨ MODELO MAIS NOVO E INTELIGENTE
-            max_tokens: 3000, // Aumentado para mais qualidade
+            max_tokens: 3000,
             messages: [
                 {
                     role: 'user',
@@ -578,6 +569,7 @@ GATILHOS A USAR:
         console.error('❌ ERRO DETALHADO:', err);
         console.error('Tipo de erro:', err.constructor.name);
         console.error('Mensagem:', err.message);
+        console.error('Stack:', err.stack);
         
         res.status(500).json({ 
             error: 'Erro ao gerar anúncio: ' + err.message,
