@@ -10,8 +10,18 @@ const { createClient } = require('@supabase/supabase-js');
 
 // Anthropic para gerar anúncios
 let Anthropic;
+let anthropicClient = null;
+
 try {
     Anthropic = require('@anthropic-ai/sdk');
+    if (process.env.ANTHROPIC_API_KEY) {
+        anthropicClient = new Anthropic({
+            apiKey: process.env.ANTHROPIC_API_KEY
+        });
+        console.log('✅ Claude API configurada!');
+    } else {
+        console.log('⚠️  ANTHROPIC_API_KEY não definida. Gerador de anúncios desativado.');
+    }
 } catch (e) {
     console.log('⚠️  Anthropic SDK não instalado. Instale com: npm install @anthropic-ai/sdk');
 }
@@ -439,8 +449,10 @@ app.get('/api/alunos', async (req, res) => {
 // ============================================
 app.post('/api/generate-ads', async (req, res) => {
     try {
-        if (!Anthropic) {
-            return res.status(400).json({ error: 'Claude SDK não está disponível. Instale: npm install @anthropic-ai/sdk' });
+        if (!anthropicClient) {
+            return res.status(400).json({ 
+                error: '⚠️  Serviço de IA não disponível. Configure ANTHROPIC_API_KEY no .env' 
+            });
         }
 
         const { palavrasChave, idioma } = req.body;
@@ -448,10 +460,6 @@ app.post('/api/generate-ads', async (req, res) => {
         if (!palavrasChave || !idioma) {
             return res.status(400).json({ error: 'Palavras-chave e idioma são obrigatórios' });
         }
-
-        const client = new Anthropic({
-            apiKey: process.env.ANTHROPIC_API_KEY || 'sk-ant-v7-missing-key'
-        });
 
         const prompt = `Você é um especialista em Google Ads e copywriting. Gere um anúncio completo em ${idioma} baseado nas seguintes palavras-chave: "${palavrasChave}"
 
@@ -493,7 +501,7 @@ Formate a resposta exatamente assim:
 
 Certifique-se de que todos os textos seguem os limites de caracteres do Google Ads.`;
 
-        const message = await client.messages.create({
+        const message = await anthropicClient.messages.create({
             model: 'claude-opus-4-6',
             max_tokens: 2000,
             messages: [
