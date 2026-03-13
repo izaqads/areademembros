@@ -1072,64 +1072,74 @@
         // ===== LOAD AULAS =====
         async function loadAulas() {
             try {
-                console.log('🔄 Carregando aulas...');
-                
-                // Verificar se elementos existem
-                const loginSection = document.getElementById('loginSection');
-                const aulasSection = document.getElementById('aulasSection');
-                const loadingSpinner = document.getElementById('loadingSpinner');
-                
-                if (!loginSection || !aulasSection || !loadingSpinner) {
-                    console.error('❌ Elementos não encontrados no DOM');
-                    return;
-                }
-                
                 const sessionResponse = await fetch(`${API_URL}/auth/session`, {
                     credentials: 'include'
                 });
 
-                console.log('Session response status:', sessionResponse.status);
-
                 if (sessionResponse.ok) {
-                    console.log('✅ Sessão ativa! Carregando aulas...');
                     const session = await sessionResponse.json();
                     currentUser = session.user;
-                    document.getElementById('userName').textContent = `Olá, ${session.user.nome}`;
+                    
+                    // Atualizar dados da sessão
+                    const userNameEl = document.getElementById('userName');
+                    if (userNameEl) userNameEl.textContent = `Olá, ${session.user.nome}`;
 
+                    // Carregar config
                     const configResponse = await fetch(`${API_URL}/config`);
                     config = await configResponse.json();
 
-                    document.getElementById('logoEmoji').textContent = config.plataforma.logo;
-                    document.getElementById('platformaNome').textContent = config.plataforma.nome;
+                    // Atualizar header
+                    const logoEl = document.getElementById('logoEmoji');
+                    const platformaEl = document.getElementById('platformaNome');
+                    if (logoEl) logoEl.textContent = config.plataforma.logo;
+                    if (platformaEl) platformaEl.textContent = config.plataforma.nome;
 
+                    // Renderizar aulas
                     const grid = document.getElementById('coursesGrid');
-                    grid.innerHTML = config.aulas.map(aula => `
-                        <div class="course-card" onclick="openAula(${aula.id})">
-                            <div class="course-image">${aula.emoji}</div>
-                            <div class="course-body">
-                                <div class="course-title">${aula.titulo}</div>
-                                <p class="course-desc">${aula.descricao}</p>
-                                <p class="course-meta">${aula.licoes.length} aula${aula.licoes.length > 1 ? 's' : ''} • ${aula.duracao}</p>
+                    if (grid) {
+                        grid.innerHTML = config.aulas.map(aula => `
+                            <div class="course-card" onclick="openAula(${aula.id})">
+                                <div class="course-image">${aula.emoji}</div>
+                                <div class="course-body">
+                                    <div class="course-title">${aula.titulo}</div>
+                                    <p class="course-desc">${aula.descricao}</p>
+                                    <p class="course-meta">${aula.licoes.length} aula${aula.licoes.length > 1 ? 's' : ''} • ${aula.duracao}</p>
+                                </div>
                             </div>
-                        </div>
-                    `).join('');
+                        `).join('');
+                    }
 
-                    loadingSpinner.classList.add('hidden');
-                    loginSection.classList.add('hidden');
-                    aulasSection.classList.add('active');
+                    // Mostrar aulas, esconder login
+                    const spinner = document.getElementById('loadingSpinner');
+                    const login = document.getElementById('loginSection');
+                    const aulas = document.getElementById('aulasSection');
+                    
+                    if (spinner) spinner.classList.add('hidden');
+                    if (login) login.classList.add('hidden');
+                    if (aulas) aulas.classList.add('active');
+                    
                     console.log('✅ Aulas carregadas com sucesso!');
                 } else {
-                    console.log('❌ Sem sessão. Mostrando login.');
-                    loadingSpinner.classList.add('hidden');
-                    loginSection.classList.remove('hidden');
-                    aulasSection.classList.remove('active');
+                    // Sem sessão - mostrar login
+                    const spinner = document.getElementById('loadingSpinner');
+                    const login = document.getElementById('loginSection');
+                    const aulas = document.getElementById('aulasSection');
+                    
+                    if (spinner) spinner.classList.add('hidden');
+                    if (login) login.classList.remove('hidden');
+                    if (aulas) aulas.classList.remove('active');
+                    
+                    console.log('ℹ️ Sem sessão. Mostrando login.');
                 }
             } catch (err) {
-                console.error('❌ Erro ao carregar aulas:', err);
-                const loadingSpinner = document.getElementById('loadingSpinner');
-                const loginSection = document.getElementById('loginSection');
-                if (loadingSpinner) loadingSpinner.classList.add('hidden');
-                if (loginSection) loginSection.classList.remove('hidden');
+                console.error('Erro ao carregar aulas:', err);
+                
+                // Em caso de erro, mostrar login mesmo assim
+                const spinner = document.getElementById('loadingSpinner');
+                const login = document.getElementById('loginSection');
+                
+                if (spinner) spinner.classList.add('hidden');
+                if (login) login.classList.remove('hidden');
             }
         }
 
