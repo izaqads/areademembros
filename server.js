@@ -447,7 +447,7 @@ app.get('/api/alunos', async (req, res) => {
 });
 
 // ============================================
-// GERADOR DE ANÚNCIOS COM CLAUDE
+// GERADOR DE ANÚNCIOS COM CLAUDE (VERSÃO AVANÇADA)
 // ============================================
 app.post('/api/generate-ads', async (req, res) => {
     try {
@@ -456,13 +456,11 @@ app.post('/api/generate-ads', async (req, res) => {
         // Verificar se API Key existe
         const apiKey = process.env.ANTHROPIC_API_KEY;
         console.log('🔑 Verificando API Key...');
-        console.log('API Key existe?', !!apiKey);
-        console.log('API Key começa com?', apiKey ? apiKey.substring(0, 20) + '...' : 'NÃO EXISTE');
         
         if (!apiKey) {
             console.error('❌ API Key não configurada!');
             return res.status(400).json({ 
-                error: 'API Key do Claude não configurada no Render. Vá em Settings > Environment Variables e adicione ANTHROPIC_API_KEY' 
+                error: 'API Key do Claude não configurada' 
             });
         }
 
@@ -473,56 +471,73 @@ app.post('/api/generate-ads', async (req, res) => {
             return res.status(400).json({ error: 'Palavras-chave e idioma são obrigatórios' });
         }
 
-        // Criar client diretamente aqui
+        // Criar client com API Key
         console.log('🤖 Criando cliente Anthropic...');
         const { Anthropic } = await import('@anthropic-ai/sdk');
         const client = new Anthropic({ apiKey });
         console.log('✅ Cliente criado com sucesso!');
 
-        const prompt = `Você é um especialista em Google Ads e copywriting. Gere um anúncio completo em ${idioma} baseado nas seguintes palavras-chave: "${palavrasChave}"
+        // PROMPT MUITO MAIS INTELIGENTE
+        const prompt = `Você é um ESPECIALISTA MÁSTER em Google Ads, copywriting de conversão, psicologia do consumidor e marketing digital. 
 
-IMPORTANTE: Forneça exatamente:
+Sua tarefa é gerar um anúncio EXTREMAMENTE PERSUASIVO e de alta conversão para Google Ads.
 
-📌 TÍTULOS (7-10 opções):
-Cada título deve ter no máximo 30 caracteres e ser atrativo.
+CONTEXTO DO PRODUTO:
+- Palavras-chave: "${palavrasChave}"
+- Idioma: ${idioma}
+- Objetivo: MAXIMIZAR CLIQUES E CONVERSÕES
+- Público: Consumidores buscando essa solução
 
-🎯 HEADLINES/TÍTULOS PRINCIPAIS (7-10 opções):
-Cada headline deve ter no máximo 30 caracteres e focar em benefício.
+REGRAS OBRIGATÓRIAS:
+1. TÍTULOS devem ser MAGNÉTICOS - usar gatilhos psicológicos (urgência, escassez, benefício)
+2. HEADLINES devem FOCAR EM BENEFÍCIO PRINCIPAL - não em features
+3. DESCRIÇÕES devem criar DESEJO e CONFIANÇA
+4. SITE LINKS devem guiar para ações específicas
 
-📝 DESCRIÇÕES (5-7 opções):
-Cada descrição deve ter no máximo 90 caracteres e descrever a proposta de valor.
+GATILHOS PSICOLÓGICOS A USAR:
+✓ Urgência ("Hoje", "Agora", "Limite")
+✓ Benefício específico ("Economize X%", "Ganhe Y")
+✓ Prova social ("10k clientes", "Avaliação 4.9★")
+✓ Confiança ("Garantia", "Sem risco", "100% seguro")
+✓ Escassez ("Estoque limitado", "Últimas vagas")
 
-🔗 SITE LINKS (3-5 opções):
-Cada site link deve ter um texto curto (até 25 caracteres) que direcionará o usuário.
+ESTRUTURA DE RESPOSTA:
 
-Formate a resposta exatamente assim:
+---TÍTULOS (MAGNÉTICOS)---
+1. [Título 1 - máx 30 chars] - use gatilho psicológico
+2. [Título 2 - máx 30 chars] - abordagem diferente
+3. [Título 3 - máx 30 chars]
+... até 10 opções
 
----TÍTULOS---
-1. [Título 1]
-2. [Título 2]
-... (até 10)
+---HEADLINES (BENEFIT-DRIVEN)---
+1. [Headline 1 - máx 30 chars] - benefício #1
+2. [Headline 2 - máx 30 chars] - benefício #2
+3. [Headline 3 - máx 30 chars] - prova social
+... até 10 opções
 
----HEADLINES---
-1. [Headline 1]
-2. [Headline 2]
-... (até 10)
+---DESCRIÇÕES (PERSUASIVAS)---
+1. [Descrição 1 - máx 90 chars] - benefício + gatilho
+2. [Descrição 2 - máx 90 chars] - confiança + garantia
+3. [Descrição 3 - máx 90 chars] - urgência
+... até 7 opções
 
----DESCRIÇÕES---
-1. [Descrição 1]
-2. [Descrição 2]
-... (até 7)
+---SITE LINKS (AÇÃO)---
+1. [Link 1 - máx 25 chars] → descrição da ação
+2. [Link 2 - máx 25 chars] → descrição da ação
+3. [Link 3 - máx 25 chars] → descrição da ação
+... até 5 opções
 
----SITE LINKS---
-1. [Site Link 1]
-2. [Site Link 2]
-... (até 5)
+LEMBRE-SE:
+- Cada texto deve passar EMOÇÃO e não apenas informação
+- Evitar clichês genéricos
+- Usar números específicos quando possível
+- Direcionar para ação clara
+- Manter tom conversacional e confiável`;
 
-Certifique-se de que todos os textos seguem os limites de caracteres do Google Ads.`;
-
-        console.log('🚀 Chamando API do Claude...');
+        console.log('🚀 Chamando Claude Opus 4 (modelo mais avançado)...');
         const message = await client.messages.create({
-            model: 'claude-opus-4-6',
-            max_tokens: 2000,
+            model: 'claude-opus-4-20250514', // ✨ MODELO MAIS NOVO E INTELIGENTE
+            max_tokens: 3000, // Aumentado para mais qualidade
             messages: [
                 {
                     role: 'user',
@@ -532,25 +547,24 @@ Certifique-se de que todos os textos seguem os limites de caracteres do Google A
         });
 
         const anuncio = message.content[0].text;
-        console.log('✅ Anúncio gerado com sucesso!');
+        console.log('✅ Anúncio gerado com sucesso com Claude Opus 4!');
 
         res.json({
             sucesso: true,
             anuncio: anuncio,
             palavrasChave: palavrasChave,
-            idioma: idioma
+            idioma: idioma,
+            modelo: 'Claude Opus 4 (Avançado)'
         });
 
     } catch (err) {
         console.error('❌ ERRO DETALHADO:', err);
         console.error('Tipo de erro:', err.constructor.name);
         console.error('Mensagem:', err.message);
-        console.error('Status:', err.status);
         
         res.status(500).json({ 
             error: 'Erro ao gerar anúncio: ' + err.message,
-            tipo: err.constructor.name,
-            status: err.status
+            tipo: err.constructor.name
         });
     }
 });
