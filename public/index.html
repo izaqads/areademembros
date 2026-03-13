@@ -972,9 +972,15 @@
 
         // ===== LOGIN =====
         async function handleLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const senha = document.getElementById('loginPassword').value;
+            if (e) e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const senha = document.getElementById('loginPassword').value.trim();
+
+            if (!email || !senha) {
+                showError('loginError', 'Preencha email e senha!');
+                return;
+            }
 
             try {
                 const response = await fetch(`${API_URL}/auth/login`, {
@@ -988,12 +994,15 @@
 
                 if (data.success) {
                     currentUser = data.user;
-                    loadAulas();
+                    document.getElementById('userName').textContent = `Olá, ${data.user.nome}`;
+                    console.log('✅ Login bem-sucedido!');
+                    loadAulas(); // CARREGA AS AULAS
                 } else {
-                    showError('loginError', data.error);
+                    showError('loginError', data.error || 'Erro ao fazer login');
                 }
             } catch (err) {
-                showError('loginError', 'Erro ao conectar');
+                console.error('Erro no login:', err);
+                showError('loginError', 'Erro ao conectar com o servidor');
             }
         }
 
@@ -1071,75 +1080,38 @@
 
         // ===== LOAD AULAS =====
         async function loadAulas() {
+            const loginSection = document.getElementById('loginSection');
+            const aulasSection = document.getElementById('aulasSection');
+            const coursesGrid = document.getElementById('coursesGrid');
+
             try {
-                const sessionResponse = await fetch(`${API_URL}/auth/session`, {
-                    credentials: 'include'
-                });
+                // Carregar config
+                const configResponse = await fetch(`${API_URL}/config`);
+                const config = await configResponse.json();
 
-                if (sessionResponse.ok) {
-                    const session = await sessionResponse.json();
-                    currentUser = session.user;
-                    
-                    // Atualizar dados da sessão
-                    const userNameEl = document.getElementById('userName');
-                    if (userNameEl) userNameEl.textContent = `Olá, ${session.user.nome}`;
+                // Atualizar elementos
+                document.getElementById('logoEmoji').textContent = config.plataforma.logo;
+                document.getElementById('platformaNome').textContent = config.plataforma.nome;
 
-                    // Carregar config
-                    const configResponse = await fetch(`${API_URL}/config`);
-                    config = await configResponse.json();
+                // Renderizar aulas
+                coursesGrid.innerHTML = config.aulas.map(aula => `
+                    <div class="course-card" onclick="openAula(${aula.id})">
+                        <div class="course-image">${aula.emoji}</div>
+                        <div class="course-body">
+                            <div class="course-title">${aula.titulo}</div>
+                            <p class="course-desc">${aula.descricao}</p>
+                            <p class="course-meta">${aula.licoes.length} aula${aula.licoes.length > 1 ? 's' : ''} • ${aula.duracao}</p>
+                        </div>
+                    </div>
+                `).join('');
 
-                    // Atualizar header
-                    const logoEl = document.getElementById('logoEmoji');
-                    const platformaEl = document.getElementById('platformaNome');
-                    if (logoEl) logoEl.textContent = config.plataforma.logo;
-                    if (platformaEl) platformaEl.textContent = config.plataforma.nome;
-
-                    // Renderizar aulas
-                    const grid = document.getElementById('coursesGrid');
-                    if (grid) {
-                        grid.innerHTML = config.aulas.map(aula => `
-                            <div class="course-card" onclick="openAula(${aula.id})">
-                                <div class="course-image">${aula.emoji}</div>
-                                <div class="course-body">
-                                    <div class="course-title">${aula.titulo}</div>
-                                    <p class="course-desc">${aula.descricao}</p>
-                                    <p class="course-meta">${aula.licoes.length} aula${aula.licoes.length > 1 ? 's' : ''} • ${aula.duracao}</p>
-                                </div>
-                            </div>
-                        `).join('');
-                    }
-
-                    // Mostrar aulas, esconder login
-                    const spinner = document.getElementById('loadingSpinner');
-                    const login = document.getElementById('loginSection');
-                    const aulas = document.getElementById('aulasSection');
-                    
-                    if (spinner) spinner.classList.add('hidden');
-                    if (login) login.classList.add('hidden');
-                    if (aulas) aulas.classList.add('active');
-                    
-                    console.log('✅ Aulas carregadas com sucesso!');
-                } else {
-                    // Sem sessão - mostrar login
-                    const spinner = document.getElementById('loadingSpinner');
-                    const login = document.getElementById('loginSection');
-                    const aulas = document.getElementById('aulasSection');
-                    
-                    if (spinner) spinner.classList.add('hidden');
-                    if (login) login.classList.remove('hidden');
-                    if (aulas) aulas.classList.remove('active');
-                    
-                    console.log('ℹ️ Sem sessão. Mostrando login.');
-                }
+                // Mostrar aulas, esconder login
+                if (loginSection) loginSection.classList.add('hidden');
+                if (aulasSection) aulasSection.classList.add('active');
+                
             } catch (err) {
                 console.error('Erro ao carregar aulas:', err);
-                
-                // Em caso de erro, mostrar login mesmo assim
-                const spinner = document.getElementById('loadingSpinner');
-                const login = document.getElementById('loginSection');
-                
-                if (spinner) spinner.classList.add('hidden');
-                if (login) login.classList.remove('hidden');
+                alert('Erro ao carregar aulas. Tente novamente.');
             }
         }
 
@@ -1414,7 +1386,16 @@
             setTimeout(() => element.classList.remove('show'), 5000);
         }
 
-        window.addEventListener('load', loadAulas);
+        window.addEventListener('load', () => {
+            // Simples: mostrar LOGIN quando a página carrega
+            const loginSection = document.getElementById('loginSection');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const aulasSection = document.getElementById('aulasSection');
+            
+            if (loginSection) loginSection.classList.remove('hidden');
+            if (loadingSpinner) loadingSpinner.classList.add('hidden');
+            if (aulasSection) aulasSection.classList.remove('active');
+        });
     </script>
 </body>
 </html>
