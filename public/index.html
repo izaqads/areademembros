@@ -1721,6 +1721,17 @@
             html += '</div>';
             return html;
         }
+            const errorDiv = document.getElementById('adsError');
+            errorDiv.textContent = mensagem;
+            errorDiv.style.display = 'block';
+            document.getElementById('adsResult').style.display = 'none';
+            
+            // Se for erro de API não disponível, desabilitar botão
+            if (mensagem.includes('não disponível') || mensagem.includes('Configure')) {
+                document.getElementById('adsGenerateBtn').disabled = true;
+                document.getElementById('adsGenerateBtn').textContent = '⚠️ Serviço indisponível';
+            }
+        }
 
         // ===== HELPERS =====
         function showError(elementId, message) {
