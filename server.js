@@ -451,17 +451,33 @@ app.get('/api/alunos', async (req, res) => {
 // ============================================
 app.post('/api/generate-ads', async (req, res) => {
     try {
-        if (!anthropicClient) {
+        console.log('📨 Requisição recebida em /api/generate-ads');
+        
+        // Verificar se API Key existe
+        const apiKey = process.env.ANTHROPIC_API_KEY;
+        console.log('🔑 Verificando API Key...');
+        console.log('API Key existe?', !!apiKey);
+        console.log('API Key começa com?', apiKey ? apiKey.substring(0, 20) + '...' : 'NÃO EXISTE');
+        
+        if (!apiKey) {
+            console.error('❌ API Key não configurada!');
             return res.status(400).json({ 
-                error: '⚠️  Serviço de IA não disponível. Configure ANTHROPIC_API_KEY no .env' 
+                error: 'API Key do Claude não configurada no Render. Vá em Settings > Environment Variables e adicione ANTHROPIC_API_KEY' 
             });
         }
 
         const { palavrasChave, idioma } = req.body;
+        console.log('📝 Dados recebidos:', { palavrasChave, idioma });
 
         if (!palavrasChave || !idioma) {
             return res.status(400).json({ error: 'Palavras-chave e idioma são obrigatórios' });
         }
+
+        // Criar client diretamente aqui
+        console.log('🤖 Criando cliente Anthropic...');
+        const { Anthropic } = await import('@anthropic-ai/sdk');
+        const client = new Anthropic({ apiKey });
+        console.log('✅ Cliente criado com sucesso!');
 
         const prompt = `Você é um especialista em Google Ads e copywriting. Gere um anúncio completo em ${idioma} baseado nas seguintes palavras-chave: "${palavrasChave}"
 
@@ -503,7 +519,8 @@ Formate a resposta exatamente assim:
 
 Certifique-se de que todos os textos seguem os limites de caracteres do Google Ads.`;
 
-        const message = await anthropicClient.messages.create({
+        console.log('🚀 Chamando API do Claude...');
+        const message = await client.messages.create({
             model: 'claude-opus-4-6',
             max_tokens: 2000,
             messages: [
@@ -515,6 +532,7 @@ Certifique-se de que todos os textos seguem os limites de caracteres do Google A
         });
 
         const anuncio = message.content[0].text;
+        console.log('✅ Anúncio gerado com sucesso!');
 
         res.json({
             sucesso: true,
@@ -524,8 +542,16 @@ Certifique-se de que todos os textos seguem os limites de caracteres do Google A
         });
 
     } catch (err) {
-        console.error('Erro ao gerar anúncio:', err);
-        res.status(500).json({ error: 'Erro ao gerar anúncio: ' + err.message });
+        console.error('❌ ERRO DETALHADO:', err);
+        console.error('Tipo de erro:', err.constructor.name);
+        console.error('Mensagem:', err.message);
+        console.error('Status:', err.status);
+        
+        res.status(500).json({ 
+            error: 'Erro ao gerar anúncio: ' + err.message,
+            tipo: err.constructor.name,
+            status: err.status
+        });
     }
 });
 
