@@ -1072,11 +1072,26 @@
         // ===== LOAD AULAS =====
         async function loadAulas() {
             try {
+                console.log('🔄 Carregando aulas...');
+                
+                // Verificar se elementos existem
+                const loginSection = document.getElementById('loginSection');
+                const aulasSection = document.getElementById('aulasSection');
+                const loadingSpinner = document.getElementById('loadingSpinner');
+                
+                if (!loginSection || !aulasSection || !loadingSpinner) {
+                    console.error('❌ Elementos não encontrados no DOM');
+                    return;
+                }
+                
                 const sessionResponse = await fetch(`${API_URL}/auth/session`, {
                     credentials: 'include'
                 });
 
+                console.log('Session response status:', sessionResponse.status);
+
                 if (sessionResponse.ok) {
+                    console.log('✅ Sessão ativa! Carregando aulas...');
                     const session = await sessionResponse.json();
                     currentUser = session.user;
                     document.getElementById('userName').textContent = `Olá, ${session.user.nome}`;
@@ -1099,17 +1114,22 @@
                         </div>
                     `).join('');
 
-                    document.getElementById('loadingSpinner').classList.add('hidden');
-                    document.getElementById('loginSection').classList.add('hidden');
-                    document.getElementById('aulasSection').classList.add('active');
+                    loadingSpinner.classList.add('hidden');
+                    loginSection.classList.add('hidden');
+                    aulasSection.classList.add('active');
+                    console.log('✅ Aulas carregadas com sucesso!');
                 } else {
-                    document.getElementById('loadingSpinner').classList.add('hidden');
-                    document.getElementById('loginSection').classList.remove('hidden');
+                    console.log('❌ Sem sessão. Mostrando login.');
+                    loadingSpinner.classList.add('hidden');
+                    loginSection.classList.remove('hidden');
+                    aulasSection.classList.remove('active');
                 }
             } catch (err) {
-                console.error('Erro ao carregar aulas:', err);
-                document.getElementById('loadingSpinner').classList.add('hidden');
-                document.getElementById('loginSection').classList.remove('hidden');
+                console.error('❌ Erro ao carregar aulas:', err);
+                const loadingSpinner = document.getElementById('loadingSpinner');
+                const loginSection = document.getElementById('loginSection');
+                if (loadingSpinner) loadingSpinner.classList.add('hidden');
+                if (loginSection) loginSection.classList.remove('hidden');
             }
         }
 
