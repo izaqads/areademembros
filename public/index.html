@@ -809,7 +809,7 @@
     </div>
 
     <script>
-        const API_URL = '/api';
+        const API_URL = 'https://areademembros-nfqo.onrender.com/api';
         let config = {};
         let currentUser = {};
         let currentAulaId = null;
@@ -918,6 +918,7 @@
                 const response = await fetch(`${API_URL}/auth/forgot-password`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
                     body: JSON.stringify({ email })
                 });
 
@@ -1131,6 +1132,15 @@
         }
 
         function backToAulas() {
+            // Limpa a aula aberta
+            document.getElementById('aulaDetail').classList.remove('active');
+            document.getElementById('aulasSection').classList.add('active');
+            document.getElementById('comentariosSection').classList.remove('active');
+            
+            // Reseta os dados
+            currentAula = null;
+            
+            // Recarrega as aulas
             loadAulas();
         }
 
