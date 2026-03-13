@@ -1087,7 +1087,10 @@
             try {
                 // Carregar config
                 const configResponse = await fetch(`${API_URL}/config`);
-                const config = await configResponse.json();
+                if (!configResponse.ok) throw new Error('Erro ao carregar config');
+                
+                config = await configResponse.json(); // IMPORTANTE: Salvar em variável GLOBAL
+                console.log('✅ Config carregado:', config);
 
                 // Atualizar elementos
                 document.getElementById('logoEmoji').textContent = config.plataforma.logo;
@@ -1108,9 +1111,10 @@
                 // Mostrar aulas, esconder login
                 if (loginSection) loginSection.classList.add('hidden');
                 if (aulasSection) aulasSection.classList.add('active');
+                console.log('✅ Aulas carregadas com sucesso!');
                 
             } catch (err) {
-                console.error('Erro ao carregar aulas:', err);
+                console.error('❌ Erro ao carregar aulas:', err);
                 alert('Erro ao carregar aulas. Tente novamente.');
             }
         }
@@ -1195,8 +1199,16 @@
 
         // ===== OPEN AULA =====
         function openAula(aulaId) {
+            // Validar que config existe
+            if (!config || !config.aulas) {
+                console.error('❌ Config não carregado');
+                alert('Erro ao carregar aulas. Recarregue a página.');
+                return;
+            }
+
             currentAulaId = aulaId;
             const aula = config.aulas.find(a => a.id === aulaId);
+            
             if (!aula || !aula.licoes || aula.licoes.length === 0) {
                 alert('Aula sem conteúdo!');
                 return;
