@@ -598,6 +598,131 @@
             box-shadow: 0 8px 20px rgba(79, 125, 255, 0.3);
         }
 
+        /* ===== GERADOR DE ANÚNCIOS ===== */
+        .ads-generator-section {
+            background: rgba(26, 31, 46, 0.7);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .ads-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-white);
+        }
+
+        .ads-form {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group-ads {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group-ads label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .form-group-ads input,
+        .form-group-ads select {
+            padding: 0.75rem;
+            background: rgba(42, 48, 64, 0.5);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            color: var(--text-white);
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group-ads input:focus,
+        .form-group-ads select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background: rgba(42, 48, 64, 0.8);
+            box-shadow: 0 0 0 3px rgba(79, 125, 255, 0.1);
+        }
+
+        .ads-button {
+            padding: 0.85rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-purple));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .ads-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 125, 255, 0.3);
+        }
+
+        .ads-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .ads-loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        .spinner-small {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(79, 125, 255, 0.2);
+            border-top-color: var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        .ads-result {
+            background: rgba(42, 48, 64, 0.5);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-light);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .ads-result-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .ads-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ff6b6b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
         .comments-list {
             max-height: 400px;
             overflow-y: auto;
@@ -1108,6 +1233,44 @@
                     <div class="comments-list" id="commentsList"></div>
                 </div>
 
+                <!-- GERADOR DE ANÚNCIOS -->
+                <div class="ads-generator-section">
+                    <div class="ads-title">🎯 Gerador de Anúncios Google Ads</div>
+                    
+                    <div class="ads-form">
+                        <div class="form-group-ads">
+                            <label for="adsKeywords">Palavras-chave do Anúncio</label>
+                            <input type="text" id="adsKeywords" placeholder="Ex: sapato confortável para mulheres" />
+                        </div>
+
+                        <div class="form-group-ads">
+                            <label for="adsLanguage">Idioma</label>
+                            <select id="adsLanguage">
+                                <option value="Português Brasileiro">Português Brasileiro</option>
+                                <option value="Inglês Americano">Inglês Americano</option>
+                                <option value="Espanhol">Espanhol</option>
+                                <option value="Francês">Francês</option>
+                                <option value="Italiano">Italiano</option>
+                                <option value="Alemão">Alemão</option>
+                            </select>
+                        </div>
+
+                        <button class="ads-button" onclick="gerarAnuncio()" id="adsGenerateBtn">Gerar Anúncio</button>
+                    </div>
+
+                    <div id="adsResult" style="display: none;">
+                        <div class="ads-result-title">📌 Seu Anúncio Gerado:</div>
+                        <div class="ads-result" id="adsContent"></div>
+                    </div>
+
+                    <div id="adsLoading" class="ads-loading" style="display: none;">
+                        <span class="spinner-small"></span>
+                        Gerando seu anúncio...
+                    </div>
+
+                    <div id="adsError" class="ads-error" style="display: none;"></div>
+                </div>
+
                 <button class="back-button" onclick="backToAulas()" style="margin-top: 2rem;">← Voltar às Aulas</button>
             `;
 
@@ -1147,6 +1310,57 @@
             
             // Recarrega as aulas
             loadAulas();
+        }
+
+        // ===== GERADOR DE ANÚNCIOS =====
+        async function gerarAnuncio() {
+            const palavrasChave = document.getElementById('adsKeywords').value.trim();
+            const idioma = document.getElementById('adsLanguage').value;
+
+            if (!palavrasChave) {
+                mostrarErroAnuncio('Preencha as palavras-chave!');
+                return;
+            }
+
+            // Mostrar loading
+            document.getElementById('adsLoading').style.display = 'block';
+            document.getElementById('adsResult').style.display = 'none';
+            document.getElementById('adsError').style.display = 'none';
+            document.getElementById('adsGenerateBtn').disabled = true;
+
+            try {
+                const response = await fetch(`${API_URL}/generate-ads`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ 
+                        palavrasChave: palavrasChave,
+                        idioma: idioma 
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.sucesso || data.anuncio) {
+                    document.getElementById('adsContent').textContent = data.anuncio;
+                    document.getElementById('adsResult').style.display = 'block';
+                } else {
+                    mostrarErroAnuncio(data.error || 'Erro ao gerar anúncio');
+                }
+            } catch (err) {
+                console.error('Erro:', err);
+                mostrarErroAnuncio('Erro ao conectar com o servidor: ' + err.message);
+            } finally {
+                document.getElementById('adsLoading').style.display = 'none';
+                document.getElementById('adsGenerateBtn').disabled = false;
+            }
+        }
+
+        function mostrarErroAnuncio(mensagem) {
+            const errorDiv = document.getElementById('adsError');
+            errorDiv.textContent = mensagem;
+            errorDiv.style.display = 'block';
+            document.getElementById('adsResult').style.display = 'none';
         }
 
         // ===== HELPERS =====
