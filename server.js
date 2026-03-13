@@ -19,8 +19,10 @@ try {
             apiKey: process.env.ANTHROPIC_API_KEY
         });
         console.log('✅ Claude API configurada!');
+        console.log('🔑 API Key presente:', process.env.ANTHROPIC_API_KEY.substring(0, 20) + '...');
     } else {
-        console.log('⚠️  ANTHROPIC_API_KEY não definida. Gerador de anúncios desativado.');
+        console.log('❌ ANTHROPIC_API_KEY não definida no .env ou Environment Variables!');
+        console.log('⚠️  Gerador de anúncios desativado.');
     }
 } catch (e) {
     console.log('⚠️  Anthropic SDK não instalado. Instale com: npm install @anthropic-ai/sdk');
