@@ -76,29 +76,6 @@
         }
 
         /* ===== LOADING ===== */
-        .loading-spinner {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a2e 50%, var(--dark-bg) 100%);
-            position: relative;
-            z-index: 1;
-        }
-
-        .spinner {
-            width: 45px;
-            height: 45px;
-            border: 3px solid rgba(79, 125, 255, 0.15);
-            border-top-color: var(--primary-blue);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
         /* ===== LOGIN ===== */
         .login-section {
             display: flex;
@@ -298,7 +275,44 @@
         }
 
         .aulas-section.active {
-            display: block;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== LAYOUT 2 COLUNAS (AULAS + IA) ===== */
+        .aulas-content-wrapper {
+            display: flex;
+            gap: 2rem;
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .aulas-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .ia-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            background: rgba(26, 31, 46, 0.4);
+            border: 1px solid rgba(79, 125, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .ia-column-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
         }
 
         .header {
@@ -693,17 +707,13 @@
         }
 
         .ads-result {
-            background: rgba(42, 48, 64, 0.5);
+            background: rgba(42, 48, 64, 0.3);
             border: 1px solid var(--border-light);
             border-radius: 8px;
             padding: 2rem;
             margin-top: 1.5rem;
-            white-space: pre-wrap;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            line-height: 1.6;
             color: var(--text-light);
-            max-height: 600px;
+            max-height: 1200px;
             overflow-y: auto;
         }
 
@@ -721,6 +731,98 @@
             padding: 1rem;
             border-radius: 8px;
             margin-top: 1rem;
+        }
+
+        /* ===== ESTILO PARA COLUNAS DE ANÚNCIOS ===== */
+        .ads-container-colunas {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .ads-secao {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ads-secao h4 {
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(79, 125, 255, 0.2);
+        }
+
+        .ads-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .ads-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .ads-grid-site-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .ads-item {
+            background: rgba(26, 31, 46, 0.8);
+            border: 1px solid rgba(79, 125, 255, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .ads-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ads-texto {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.5;
+            word-wrap: break-word;
+            font-weight: 500;
+        }
+
+        .ads-counter {
+            font-size: 0.75rem;
+            color: rgba(107, 95, 217, 0.8);
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+
+        .ads-site-link-card {
+            background: rgba(26, 31, 46, 0.6);
+            border: 2px solid rgba(79, 125, 255, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ads-site-link-numero {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(79, 125, 255, 0.2);
         }
 
         .comments-list {
@@ -826,6 +928,19 @@
                 height: 300px;
             }
 
+            /* Responsividade para 2 colunas */
+            .aulas-content-wrapper {
+                flex-direction: column;
+                gap: 2rem;
+                padding: 1rem;
+            }
+
+            .aulas-column,
+            .ia-column {
+                flex: 1;
+                width: 100%;
+            }
+
             .comments-section,
             .rating-section {
                 padding: 1.5rem;
@@ -834,11 +949,6 @@
     </style>
 </head>
 <body>
-    <!-- Loading -->
-    <div class="loading-spinner" id="loadingSpinner">
-        <div class="spinner"></div>
-    </div>
-
     <!-- Login -->
     <div class="login-section" id="loginSection">
         <div class="login-card">
@@ -919,17 +1029,64 @@
     <!-- Aulas -->
     <div class="aulas-section" id="aulasSection">
         <div class="header">
-            <div class="header-title">Suas Aulas</div>
+            <div class="header-title">Área de Membros</div>
             <div class="header-right">
                 <span id="userName"></span>
                 <button class="logout-btn" onclick="handleLogout()">Sair</button>
             </div>
         </div>
 
-        <div class="container">
-            <h1>Bem-vindo!</h1>
-            <p class="container-subtitle">Aulas disponíveis para você</p>
-            <div class="courses-grid" id="coursesGrid"></div>
+        <div class="aulas-content-wrapper">
+            <!-- COLUNA ESQUERDA - AULAS -->
+            <div class="aulas-column">
+                <div>
+                    <h2 style="color: var(--primary-blue); font-size: 1.2rem; margin-bottom: 0.5rem;">📚 Suas Aulas</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Clique em uma aula para começar</p>
+                </div>
+                <div class="courses-grid" id="coursesGrid"></div>
+            </div>
+
+            <!-- COLUNA DIREITA - GERADOR DE IA -->
+            <div class="ia-column">
+                <div class="ia-column-title">
+                    🤖 Gerador de Anúncios
+                </div>
+                
+                <div class="ads-form">
+                    <div class="form-group-ads">
+                        <label for="adsKeywordsHome">Palavras-chave do Anúncio</label>
+                        <input type="text" id="adsKeywordsHome" placeholder="Ex: produto revolucionário" />
+                    </div>
+
+                    <div class="form-group-ads">
+                        <label for="adsLanguageHome">Idioma</label>
+                        <select id="adsLanguageHome">
+                            <option value="Português Brasileiro">Português Brasileiro</option>
+                            <option value="English American">Inglês Americano</option>
+                            <option value="Español">Espanhol</option>
+                            <option value="Français">Francês</option>
+                            <option value="Italiano">Italiano</option>
+                            <option value="Deutsch">Alemão</option>
+                        </select>
+                    </div>
+
+                    <button class="comment-button" id="adsGenerateBtnHome" onclick="generateAdsHome()" style="width: 100%; padding: 0.8rem;">
+                        Gerar Anúncio
+                    </button>
+                </div>
+
+                <div id="adsLoadingHome" class="ads-loading" style="display: none;">
+                    <span class="spinner-small"></span>
+                    Gerando seu anúncio...
+                </div>
+
+                <div id="adsErrorHome" class="ads-error" style="display: none;"></div>
+
+                <div id="adsResultHome" style="display: none;">
+                    <div class="ads-result-title">📌 Seu Anúncio Gerado:</div>
+                    <div class="ads-result" id="adsContentHome"></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1356,7 +1513,8 @@
                 const data = await response.json();
 
                 if (data.sucesso || data.anuncio) {
-                    document.getElementById('adsContent').textContent = data.anuncio;
+                    const htmlFormatado = formatarAnuncioEmColunas(data.anuncio);
+                    document.getElementById('adsContent').innerHTML = htmlFormatado;
                     document.getElementById('adsResult').style.display = 'block';
                 } else {
                     mostrarErroAnuncio(data.error || 'Erro ao gerar anúncio');
@@ -1370,7 +1528,199 @@
             }
         }
 
-        function mostrarErroAnuncio(mensagem) {
+        // ===== GERADOR DE ANÚNCIOS NA HOME =====
+        async function generateAdsHome() {
+            const palavrasChave = document.getElementById('adsKeywordsHome').value.trim();
+            const idioma = document.getElementById('adsLanguageHome').value;
+
+            if (!palavrasChave) {
+                alert('Preencha as palavras-chave!');
+                return;
+            }
+
+            document.getElementById('adsLoadingHome').style.display = 'block';
+            document.getElementById('adsResultHome').style.display = 'none';
+            document.getElementById('adsErrorHome').style.display = 'none';
+            document.getElementById('adsGenerateBtnHome').disabled = true;
+
+            try {
+                const response = await fetch(`${API_URL}/generate-ads`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ 
+                        palavrasChave: palavrasChave,
+                        idioma: idioma 
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.sucesso || data.anuncio) {
+                    const htmlFormatado = formatarAnuncioEmColunas(data.anuncio);
+                    document.getElementById('adsContentHome').innerHTML = htmlFormatado;
+                    document.getElementById('adsResultHome').style.display = 'block';
+                } else {
+                    mostrarErroAnuncioHome(data.error || 'Erro ao gerar anúncio');
+                }
+            } catch (err) {
+                console.error('Erro:', err);
+                mostrarErroAnuncioHome('Erro ao conectar com o servidor: ' + err.message);
+            } finally {
+                document.getElementById('adsLoadingHome').style.display = 'none';
+                document.getElementById('adsGenerateBtnHome').disabled = false;
+            }
+        }
+
+        function mostrarErroAnuncioHome(mensagem) {
+            const errorDiv = document.getElementById('adsErrorHome');
+            errorDiv.textContent = mensagem;
+            errorDiv.style.display = 'block';
+            document.getElementById('adsResultHome').style.display = 'none';
+        }
+
+        function formatarAnuncioEmColunas(textoAnuncio) {
+            // Separar as seções
+            const secoes = {};
+            const regex = /---(TÍTULOS|HEADLINES|DESCRIÇÕES|SITE LINKS)---/g;
+            const partes = textoAnuncio.split(regex);
+            
+            for (let i = 1; i < partes.length; i += 2) {
+                const nomeSeccao = partes[i].trim();
+                const conteudoSeccao = partes[i + 1] ? partes[i + 1].trim() : '';
+                secoes[nomeSeccao] = conteudoSeccao;
+            }
+
+            // Função auxiliar para contar caracteres
+            function contarChars(texto) {
+                return texto.length;
+            }
+
+            // Função para extrair números e textos
+            function extrairItens(texto) {
+                const linhas = texto.split('\n').filter(l => l.trim());
+                return linhas.map(linha => linha.replace(/^\d+\.\s*/, '').trim()).filter(l => l);
+            }
+
+            // Gerar HTML formatado
+            let html = '<div class="ads-container-colunas">';
+
+            // TÍTULOS (7 colunas)
+            if (secoes.TÍTULOS) {
+                const titulos = extrairItens(secoes.TÍTULOS);
+                html += '<div class="ads-secao"><h4>📌 TÍTULOS (máx 30 caracteres)</h4><div class="ads-grid-3">';
+                titulos.forEach(t => {
+                    const chars = contarChars(t);
+                    const cor = chars <= 30 ? '#4F7DFF' : '#ff6b6b';
+                    html += `<div class="ads-item" style="border-left: 4px solid ${cor}">
+                        <div class="ads-texto">${t}</div>
+                        <div class="ads-counter">${chars}/30 ${chars > 30 ? '❌ ACIMA!' : '✓'}</div>
+                    </div>`;
+                });
+                html += '</div></div>';
+            }
+
+            // HEADLINES (7 colunas)
+            if (secoes.HEADLINES) {
+                const headlines = extrairItens(secoes.HEADLINES);
+                html += '<div class="ads-secao"><h4>🎯 HEADLINES (máx 30 caracteres)</h4><div class="ads-grid-3">';
+                headlines.forEach(h => {
+                    const chars = contarChars(h);
+                    const cor = chars <= 30 ? '#6B5FD9' : '#ff6b6b';
+                    html += `<div class="ads-item" style="border-left: 4px solid ${cor}">
+                        <div class="ads-texto">${h}</div>
+                        <div class="ads-counter">${chars}/30 ${chars > 30 ? '❌ ACIMA!' : '✓'}</div>
+                    </div>`;
+                });
+                html += '</div></div>';
+            }
+
+            // DESCRIÇÕES (5 colunas)
+            if (secoes.DESCRIÇÕES) {
+                const descricoes = extrairItens(secoes.DESCRIÇÕES);
+                html += '<div class="ads-secao"><h4>📝 DESCRIÇÕES (máx 90 caracteres)</h4><div class="ads-grid-2">';
+                descricoes.forEach(d => {
+                    const chars = contarChars(d);
+                    const cor = chars <= 90 ? '#10b981' : '#ff6b6b';
+                    html += `<div class="ads-item" style="border-left: 4px solid ${cor}">
+                        <div class="ads-texto">${d}</div>
+                        <div class="ads-counter">${chars}/90 ${chars > 90 ? '❌ ACIMA!' : '✓'}</div>
+                    </div>`;
+                });
+                html += '</div></div>';
+            }
+
+            // SITE LINKS (com 2 descrições)
+            if (secoes['SITE LINKS']) {
+                const siteLinksTexto = secoes['SITE LINKS'];
+                html += '<div class="ads-secao"><h4>🔗 SITE LINKS (Texto + 2 Descrições)</h4>';
+                
+                // Separar cada site link (começam com número.)
+                const linhas = siteLinksTexto.split('\n').filter(l => l.trim());
+                let siteAtual = null;
+                
+                linhas.forEach(linha => {
+                    if (linha.match(/^\d+\.\s*Texto:/)) {
+                        siteAtual = { texto: '', desc1: '', desc2: '' };
+                    }
+                    
+                    if (linha.includes('Texto:')) {
+                        siteAtual.texto = linha.replace(/^\d+\.\s*Texto:\s*/, '').trim();
+                    } else if (linha.includes('Descrição 1:')) {
+                        siteAtual.desc1 = linha.replace(/Descrição 1:\s*/, '').trim();
+                    } else if (linha.includes('Descrição 2:')) {
+                        siteAtual.desc2 = linha.replace(/Descrição 2:\s*/, '').trim();
+                    }
+                });
+
+                // Exibir site links
+                html += '<div class="ads-grid-site-links">';
+                const linkMatches = siteLinksTexto.match(/\d+\.\s*Texto:(.+?)(?=\n\d+\.|\Z)/gs);
+                
+                if (linkMatches) {
+                    linkMatches.forEach((match, idx) => {
+                        const textoMatch = match.match(/Texto:\s*(.+?)(?=\n|Descrição)/);
+                        const desc1Match = match.match(/Descrição 1:\s*(.+?)(?=\n|Descrição)/);
+                        const desc2Match = match.match(/Descrição 2:\s*(.+?)(?=\n|$)/);
+                        
+                        const texto = textoMatch ? textoMatch[1].trim() : '';
+                        const desc1 = desc1Match ? desc1Match[1].trim() : '';
+                        const desc2 = desc2Match ? desc2Match[1].trim() : '';
+                        
+                        const charTexto = contarChars(texto);
+                        const charDesc1 = contarChars(desc1);
+                        const charDesc2 = contarChars(desc2);
+                        
+                        const corTexto = charTexto <= 25 ? '#4F7DFF' : '#ff6b6b';
+                        const corDesc1 = charDesc1 <= 35 ? '#6B5FD9' : '#ff6b6b';
+                        const corDesc2 = charDesc2 <= 35 ? '#6B5FD9' : '#ff6b6b';
+                        
+                        html += `<div class="ads-site-link-card">
+                            <div class="ads-site-link-numero">Link ${idx + 1}</div>
+                            <div class="ads-item" style="border-left: 4px solid ${corTexto}">
+                                <div class="ads-label">Texto Principal:</div>
+                                <div class="ads-texto">${texto || '(vazio)'}</div>
+                                <div class="ads-counter">${charTexto}/25 ${charTexto > 25 ? '❌' : '✓'}</div>
+                            </div>
+                            <div class="ads-item" style="border-left: 4px solid ${corDesc1}">
+                                <div class="ads-label">Descrição 1:</div>
+                                <div class="ads-texto">${desc1 || '(vazio)'}</div>
+                                <div class="ads-counter">${charDesc1}/35 ${charDesc1 > 35 ? '❌' : '✓'}</div>
+                            </div>
+                            <div class="ads-item" style="border-left: 4px solid ${corDesc2}">
+                                <div class="ads-label">Descrição 2:</div>
+                                <div class="ads-texto">${desc2 || '(vazio)'}</div>
+                                <div class="ads-counter">${charDesc2}/35 ${charDesc2 > 35 ? '❌' : '✓'}</div>
+                            </div>
+                        </div>`;
+                    });
+                }
+                html += '</div></div>';
+            }
+
+            html += '</div>';
+            return html;
+        }
             const errorDiv = document.getElementById('adsError');
             errorDiv.textContent = mensagem;
             errorDiv.style.display = 'block';
@@ -1399,14 +1749,19 @@
         }
 
         window.addEventListener('load', () => {
-            // Simples: mostrar LOGIN quando a página carrega
+            // Mostrar login na inicialização
             const loginSection = document.getElementById('loginSection');
-            const loadingSpinner = document.getElementById('loadingSpinner');
             const aulasSection = document.getElementById('aulasSection');
             
-            if (loginSection) loginSection.classList.remove('hidden');
-            if (loadingSpinner) loadingSpinner.classList.add('hidden');
-            if (aulasSection) aulasSection.classList.remove('active');
+            if (loginSection) {
+                loginSection.style.display = 'flex';
+                loginSection.classList.remove('hidden');
+            }
+            
+            if (aulasSection) {
+                aulasSection.style.display = 'none';
+                aulasSection.classList.remove('active');
+            }
         });
     </script>
 </body>
