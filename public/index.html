@@ -1228,11 +1228,32 @@
 
         // ===== LOGOUT =====
         async function handleLogout() {
-            await fetch(`${API_URL}/auth/logout`, {
-                method: 'POST',
-                credentials: 'include'
-            });
-            location.reload();
+            try {
+                await fetch(`${API_URL}/auth/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+            } catch (err) {
+                console.error('Erro ao fazer logout:', err);
+            }
+            
+            // Mostrar login novamente
+            const loginSection = document.getElementById('loginSection');
+            const aulasSection = document.getElementById('aulasSection');
+            
+            if (loginSection) {
+                loginSection.style.display = 'flex';
+                loginSection.classList.remove('hidden');
+            }
+            if (aulasSection) {
+                aulasSection.style.display = 'none';
+                aulasSection.classList.remove('active');
+            }
+            
+            // Limpar formulários
+            document.getElementById('loginForm').reset();
+            document.getElementById('registerForm').reset();
+            console.log('✅ Logout realizado');
         }
 
         // ===== LOAD AULAS =====
@@ -1242,16 +1263,14 @@
             const coursesGrid = document.getElementById('coursesGrid');
 
             try {
+                console.log('🔄 Carregando aulas...');
+                
                 // Carregar config
                 const configResponse = await fetch(`${API_URL}/config`);
                 if (!configResponse.ok) throw new Error('Erro ao carregar config');
                 
-                config = await configResponse.json(); // IMPORTANTE: Salvar em variável GLOBAL
-                console.log('✅ Config carregado:', config);
-
-                // Atualizar elementos
-                document.getElementById('logoEmoji').textContent = config.plataforma.logo;
-                document.getElementById('platformaNome').textContent = config.plataforma.nome;
+                config = await configResponse.json();
+                console.log('✅ Config carregado');
 
                 // Renderizar aulas
                 coursesGrid.innerHTML = config.aulas.map(aula => `
@@ -1265,9 +1284,16 @@
                     </div>
                 `).join('');
 
-                // Mostrar aulas, esconder login
-                if (loginSection) loginSection.classList.add('hidden');
-                if (aulasSection) aulasSection.classList.add('active');
+                // GARANTIR transição visual
+                if (loginSection) {
+                    loginSection.style.display = 'none';
+                    loginSection.classList.add('hidden');
+                }
+                if (aulasSection) {
+                    aulasSection.style.display = 'flex';
+                    aulasSection.classList.add('active');
+                }
+                
                 console.log('✅ Aulas carregadas com sucesso!');
                 
             } catch (err) {
@@ -1749,7 +1775,6 @@
         }
 
         window.addEventListener('load', () => {
-            // Mostrar login na inicialização
             const loginSection = document.getElementById('loginSection');
             const aulasSection = document.getElementById('aulasSection');
             
@@ -1762,6 +1787,8 @@
                 aulasSection.style.display = 'none';
                 aulasSection.classList.remove('active');
             }
+            
+            console.log('✅ Página carregada - Login visível');
         });
     </script>
 </body>
