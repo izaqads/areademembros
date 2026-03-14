@@ -1309,13 +1309,12 @@
                 setTimeout(() => {
                     const lottieContainer = document.getElementById('lottieAnimation');
                     if (lottieContainer && window.lottie) {
-                        const animationData = {"v":"5.12.2","fr":60,"ip":0,"op":360,"w":512,"h":512,"nm":"Comp 1","ddd":0,"assets":[],"fonts":{"list":[{"fName":"SVN-GilroyBold","fFamily":"SVN-Gilroy","fStyle":"Bold","ascent":69.9996948242188}]},"layers":[{"ddd":0,"ind":1,"ty":3,"nm":"Null 8","sr":1,"ks":{"o":{"a":0,"k":0,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":0,"k":[256,256,0],"ix":2,"l":2},"a":{"a":0,"k":[0,0,0],"ix":1,"l":2},"s":{"a":0,"k":[126,126,100],"ix":6,"l":2}},"ao":0,"ip":0,"op":360,"st":0,"bm":0}]};
                         window.lottie.loadAnimation({
                             container: lottieContainer,
                             renderer: 'svg',
                             loop: true,
                             autoplay: true,
-                            animationData: animationData
+                            path: '/animation.json'
                         });
                     }
                 }, 100);
