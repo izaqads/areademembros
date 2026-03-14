@@ -1,7 +1,7 @@
 {
   "plataforma": {
     "nome": "Aulas no Claude",
-    "descricao": "Plataforma criada com Claude By",
+    "descricao": "Plataforma de aprendizado online",
     "logo": "🚀",
     "cor_primaria": "#3b82f6",
     "cor_secundaria": "#06b6d4",
@@ -23,8 +23,29 @@
           "titulo": "AULAO - Páginas no Claude",
           "duracao": "40:00",
           "tipo": "youtube",
-          "videoId": "kSCVRFuSrTs",
+          "videoId": "dQw4w9WgXcQ",
           "descricao": "Aula completa sobre como criar páginas no Claude",
+          "assistida": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "titulo": "Básico de como eu subo minhas campanhas no Youtube Shorts - google Ads",
+      "descricao": "Subindo uma campanha do shorts do zero em call",
+      "emoji": "🥷",
+      "duracao": "20 minutos",
+      "nivel": "Iniciante",
+      "acessos": 0,
+      "ativa": true,
+      "licoes": [
+        {
+          "id": 1,
+          "titulo": "Básico de como eu subo minhas campanhas no Youtube Shorts - google Ads",
+          "duracao": "20:00",
+          "tipo": "youtube",
+          "videoId": "m2OBA813oEc",
+          "descricao": "Subindo uma campanha do shorts do zero em call",
           "assistida": false
         }
       ]
