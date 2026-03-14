@@ -1295,8 +1295,8 @@
 
                 // Renderizar aulas
                 coursesGrid.innerHTML = config.aulas.map(aula => `
-                    <div class="course-card" id="${aula.id === 1 ? 'aulaCard1' : ''}" onclick="openAula(${aula.id})">
-                        <div class="course-image">${aula.id === 1 ? '<div id="lottieAnimation" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"></div>' : aula.emoji}</div>
+                    <div class="course-card" onclick="openAula(${aula.id})">
+                        <div class="course-image"><div id="lottieAnimation${aula.id}" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"></div></div>
                         <div class="course-body">
                             <div class="course-title">${aula.titulo}</div>
                             <p class="course-desc">${aula.descricao}</p>
@@ -1305,16 +1305,23 @@
                     </div>
                 `).join('');
 
-                // Inicializar animação Lottie para a primeira aula
+                // Inicializar animações Lottie para ambas as aulas
                 setTimeout(() => {
-                    const lottieContainer = document.getElementById('lottieAnimation');
-                    if (lottieContainer && window.lottie) {
-                        window.lottie.loadAnimation({
-                            container: lottieContainer,
-                            renderer: 'svg',
-                            loop: true,
-                            autoplay: true,
-                            path: '/animation.json'
+                    if (window.lottie) {
+                        config.aulas.forEach(aula => {
+                            const lottieContainer = document.getElementById(`lottieAnimation${aula.id}`);
+                            if (lottieContainer) {
+                                const animationFile = aula.id === 1 ? '/animation1.lottie' : aula.id === 2 ? '/animation2.lottie' : null;
+                                if (animationFile) {
+                                    window.lottie.loadAnimation({
+                                        container: lottieContainer,
+                                        renderer: 'svg',
+                                        loop: true,
+                                        autoplay: true,
+                                        path: animationFile
+                                    });
+                                }
+                            }
                         });
                     }
                 }, 100);
