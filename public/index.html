@@ -1311,7 +1311,7 @@
                         config.aulas.forEach(aula => {
                             const lottieContainer = document.getElementById(`lottieAnimation${aula.id}`);
                             if (lottieContainer) {
-                                const animationFile = aula.id === 1 ? '/animation1.lottie' : aula.id === 2 ? '/animation2.lottie' : null;
+                                const animationFile = aula.id === 1 ? '/animation1.json' : aula.id === 2 ? '/animation2.json' : null;
                                 if (animationFile) {
                                     window.lottie.loadAnimation({
                                         container: lottieContainer,
