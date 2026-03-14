@@ -1090,6 +1090,15 @@
         </div>
     </div>
 
+    <!-- SESSÃO DE AULA DETALHADA -->
+    <div class="aula-detalhe-section" id="aulaDetalheSection" style="display: none; flex: 1; flex-direction: column; position: relative; z-index: 1;">
+        <div class="aula-detalhe-header" style="background: rgba(15, 20, 25, 0.95); border-bottom: 1px solid rgba(42, 48, 64, 0.5); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center;">
+            <h2 id="aulaDetalheTitle" style="color: var(--primary-blue); margin: 0; font-size: 1.3rem;"></h2>
+            <button onclick="voltarAulas()" style="background: rgba(79, 125, 255, 0.1); border: 1px solid rgba(79, 125, 255, 0.3); color: var(--primary-blue); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">← Voltar</button>
+        </div>
+        <div class="aula-detalhe-content" id="aulaDetalheContent" style="flex: 1; overflow-y: auto; padding: 2rem;"></div>
+    </div>
+
     <script>
         const API_URL = 'https://areademembros-nfqo.onrender.com/api';
         let config = {};
@@ -1382,7 +1391,6 @@
 
         // ===== OPEN AULA =====
         function openAula(aulaId) {
-            // Validar que config existe
             if (!config || !config.aulas) {
                 console.error('❌ Config não carregado');
                 alert('Erro ao carregar aulas. Recarregue a página.');
@@ -1399,82 +1407,28 @@
 
             const primeiraLicao = aula.licoes[0];
             
-            const html = `
-                <div class="aula-header">
-                    <h2>${primeiraLicao.titulo}</h2>
-                    <p>${primeiraLicao.descricao}</p>
-                </div>
+            document.getElementById('aulaDetalheTitle').textContent = primeiraLicao.titulo;
+            
+            const html = `<div class="aula-header"><h2>${primeiraLicao.titulo}</h2><p>${primeiraLicao.descricao}</p></div><div class="video-container">${primeiraLicao.tipo === 'youtube' ? `<iframe src="https://www.youtube.com/embed/${primeiraLicao.videoId}" frameborder="0" allowfullscreen></iframe>` : `<video controls><source src="${primeiraLicao.videoId}" type="video/mp4"></video>`}</div><div class="rating-section"><div class="rating-title">⭐ Avalie esta Aula</div><div class="stars-container" id="starsContainer"></div><p class="rating-text">Sua avaliação nos ajuda a melhorar!</p><div id="ratingDisplay"></div></div><div class="comments-section"><div class="comments-title">💬 Comentários e Feedback</div><div class="comment-form"><textarea class="comment-textarea" id="commentInput" placeholder="Deixe seu feedback ou comentário..."></textarea><button class="comment-button" onclick="submitComment()">Enviar Comentário</button></div><div class="comments-list" id="commentsList"></div></div><div class="ads-generator-section"><div class="ads-title">🎯 Gerador de Anúncios Google Ads</div><div class="ads-form"><div class="form-group-ads"><label for="adsKeywords">Palavras-chave do Anúncio</label><input type="text" id="adsKeywords" placeholder="Ex: sapato confortável para mulheres" /></div><div class="form-group-ads"><label for="adsLanguage">Idioma</label><select id="adsLanguage"><option value="Português Brasileiro">Português Brasileiro</option><option value="Inglês Americano">Inglês Americano</option><option value="Espanhol">Espanhol</option><option value="Francês">Francês</option><option value="Italiano">Italiano</option><option value="Alemão">Alemão</option></select></div><button class="ads-button" onclick="gerarAnuncio()" id="adsGenerateBtn">Gerar Anúncio</button></div><div id="adsResult" style="display: none;"><div class="ads-result-title">📌 Seu Anúncio Gerado:</div><div class="ads-result" id="adsContent"></div></div><div id="adsLoading" class="ads-loading" style="display: none;"><span class="spinner-small"></span>Gerando seu anúncio...</div><div id="adsError" class="ads-error" style="display: none;"></div></div>`;
 
-                <div class="video-container">
-                    ${primeiraLicao.tipo === 'youtube' 
-                        ? `<iframe src="https://www.youtube.com/embed/${primeiraLicao.videoId}" frameborder="0" allowfullscreen></iframe>`
-                        : `<video controls><source src="${primeiraLicao.videoId}" type="video/mp4"></video>`
-                    }
-                </div>
-
-                <div class="rating-section">
-                    <div class="rating-title">⭐ Avalie esta Aula</div>
-                    <div class="stars-container" id="starsContainer"></div>
-                    <p class="rating-text">Sua avaliação nos ajuda a melhorar!</p>
-                    <div id="ratingDisplay"></div>
-                </div>
-
-                <div class="comments-section">
-                    <div class="comments-title">💬 Comentários e Feedback</div>
-                    
-                    <div class="comment-form">
-                        <textarea class="comment-textarea" id="commentInput" placeholder="Deixe seu feedback ou comentário..."></textarea>
-                        <button class="comment-button" onclick="submitComment()">Enviar Comentário</button>
-                    </div>
-
-                    <div class="comments-list" id="commentsList"></div>
-                </div>
-
-                <!-- GERADOR DE ANÚNCIOS -->
-                <div class="ads-generator-section">
-                    <div class="ads-title">🎯 Gerador de Anúncios Google Ads</div>
-                    
-                    <div class="ads-form">
-                        <div class="form-group-ads">
-                            <label for="adsKeywords">Palavras-chave do Anúncio</label>
-                            <input type="text" id="adsKeywords" placeholder="Ex: sapato confortável para mulheres" />
-                        </div>
-
-                        <div class="form-group-ads">
-                            <label for="adsLanguage">Idioma</label>
-                            <select id="adsLanguage">
-                                <option value="Português Brasileiro">Português Brasileiro</option>
-                                <option value="Inglês Americano">Inglês Americano</option>
-                                <option value="Espanhol">Espanhol</option>
-                                <option value="Francês">Francês</option>
-                                <option value="Italiano">Italiano</option>
-                                <option value="Alemão">Alemão</option>
-                            </select>
-                        </div>
-
-                        <button class="ads-button" onclick="gerarAnuncio()" id="adsGenerateBtn">Gerar Anúncio</button>
-                    </div>
-
-                    <div id="adsResult" style="display: none;">
-                        <div class="ads-result-title">📌 Seu Anúncio Gerado:</div>
-                        <div class="ads-result" id="adsContent"></div>
-                    </div>
-
-                    <div id="adsLoading" class="ads-loading" style="display: none;">
-                        <span class="spinner-small"></span>
-                        Gerando seu anúncio...
-                    </div>
-
-                    <div id="adsError" class="ads-error" style="display: none;"></div>
-                </div>
-
-                <button class="back-button" onclick="backToAulas()" style="margin-top: 2rem;">← Voltar às Aulas</button>
-            `;
-
-            const container = document.querySelector('.container');
-            container.innerHTML = html;
+            document.getElementById('aulaDetalheContent').innerHTML = html;
+            
+            const aulasSection = document.getElementById('aulasSection');
+            const aulaDetalheSection = document.getElementById('aulaDetalheSection');
+            
+            if (aulasSection) aulasSection.style.display = 'none';
+            if (aulaDetalheSection) aulaDetalheSection.style.display = 'flex';
+            
             renderStars(aulaId);
             renderComments(aulaId);
+        }
+        
+        function voltarAulas() {
+            const aulasSection = document.getElementById('aulasSection');
+            const aulaDetalheSection = document.getElementById('aulaDetalheSection');
+            
+            if (aulasSection) aulasSection.style.display = 'flex';
+            if (aulaDetalheSection) aulaDetalheSection.style.display = 'none';
         }
 
         function submitComment() {
@@ -1491,23 +1445,6 @@
             renderComments(currentAulaId);
         }
 
-        function backToAulas() {
-            // Restaura a estrutura original
-            const container = document.querySelector('.container');
-            container.innerHTML = `
-                <div class="header">
-                    <div>
-                        <h1 id="platformaNome" style="display: inline; margin-right: 1rem;"></h1>
-                        <span id="userName" style="color: var(--text-muted);"></span>
-                    </div>
-                    <button class="logout-btn" onclick="handleLogout()">Sair</button>
-                </div>
-                <div class="courses-grid" id="coursesGrid"></div>
-            `;
-            
-            // Recarrega as aulas
-            loadAulas();
-        }
 
         // ===== GERADOR DE ANÚNCIOS =====
         async function gerarAnuncio() {
