@@ -397,30 +397,41 @@
             border-radius: 12px;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .course-card:hover {
-            border-color: rgba(79, 125, 255, 0.3);
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(79, 125, 255, 0.15);
+            border-color: rgba(79, 125, 255, 0.5);
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(79, 125, 255, 0.25);
             background: rgba(26, 31, 46, 0.95);
         }
 
         .course-image {
             aspect-ratio: 16/9;
-            background: linear-gradient(135deg, rgba(79, 125, 255, 0.08), rgba(107, 95, 217, 0.08));
+            background: linear-gradient(135deg, #4F7DFF 0%, #6B5FD9 50%, #5EC4D7 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 3.5rem;
             border-bottom: 1px solid var(--border-light);
-            transition: background 0.4s ease;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(79, 125, 255, 0.4); }
+            50% { box-shadow: 0 0 20px 10px rgba(79, 125, 255, 0.2); }
+            100% { box-shadow: 0 0 0 0 rgba(79, 125, 255, 0); }
         }
 
         .course-card:hover .course-image {
-            background: linear-gradient(135deg, rgba(79, 125, 255, 0.12), rgba(107, 95, 217, 0.12));
+            background: linear-gradient(135deg, #5a88ff 0%, #7a6fe6 50%, #6dd4e0 100%);
+            transform: scale(1.1) rotate(1deg);
+            filter: brightness(1.2) saturate(1.3);
         }
 
         .course-body {
@@ -947,6 +958,7 @@
             }
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 </head>
 <body>
     <!-- Login -->
@@ -1283,8 +1295,8 @@
 
                 // Renderizar aulas
                 coursesGrid.innerHTML = config.aulas.map(aula => `
-                    <div class="course-card" onclick="openAula(${aula.id})">
-                        <div class="course-image">${aula.emoji}</div>
+                    <div class="course-card" id="${aula.id === 1 ? 'aulaCard1' : ''}" onclick="openAula(${aula.id})">
+                        <div class="course-image">${aula.id === 1 ? '<div id="lottieAnimation" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"></div>' : aula.emoji}</div>
                         <div class="course-body">
                             <div class="course-title">${aula.titulo}</div>
                             <p class="course-desc">${aula.descricao}</p>
@@ -1292,6 +1304,21 @@
                         </div>
                     </div>
                 `).join('');
+
+                // Inicializar animação Lottie para a primeira aula
+                setTimeout(() => {
+                    const lottieContainer = document.getElementById('lottieAnimation');
+                    if (lottieContainer && window.lottie) {
+                        const animationData = {"v":"5.12.2","fr":60,"ip":0,"op":360,"w":512,"h":512,"nm":"Comp 1","ddd":0,"assets":[],"fonts":{"list":[{"fName":"SVN-GilroyBold","fFamily":"SVN-Gilroy","fStyle":"Bold","ascent":69.9996948242188}]},"layers":[{"ddd":0,"ind":1,"ty":3,"nm":"Null 8","sr":1,"ks":{"o":{"a":0,"k":0,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":0,"k":[256,256,0],"ix":2,"l":2},"a":{"a":0,"k":[0,0,0],"ix":1,"l":2},"s":{"a":0,"k":[126,126,100],"ix":6,"l":2}},"ao":0,"ip":0,"op":360,"st":0,"bm":0}]};
+                        window.lottie.loadAnimation({
+                            container: lottieContainer,
+                            renderer: 'svg',
+                            loop: true,
+                            autoplay: true,
+                            animationData: animationData
+                        });
+                    }
+                }, 100);
 
                 // GARANTIR transição visual
                 if (loginSection) {
