@@ -1077,59 +1077,62 @@
     <!-- MÓDULO DE CAMPANHAS - SEPARADO -->
     <div class="campanhas-module-section" id="campanhasSection" style="display: none;">
         <div class="campanhas-header">
-            <h2>🤖 Gerador de Campanhas</h2>
-            <button onclick="voltarAulas()" style="background: rgba(79, 125, 255, 0.1); border: 1px solid rgba(79, 125, 255, 0.3); color: var(--primary-blue); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">← Voltar</button>
+            <h2>🤖 Gerador de Campanhas Google Ads</h2>
+            <button onclick="voltarAulas()" style="background: rgba(79, 125, 255, 0.1); border: 1px solid rgba(79, 125, 255, 0.3); color: var(--primary-blue); padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">← Voltar</button>
         </div>
         
         <div class="campanhas-container">
             <!-- COLUNA 1: INPUTS/CONFIGURAÇÕES -->
             <div class="campanhas-col-inputs">
-                <h3>Configurações</h3>
+                <h3>⚙️ Configurações</h3>
                 
                 <div>
                     <div>
-                        <label>Palavras-chave</label>
-                        <input type="text" id="campanhas-keywords" placeholder="Ex: sapato confortável">
+                        <label>📌 Palavras-chave do Anúncio</label>
+                        <input type="text" id="campanhas-keywords" placeholder="Ex: sapato confortável, roupa de moda">
                     </div>
                     
                     <div>
-                        <label>Idioma</label>
+                        <label>🌐 Idioma da Campanha</label>
                         <select id="campanhas-language">
-                            <option value="Português Brasileiro">Português</option>
-                            <option value="English American">Inglês</option>
+                            <option value="Português Brasileiro">Português Brasileiro</option>
+                            <option value="English American">Inglês Americano</option>
                             <option value="Español">Espanhol</option>
                             <option value="Français">Francês</option>
                         </select>
                     </div>
                     
-                    <button onclick="gerarCampanhaPrincipal()">Gerar Campanha</button>
+                    <button onclick="gerarCampanhaPrincipal()">🚀 Gerar Campanha</button>
                     
-                    <div id="campanhas-loading">⏳ Gerando...</div>
+                    <div id="campanhas-loading">⏳ Gerando campanha com IA...</div>
                 </div>
             </div>
             
-            <!-- COLUNA 2: TÍTULOS -->
-            <div class="campanhas-col-titulos">
-                <h3>Títulos (30 chars)</h3>
-                <div id="campanhas-titulos"></div>
-            </div>
-            
-            <!-- COLUNA 3: HEADLINES -->
-            <div class="campanhas-col-headlines">
-                <h3>Headlines (30 chars)</h3>
-                <div id="campanhas-headlines"></div>
-            </div>
-            
-            <!-- COLUNA 4: DESCRIÇÕES -->
-            <div class="campanhas-col-descricoes">
-                <h3>Descrições (90 chars)</h3>
-                <div id="campanhas-descricoes"></div>
-            </div>
-            
-            <!-- COLUNA 5: SITELINKS -->
-            <div class="campanhas-col-sitelinks">
-                <h3>Sitelinks (25 chars)</h3>
-                <div id="campanhas-sitelinks"></div>
+            <!-- COLUNA 2: RESULTADOS (4 painéis) -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; grid-column: 2 / 3;">
+                <!-- TÍTULOS -->
+                <div class="campanhas-col-titulos">
+                    <h3>📌 Títulos (30 chars)</h3>
+                    <div id="campanhas-titulos"></div>
+                </div>
+                
+                <!-- HEADLINES -->
+                <div class="campanhas-col-headlines">
+                    <h3>🎯 Headlines (30 chars)</h3>
+                    <div id="campanhas-headlines"></div>
+                </div>
+                
+                <!-- DESCRIÇÕES -->
+                <div class="campanhas-col-descricoes">
+                    <h3>📝 Descrições (90 chars)</h3>
+                    <div id="campanhas-descricoes"></div>
+                </div>
+                
+                <!-- SITELINKS -->
+                <div class="campanhas-col-sitelinks">
+                    <h3>🔗 Sitelinks (25 chars)</h3>
+                    <div id="campanhas-sitelinks"></div>
+                </div>
             </div>
         </div>
     </div>
