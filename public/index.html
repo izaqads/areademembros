@@ -1057,17 +1057,7 @@
                     <h2 style="color: var(--primary-blue); font-size: 1.2rem; margin-bottom: 0.5rem;">📚 Suas Aulas</h2>
                     <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Clique em uma aula para começar</p>
                 </div>
-                <div class="courses-grid" id="coursesGrid">
-                    <!-- MÓDULO DE CAMPANHAS (AQUI NO GRID!) -->
-                    <div class="campanhas-module-card" onclick="router.navigate('campanhas')" style="cursor: pointer;">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
-                        <h3 style="color: var(--primary-blue); font-size: 1.1rem; margin-bottom: 0.5rem;">Gerador de Campanhas</h3>
-                        <p style="color: var(--text-muted); font-size: 0.9rem;">Crie campanhas Google Ads otimizadas com IA</p>
-                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(79, 125, 255, 0.2);">
-                            <span style="color: var(--primary-blue); font-weight: 600; font-size: 0.9rem;">→ Acessar Módulo</span>
-                        </div>
-                    </div>
-                </div>
+                <div class="courses-grid" id="coursesGrid"></div>
             </div>
         </div>
     </div>
@@ -1193,7 +1183,7 @@
         };
         
         window.addEventListener('popstate', (e) => {
-            const rota = e.state?.rota || 'login';
+            const rota = e.state?.rota || 'aulas';
             router.render(rota);
         });
 
@@ -1383,7 +1373,17 @@
                             <p class="course-meta">${aula.licoes.length} aula${aula.licoes.length > 1 ? 's' : ''} • ${aula.duracao}</p>
                         </div>
                     </div>
-                `).join('');
+                `).join('') + `
+                    <!-- MÓDULO DE CAMPANHAS -->
+                    <div class="course-card" onclick="router.navigate('campanhas')" style="cursor: pointer; border: 2px solid rgba(106, 90, 205, 0.3); background: linear-gradient(135deg, rgba(106, 90, 205, 0.1) 0%, rgba(79, 125, 255, 0.05) 100%);">
+                        <div class="course-image" style="background: linear-gradient(135deg, rgba(106, 90, 205, 0.2), rgba(79, 125, 255, 0.1)); display: flex; align-items: center; justify-content: center; font-size: 3rem;">📊</div>
+                        <div class="course-body">
+                            <div class="course-title">Gerador de Campanhas</div>
+                            <p class="course-desc">Crie campanhas Google Ads otimizadas com IA</p>
+                            <p class="course-meta" style="color: rgba(106, 90, 205, 0.8); font-weight: 600;">→ Acessar Módulo</p>
+                        </div>
+                    </div>
+                `;
 
                 // Inicializar animações Lottie para ambas as aulas
                 setTimeout(() => {
