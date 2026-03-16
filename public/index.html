@@ -958,7 +958,6 @@
             }
         }
     </style>
-    <link rel="stylesheet" href="campanhas-styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 </head>
 <body>
@@ -1075,25 +1074,25 @@
     </div>
 
     <!-- MÓDULO DE CAMPANHAS - SEPARADO -->
-    <div class="campanhas-module-section" id="campanhasSection" style="display: none;">
-        <div class="campanhas-header">
-            <h2>🤖 Gerador de Campanhas Google Ads</h2>
-            <button onclick="voltarAulas()">← Voltar</button>
+    <div class="campanhas-module-section" id="campanhasSection" style="display: none; flex: 1; flex-direction: column; background: var(--bg-dark); overflow: hidden;">
+        <div class="campanhas-header" style="background: rgba(15, 20, 25, 0.95); border-bottom: 1px solid rgba(79, 125, 255, 0.15); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+            <h2 style="color: var(--primary-blue); margin: 0; font-size: 1.2rem; font-weight: 700;">🤖 Gerador de Campanhas Google Ads</h2>
+            <button onclick="voltarAulas()" style="padding: 0.6rem 1.2rem; background: rgba(79, 125, 255, 0.1); border: 1px solid rgba(79, 125, 255, 0.3); color: var(--primary-blue); border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">← Voltar</button>
         </div>
         
-        <div class="campanhas-container">
+        <div style="display: flex; flex: 1; gap: 1.5rem; padding: 1.5rem; overflow: hidden; width: 100%;">
             <!-- COLUNA 1: INPUTS -->
-            <div class="campanhas-col-inputs">
-                <h3>⚙️ Configurações</h3>
+            <div style="flex: 0 0 280px; background: rgba(26, 31, 46, 0.7); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 8px; padding: 1.5rem; height: fit-content; display: flex; flex-direction: column; gap: 1rem;">
+                <h3 style="color: var(--primary-blue); font-size: 0.9rem; margin: 0; font-weight: 700;">⚙️ Configurações</h3>
                 
                 <div>
-                    <label>📌 Palavras-chave</label>
-                    <input type="text" id="campanhas-keywords" placeholder="Ex: sapato confortável">
+                    <label style="color: var(--text-light); font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">📌 Palavras-chave</label>
+                    <input type="text" id="campanhas-keywords" placeholder="Ex: sapato confortável" style="width: 100%; padding: 0.7rem; background: rgba(10, 14, 39, 0.8); border: 1px solid rgba(79, 125, 255, 0.25); border-radius: 5px; color: var(--text-white); font-size: 0.85rem; margin-bottom: 0.8rem;">
                 </div>
                 
                 <div>
-                    <label>🌐 Idioma</label>
-                    <select id="campanhas-language">
+                    <label style="color: var(--text-light); font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">🌐 Idioma</label>
+                    <select id="campanhas-language" style="width: 100%; padding: 0.7rem; background: rgba(10, 14, 39, 0.8); border: 1px solid rgba(79, 125, 255, 0.25); border-radius: 5px; color: var(--text-white); font-size: 0.85rem; margin-bottom: 0.8rem;">
                         <option value="Português Brasileiro">Português Brasileiro</option>
                         <option value="English American">Inglês Americano</option>
                         <option value="Español">Espanhol</option>
@@ -1101,29 +1100,33 @@
                     </select>
                 </div>
                 
-                <button onclick="gerarCampanhaPrincipal()">🚀 Gerar Campanha</button>
-                <div id="campanhas-loading">⏳ Gerando...</div>
+                <button onclick="gerarCampanhaPrincipal()" style="padding: 0.8rem; background: var(--primary-blue); border: none; color: white; border-radius: 5px; cursor: pointer; font-weight: 700; font-size: 0.85rem; transition: all 0.3s;">🚀 Gerar Campanha</button>
+                <div id="campanhas-loading" style="display: none; color: var(--text-muted); font-size: 0.8rem; text-align: center; padding: 0.6rem; background: rgba(79, 125, 255, 0.05); border-radius: 5px;">⏳ Gerando...</div>
             </div>
             
             <!-- COLUNAS DE RESULTADOS -->
-            <div class="campanhas-results">
-                <div class="campanhas-col-titulos">
-                    <h3>📌 Títulos (30 chars)</h3>
+            <div style="display: flex; flex: 1; gap: 1.5rem; overflow: hidden; width: calc(100% - 300px);">
+                <!-- TÍTULOS -->
+                <div style="flex: 1; background: rgba(26, 31, 46, 0.7); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 8px; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column;">
+                    <h3 style="color: var(--primary-blue); font-size: 0.9rem; margin: 0 0 1rem 0; font-weight: 700; padding-bottom: 0.8rem; border-bottom: 2px solid rgba(79, 125, 255, 0.2); flex-shrink: 0;">📌 Títulos (30 chars)</h3>
                     <div id="campanhas-titulos"></div>
                 </div>
                 
-                <div class="campanhas-col-headlines">
-                    <h3>🎯 Headlines (30 chars)</h3>
+                <!-- HEADLINES -->
+                <div style="flex: 1; background: rgba(26, 31, 46, 0.7); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 8px; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column;">
+                    <h3 style="color: var(--primary-blue); font-size: 0.9rem; margin: 0 0 1rem 0; font-weight: 700; padding-bottom: 0.8rem; border-bottom: 2px solid rgba(79, 125, 255, 0.2); flex-shrink: 0;">🎯 Headlines (30 chars)</h3>
                     <div id="campanhas-headlines"></div>
                 </div>
                 
-                <div class="campanhas-col-descricoes">
-                    <h3>📝 Descrições (90 chars)</h3>
+                <!-- DESCRIÇÕES -->
+                <div style="flex: 1; background: rgba(26, 31, 46, 0.7); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 8px; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column;">
+                    <h3 style="color: var(--primary-blue); font-size: 0.9rem; margin: 0 0 1rem 0; font-weight: 700; padding-bottom: 0.8rem; border-bottom: 2px solid rgba(79, 125, 255, 0.2); flex-shrink: 0;">📝 Descrições (90 chars)</h3>
                     <div id="campanhas-descricoes"></div>
                 </div>
                 
-                <div class="campanhas-col-sitelinks">
-                    <h3>🔗 Sitelinks (25 chars)</h3>
+                <!-- SITELINKS -->
+                <div style="flex: 1; background: rgba(26, 31, 46, 0.7); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 8px; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column;">
+                    <h3 style="color: var(--primary-blue); font-size: 0.9rem; margin: 0 0 1rem 0; font-weight: 700; padding-bottom: 0.8rem; border-bottom: 2px solid rgba(79, 125, 255, 0.2); flex-shrink: 0;">🔗 Sitelinks (25 chars)</h3>
                     <div id="campanhas-sitelinks"></div>
                 </div>
             </div>
