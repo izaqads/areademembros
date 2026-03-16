@@ -1556,7 +1556,7 @@
             
             document.getElementById('aulaDetalheTitle').textContent = primeiraLicao.titulo;
             
-            const html = `<div class="aula-header"><h2>${primeiraLicao.titulo}</h2><p>${primeiraLicao.descricao}</p></div><div class="video-container">${primeiraLicao.tipo === 'youtube' ? `<iframe src="https://www.youtube.com/embed/${primeiraLicao.videoId}" frameborder="0" allowfullscreen></iframe>` : `<video controls><source src="${primeiraLicao.videoId}" type="video/mp4"></video>`}</div><div class="rating-section"><div class="rating-title">⭐ Avalie esta Aula</div><div class="stars-container" id="starsContainer"></div><p class="rating-text">Sua avaliação nos ajuda a melhorar!</p><div id="ratingDisplay"></div></div><div class="comments-section"><div class="comments-title">💬 Comentários e Feedback</div><div class="comment-form"><textarea class="comment-textarea" id="commentInput" placeholder="Deixe seu feedback ou comentário..."></textarea><button class="comment-button" onclick="submitComment()">Enviar Comentário</button></div><div class="comments-list" id="commentsList"></div></div><div class="ads-generator-section"><div class="ads-title">🎯 Gerador de Anúncios Google Ads</div><div class="ads-form"><div class="form-group-ads"><label for="adsKeywords">Palavras-chave do Anúncio</label><input type="text" id="adsKeywords" placeholder="Ex: sapato confortável para mulheres" /></div><div class="form-group-ads"><label for="adsLanguage">Idioma</label><select id="adsLanguage"><option value="Português Brasileiro">Português Brasileiro</option><option value="Inglês Americano">Inglês Americano</option><option value="Espanhol">Espanhol</option><option value="Francês">Francês</option><option value="Italiano">Italiano</option><option value="Alemão">Alemão</option></select></div><button class="ads-button" onclick="gerarAnuncio()" id="adsGenerateBtn">Gerar Anúncio</button></div><div id="adsResult" style="display: none;"><div class="ads-result-title">📌 Seu Anúncio Gerado:</div><div class="ads-result" id="adsContent"></div></div><div id="adsLoading" class="ads-loading" style="display: none;"><span class="spinner-small"></span>Gerando seu anúncio...</div><div id="adsError" class="ads-error" style="display: none;"></div></div>`;
+            const html = `<div class="aula-header"><h2>${primeiraLicao.titulo}</h2><p>${primeiraLicao.descricao}</p></div><div class="video-container">${primeiraLicao.tipo === 'youtube' ? `<iframe src="https://www.youtube.com/embed/${primeiraLicao.videoId}" frameborder="0" allowfullscreen></iframe>` : `<video controls><source src="${primeiraLicao.videoId}" type="video/mp4"></video>`}</div><div class="rating-section"><div class="rating-title">⭐ Avalie esta Aula</div><div class="stars-container" id="starsContainer"></div><p class="rating-text">Sua avaliação nos ajuda a melhorar!</p><div id="ratingDisplay"></div></div><div class="comments-section"><div class="comments-title">💬 Comentários e Feedback</div><div class="comment-form"><textarea class="comment-textarea" id="commentInput" placeholder="Deixe seu feedback ou comentário..."></textarea><button class="comment-button" onclick="submitComment()">Enviar Comentário</button></div><div class="comments-list" id="commentsList"></div></div>`;
 
             document.getElementById('aulaDetalheContent').innerHTML = html;
             
@@ -1571,7 +1571,19 @@
         }
         
         function voltarAulas() {
-            router.navigate('aulas');
+            // Esconder seções
+            const aulaDetalheSection = document.getElementById('aulaDetalheSection');
+            const aulasSection = document.getElementById('aulasSection');
+            const campanhasSection = document.getElementById('campanhasSection');
+            
+            if (aulaDetalheSection) aulaDetalheSection.style.display = 'none';
+            if (campanhasSection) campanhasSection.style.display = 'none';
+            if (aulasSection) aulasSection.style.display = 'flex';
+            
+            // Atualizar URL
+            window.history.pushState({ rota: 'aulas' }, '', '/aulas');
+            
+            console.log('✅ Voltado para aulas');
         }
 
         function submitComment() {
