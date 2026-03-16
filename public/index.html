@@ -1044,6 +1044,7 @@
             <div class="header-title">Área de Membros</div>
             <div class="header-right">
                 <span id="userName"></span>
+                <button class="logout-btn" onclick="router.navigate('campanhas')" style="background: rgba(106, 90, 205, 0.2); border: 1px solid rgba(106, 90, 205, 0.4); margin-right: 1rem;">📊 Campanhas</button>
                 <button class="logout-btn" onclick="handleLogout()">Sair</button>
             </div>
         </div>
@@ -1106,9 +1107,72 @@
     <div class="aula-detalhe-section" id="aulaDetalheSection" style="display: none; flex: 1; flex-direction: column; position: relative; z-index: 1;">
         <div class="aula-detalhe-header" style="background: rgba(15, 20, 25, 0.95); border-bottom: 1px solid rgba(42, 48, 64, 0.5); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center;">
             <h2 id="aulaDetalheTitle" style="color: var(--primary-blue); margin: 0; font-size: 1.3rem;"></h2>
-            <button onclick="voltarAulas()" style="background: rgba(79, 125, 255, 0.1); border: 1px solid rgba(79, 125, 255, 0.3); color: var(--primary-blue); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">← Voltar</button>
+            <div>
+                <button onclick="router.navigate('campanhas')" style="background: rgba(106, 90, 205, 0.1); border: 1px solid rgba(106, 90, 205, 0.3); color: rgba(106, 90, 205, 0.8); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600; margin-right: 1rem;">📊 Campanhas</button>
+                <button onclick="voltarAulas()" style="background: rgba(79, 125, 255, 0.1); border: 1px solid rgba(79, 125, 255, 0.3); color: var(--primary-blue); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">← Voltar</button>
+            </div>
         </div>
         <div class="aula-detalhe-content" id="aulaDetalheContent" style="flex: 1; overflow-y: auto; padding: 2rem;"></div>
+    </div>
+
+    <!-- MÓDULO DE CAMPANHAS - SEPARADO -->
+    <div class="campanhas-module-section" id="campanhasSection" style="display: none; flex: 1; flex-direction: column; position: relative; z-index: 1;">
+        <div class="campanhas-header" style="background: rgba(15, 20, 25, 0.95); border-bottom: 1px solid rgba(42, 48, 64, 0.5); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="color: var(--primary-blue); margin: 0; font-size: 1.3rem;">🤖 Gerador de Campanhas</h2>
+            <button onclick="voltarAulas()" style="background: rgba(79, 125, 255, 0.1); border: 1px solid rgba(79, 125, 255, 0.3); color: var(--primary-blue); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">← Voltar</button>
+        </div>
+        
+        <div class="campanhas-container" style="display: grid; grid-template-columns: 300px 1fr 1fr 1fr 1fr; gap: 1.5rem; flex: 1; overflow-y: auto; padding: 2rem;">
+            <!-- COLUNA 1: INPUTS/CONFIGURAÇÕES -->
+            <div class="campanhas-col-inputs" style="background: rgba(26, 31, 46, 0.6); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 12px; padding: 1.5rem; height: fit-content;">
+                <h3 style="color: var(--primary-blue); font-size: 1rem; margin-bottom: 1.5rem;">Configurações</h3>
+                
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div>
+                        <label style="color: var(--text-light); font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">Palavras-chave</label>
+                        <input type="text" id="campanhas-keywords" placeholder="Ex: sapato confortável" style="width: 100%; padding: 0.75rem; background: rgba(10, 14, 39, 0.8); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 6px; color: var(--text-white); font-size: 0.9rem;">
+                    </div>
+                    
+                    <div>
+                        <label style="color: var(--text-light); font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">Idioma</label>
+                        <select id="campanhas-language" style="width: 100%; padding: 0.75rem; background: rgba(10, 14, 39, 0.8); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 6px; color: var(--text-white); font-size: 0.9rem;">
+                            <option value="Português Brasileiro">Português</option>
+                            <option value="English American">Inglês</option>
+                            <option value="Español">Espanhol</option>
+                            <option value="Français">Francês</option>
+                        </select>
+                    </div>
+                    
+                    <button onclick="gerarCampanhaPrincipal()" style="width: 100%; padding: 0.75rem; background: var(--primary-blue); border: none; color: white; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.3s;">Gerar Campanha</button>
+                    
+                    <div id="campanhas-loading" style="display: none; color: var(--text-muted); font-size: 0.85rem; text-align: center;">⏳ Gerando...</div>
+                </div>
+            </div>
+            
+            <!-- COLUNA 2: TÍTULOS -->
+            <div class="campanhas-col-titulos" style="background: rgba(26, 31, 46, 0.6); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 12px; padding: 1.5rem; overflow-y: auto;">
+                <h3 style="color: var(--primary-blue); font-size: 1rem; margin-bottom: 1rem; position: sticky; top: 0; background: rgba(26, 31, 46, 0.6); padding-bottom: 1rem;">Títulos (30 chars)</h3>
+                <div id="campanhas-titulos" style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem;"></div>
+            </div>
+            
+            <!-- COLUNA 3: HEADLINES -->
+            <div class="campanhas-col-headlines" style="background: rgba(26, 31, 46, 0.6); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 12px; padding: 1.5rem; overflow-y: auto;">
+                <h3 style="color: var(--primary-blue); font-size: 1rem; margin-bottom: 1rem; position: sticky; top: 0; background: rgba(26, 31, 46, 0.6); padding-bottom: 1rem;">Headlines (30 chars)</h3>
+                <div id="campanhas-headlines" style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem;"></div>
+            </div>
+            
+            <!-- COLUNA 4: DESCRIÇÕES -->
+            <div class="campanhas-col-descricoes" style="background: rgba(26, 31, 46, 0.6); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 12px; padding: 1.5rem; overflow-y: auto;">
+                <h3 style="color: var(--primary-blue); font-size: 1rem; margin-bottom: 1rem; position: sticky; top: 0; background: rgba(26, 31, 46, 0.6); padding-bottom: 1rem;">Descrições (90 chars)</h3>
+                <div id="campanhas-descricoes" style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem;"></div>
+            </div>
+            
+            <!-- COLUNA 5: SITELINKS -->
+            <div class="campanhas-col-sitelinks" style="background: rgba(26, 31, 46, 0.6); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 12px; padding: 1.5rem; overflow-y: auto;">
+                <h3 style="color: var(--primary-blue); font-size: 1rem; margin-bottom: 1rem; position: sticky; top: 0; background: rgba(26, 31, 46, 0.6); padding-bottom: 1rem;">Sitelinks (25 chars)</h3>
+                <div id="campanhas-sitelinks" style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem;"></div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1116,6 +1180,53 @@
         let config = {};
         let currentUser = {};
         let currentAulaId = null;
+
+        // ===== SISTEMA DE ROTAS =====
+        const router = {
+            navigate: (rota) => {
+                window.history.pushState({ rota }, '', `/${rota}`);
+                router.render(rota);
+            },
+            
+            render: (rota) => {
+                // Esconder todas as seções
+                const loginSection = document.getElementById('loginSection');
+                const aulasSection = document.getElementById('aulasSection');
+                const aulaDetalheSection = document.getElementById('aulaDetalheSection');
+                const campanhasSection = document.getElementById('campanhasSection');
+                
+                if (loginSection) loginSection.style.display = 'none';
+                if (aulasSection) aulasSection.style.display = 'none';
+                if (aulaDetalheSection) aulaDetalheSection.style.display = 'none';
+                if (campanhasSection) campanhasSection.style.display = 'none';
+                
+                // Mostrar seção correta baseado na rota
+                if (rota.startsWith('aula/')) {
+                    const aulaId = parseInt(rota.split('/')[1]);
+                    openAula(aulaId);
+                } else if (rota === 'aulas' || rota === '') {
+                    if (aulasSection) {
+                        aulasSection.style.display = 'flex';
+                        aulasSection.classList.add('active');
+                    }
+                } else if (rota === 'campanhas') {
+                    if (campanhasSection) {
+                        campanhasSection.style.display = 'flex';
+                        campanhasSection.classList.add('active');
+                    }
+                } else if (rota === 'login') {
+                    if (loginSection) {
+                        loginSection.style.display = 'flex';
+                        loginSection.classList.remove('hidden');
+                    }
+                }
+            }
+        };
+        
+        window.addEventListener('popstate', (e) => {
+            const rota = e.state?.rota || 'login';
+            router.render(rota);
+        });
 
         // ===== TAB SWITCHING =====
         document.getElementById('loginTabBtn').addEventListener('click', () => {
@@ -1438,6 +1549,9 @@
                 return;
             }
 
+            // ATUALIZAR URL
+            window.history.pushState({ rota: `aula/${aulaId}` }, '', `/aula/${aulaId}`);
+
             const primeiraLicao = aula.licoes[0];
             
             document.getElementById('aulaDetalheTitle').textContent = primeiraLicao.titulo;
@@ -1457,11 +1571,7 @@
         }
         
         function voltarAulas() {
-            const aulasSection = document.getElementById('aulasSection');
-            const aulaDetalheSection = document.getElementById('aulaDetalheSection');
-            
-            if (aulasSection) aulasSection.style.display = 'flex';
-            if (aulaDetalheSection) aulaDetalheSection.style.display = 'none';
+            router.navigate('aulas');
         }
 
         function submitComment() {
@@ -1733,21 +1843,210 @@
             setTimeout(() => element.classList.remove('show'), 5000);
         }
 
+        // ===== GERADOR DE CAMPANHAS MODULAR =====
+        async function gerarCampanhaPrincipal() {
+            const palavrasChave = document.getElementById('campanhas-keywords').value.trim();
+            const idioma = document.getElementById('campanhas-language').value;
+            const loadingDiv = document.getElementById('campanhas-loading');
+
+            if (!palavrasChave) {
+                alert('Preencha as palavras-chave!');
+                return;
+            }
+
+            // Mostrar loading
+            loadingDiv.style.display = 'block';
+
+            try {
+                const response = await fetch(`${API_URL}/generate-ads`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ 
+                        palavrasChave: palavrasChave,
+                        idioma: idioma 
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.sucesso || data.anuncio) {
+                    preencherColunasCampanha(data.anuncio);
+                } else {
+                    alert('Erro ao gerar campanha: ' + (data.error || 'Desconhecido'));
+                }
+            } catch (err) {
+                console.error('Erro:', err);
+                alert('Erro ao conectar com servidor: ' + err.message);
+            } finally {
+                loadingDiv.style.display = 'none';
+            }
+        }
+
+        function preencherColunasCampanha(textoAnuncio) {
+            // Parse do texto retornado pela IA
+            const secoes = {};
+            const regex = /---(TÍTULOS|HEADLINES|DESCRIÇÕES|SITE LINKS)---/g;
+            const partes = textoAnuncio.split(regex);
+            
+            for (let i = 1; i < partes.length; i += 2) {
+                const nomeSeccao = partes[i].trim();
+                const conteudoSeccao = partes[i + 1] ? partes[i + 1].trim() : '';
+                secoes[nomeSeccao] = conteudoSeccao;
+            }
+
+            // PREENCHER COLUNA DE TÍTULOS
+            const titulosDiv = document.getElementById('campanhas-titulos');
+            titulosDiv.innerHTML = '';
+            if (secoes['TÍTULOS']) {
+                const titulos = secoes['TÍTULOS'].split('\n').filter(t => t.trim());
+                titulos.forEach(titulo => {
+                    const match = titulo.match(/^\d+\.\s*(.+)$/);
+                    if (match) {
+                        const texto = match[1].trim();
+                        const chars = texto.length;
+                        const item = document.createElement('div');
+                        item.style.cssText = 'padding: 0.75rem; background: rgba(10, 14, 39, 0.5); border-left: 3px solid var(--primary-blue); border-radius: 4px;';
+                        item.innerHTML = `<div style="font-weight: 600; color: var(--text-white);">${texto}</div><div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">${chars}/30 ${chars > 30 ? '❌' : '✓'}</div>`;
+                        titulosDiv.appendChild(item);
+                    }
+                });
+            }
+
+            // PREENCHER COLUNA DE HEADLINES
+            const headlinesDiv = document.getElementById('campanhas-headlines');
+            headlinesDiv.innerHTML = '';
+            if (secoes['HEADLINES']) {
+                const headlines = secoes['HEADLINES'].split('\n').filter(h => h.trim());
+                headlines.forEach(headline => {
+                    const match = headline.match(/^\d+\.\s*(.+)$/);
+                    if (match) {
+                        const texto = match[1].trim();
+                        const chars = texto.length;
+                        const item = document.createElement('div');
+                        item.style.cssText = 'padding: 0.75rem; background: rgba(10, 14, 39, 0.5); border-left: 3px solid var(--primary-blue); border-radius: 4px;';
+                        item.innerHTML = `<div style="font-weight: 600; color: var(--text-white);">${texto}</div><div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">${chars}/30 ${chars > 30 ? '❌' : '✓'}</div>`;
+                        headlinesDiv.appendChild(item);
+                    }
+                });
+            }
+
+            // PREENCHER COLUNA DE DESCRIÇÕES
+            const descricoesDi = document.getElementById('campanhas-descricoes');
+            descricoesDi.innerHTML = '';
+            if (secoes['DESCRIÇÕES']) {
+                const descricoes = secoes['DESCRIÇÕES'].split('\n').filter(d => d.trim());
+                descricoes.forEach(desc => {
+                    const match = desc.match(/^\d+\.\s*(.+)$/);
+                    if (match) {
+                        const texto = match[1].trim();
+                        const chars = texto.length;
+                        const item = document.createElement('div');
+                        item.style.cssText = 'padding: 0.75rem; background: rgba(10, 14, 39, 0.5); border-left: 3px solid var(--primary-blue); border-radius: 4px;';
+                        item.innerHTML = `<div style="font-weight: 600; color: var(--text-white);">${texto}</div><div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">${chars}/90 ${chars > 90 ? '❌' : '✓'}</div>`;
+                        descricoesDi.appendChild(item);
+                    }
+                });
+            }
+
+            // PREENCHER COLUNA DE SITELINKS
+            const sitelinksDiv = document.getElementById('campanhas-sitelinks');
+            sitelinksDiv.innerHTML = '';
+            if (secoes['SITE LINKS']) {
+                const lines = secoes['SITE LINKS'].split('\n').filter(l => l.trim());
+                let currentLink = {};
+                
+                lines.forEach(line => {
+                    line = line.trim();
+                    if (line.startsWith(('1.', '2.', '3.', '4.'))) {
+                        if (currentLink.texto) {
+                            renderSiteLink(sitelinksDiv, currentLink);
+                        }
+                        const match = line.match(/^\d+\.\s*Texto:\s*(.+)$/);
+                        if (match) {
+                            currentLink = { texto: match[1].trim() };
+                        }
+                    } else if (line.startsWith('Descrição 1:')) {
+                        const match = line.match(/Descrição 1:\s*(.+)$/);
+                        if (match) currentLink.desc1 = match[1].trim();
+                    } else if (line.startsWith('Descrição 2:')) {
+                        const match = line.match(/Descrição 2:\s*(.+)$/);
+                        if (match) currentLink.desc2 = match[1].trim();
+                    }
+                });
+                if (currentLink.texto) {
+                    renderSiteLink(sitelinksDiv, currentLink);
+                }
+            }
+        }
+
+        function renderSiteLink(container, link) {
+            const item = document.createElement('div');
+            item.style.cssText = 'padding: 0.75rem; background: rgba(10, 14, 39, 0.5); border-left: 3px solid var(--primary-blue); border-radius: 4px; margin-bottom: 0.75rem;';
+            
+            const textoChars = link.texto?.length || 0;
+            const desc1Chars = link.desc1?.length || 0;
+            const desc2Chars = link.desc2?.length || 0;
+            
+            item.innerHTML = `
+                <div style="font-weight: 600; color: var(--text-white); margin-bottom: 0.25rem;">${link.texto || 'N/A'}</div>
+                <div style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.25rem;">${textoChars}/25 ${textoChars > 25 ? '❌' : '✓'}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Desc 1: ${desc1Chars}/35 ${desc1Chars > 35 ? '❌' : '✓'}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Desc 2: ${desc2Chars}/35 ${desc2Chars > 35 ? '❌' : '✓'}</div>
+            `;
+            container.appendChild(item);
+        }
+
         window.addEventListener('load', () => {
+            // Obter rota atual da URL
+            const path = window.location.pathname.split('/').filter(p => p);
+            const rota = path.length > 0 ? path.join('/') : 'login';
+            
+            // Verificar se usuário está autenticado
+            const user = JSON.parse(localStorage.getItem('user'));
+            
             const loginSection = document.getElementById('loginSection');
             const aulasSection = document.getElementById('aulasSection');
+            const aulaDetalheSection = document.getElementById('aulaDetalheSection');
+            const campanhasSection = document.getElementById('campanhasSection');
             
-            if (loginSection) {
-                loginSection.style.display = 'flex';
-                loginSection.classList.remove('hidden');
+            if (user) {
+                // Usuário autenticado - carregar aulas
+                carregarAulas();
+                
+                // Esconder login
+                if (loginSection) {
+                    loginSection.style.display = 'none';
+                }
+                
+                // Renderizar rota apropriada
+                if (rota.startsWith('aula/')) {
+                    const aulaId = parseInt(rota.split('/')[1]);
+                    openAula(aulaId);
+                } else if (rota === 'campanhas') {
+                    if (campanhasSection) campanhasSection.style.display = 'flex';
+                } else {
+                    // Default: aulas
+                    if (aulasSection) aulasSection.style.display = 'flex';
+                }
+            } else {
+                // Usuário não autenticado - mostrar login
+                if (loginSection) {
+                    loginSection.style.display = 'flex';
+                    loginSection.classList.remove('hidden');
+                }
+                if (aulasSection) {
+                    aulasSection.style.display = 'none';
+                }
+                if (aulaDetalheSection) {
+                    aulaDetalheSection.style.display = 'none';
+                }
+                if (campanhasSection) {
+                    campanhasSection.style.display = 'none';
+                }
             }
             
-            if (aulasSection) {
-                aulasSection.style.display = 'none';
-                aulasSection.classList.remove('active');
-            }
-            
-            console.log('✅ Página carregada - Login visível');
+            console.log('✅ Página carregada - Rota:', rota);
         });
     </script>
 </body>
