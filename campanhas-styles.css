@@ -1,41 +1,54 @@
-/* ============================================
-   MÓDULO DE CAMPANHAS - LAYOUT 5 COLUNAS
-   ============================================
-   Baseado em Google Ads Editor */
+/* MÓDULO DE CAMPANHAS - LAYOUT SIMPLES */
 
 .campanhas-module-section {
     background: var(--bg-dark);
     display: flex !important;
     flex-direction: column !important;
-    height: 100% !important;
+    width: 100%;
+    height: 100%;
 }
 
 .campanhas-header {
-    background: linear-gradient(135deg, rgba(15, 20, 25, 0.98) 0%, rgba(26, 31, 46, 0.95) 100%);
+    background: rgba(15, 20, 25, 0.95);
     border-bottom: 1px solid rgba(79, 125, 255, 0.15);
     padding: 1.5rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     flex-shrink: 0;
 }
 
 .campanhas-header h2 {
     color: var(--primary-blue);
     margin: 0;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
+}
+
+.campanhas-header button {
+    padding: 0.6rem 1.2rem;
+    background: rgba(79, 125, 255, 0.1);
+    border: 1px solid rgba(79, 125, 255, 0.3);
+    color: var(--primary-blue);
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.campanhas-header button:hover {
+    background: rgba(79, 125, 255, 0.2);
 }
 
 .campanhas-container {
     display: grid;
-    grid-template-columns: 280px 1fr 1fr 1fr 1fr;
+    grid-template-columns: 280px repeat(4, 1fr);
     gap: 1.5rem;
     flex: 1;
-    overflow: hidden;
     padding: 1.5rem;
-    background: var(--bg-dark);
+    overflow: hidden;
+    width: 100%;
 }
 
 /* ===== COLUNA DE INPUTS ===== */
@@ -45,103 +58,73 @@
     border-radius: 8px;
     padding: 1.5rem;
     height: fit-content;
-    position: sticky;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.campanhas-col-inputs h3 {
-    color: var(--primary-blue);
-    font-size: 0.95rem;
-    margin: 0;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.campanhas-col-inputs > div:last-child {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-.campanhas-col-inputs > div:last-child > div {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+.campanhas-col-inputs h3 {
+    color: var(--primary-blue);
+    font-size: 0.9rem;
+    margin: 0 0 0.5rem 0;
+    font-weight: 700;
+}
+
+.campanhas-col-inputs > div > div {
+    margin-bottom: 1rem;
 }
 
 .campanhas-col-inputs label {
     color: var(--text-light);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
+    display: block;
+    margin-bottom: 0.4rem;
 }
 
 .campanhas-col-inputs input,
 .campanhas-col-inputs select {
-    padding: 0.8rem;
+    width: 100%;
+    padding: 0.7rem;
     background: rgba(10, 14, 39, 0.8);
     border: 1px solid rgba(79, 125, 255, 0.25);
     border-radius: 5px;
     color: var(--text-white);
-    font-size: 0.9rem;
-    transition: all 0.3s;
-    font-family: inherit;
+    font-size: 0.85rem;
 }
 
 .campanhas-col-inputs input:focus,
 .campanhas-col-inputs select:focus {
     border-color: var(--primary-blue);
-    background: rgba(10, 14, 39, 0.95);
     outline: none;
-    box-shadow: 0 0 10px rgba(79, 125, 255, 0.2);
 }
 
 .campanhas-col-inputs button {
-    padding: 0.9rem;
+    padding: 0.8rem;
     background: var(--primary-blue);
     border: none;
     color: white;
     border-radius: 5px;
     cursor: pointer;
     font-weight: 700;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: 0.85rem;
     transition: all 0.3s;
-    margin-top: 0.5rem;
 }
 
 .campanhas-col-inputs button:hover {
     background: rgba(79, 125, 255, 0.9);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(79, 125, 255, 0.3);
-}
-
-.campanhas-col-inputs button:active {
-    transform: translateY(0);
 }
 
 #campanhas-loading {
     display: none;
     color: var(--text-muted);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     text-align: center;
-    padding: 0.8rem;
-    border: 1px solid rgba(79, 125, 255, 0.2);
-    border-radius: 5px;
+    padding: 0.6rem;
     background: rgba(79, 125, 255, 0.05);
-    animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
+    border-radius: 5px;
+    border: 1px solid rgba(79, 125, 255, 0.15);
 }
 
 /* ===== COLUNAS DE RESULTADOS ===== */
@@ -154,11 +137,8 @@
     border-radius: 8px;
     padding: 1.5rem;
     overflow-y: auto;
-    max-height: 75vh;
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .campanhas-col-titulos h3,
@@ -166,39 +146,32 @@
 .campanhas-col-descricoes h3,
 .campanhas-col-sitelinks h3 {
     color: var(--primary-blue);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     margin: 0 0 1rem 0;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
     padding-bottom: 0.8rem;
     border-bottom: 2px solid rgba(79, 125, 255, 0.2);
     flex-shrink: 0;
 }
 
-/* ===== ITENS DOS RESULTADOS ===== */
 .campanhas-col-titulos > div,
 .campanhas-col-headlines > div,
 .campanhas-col-descricoes > div,
 .campanhas-col-sitelinks > div {
-    padding: 0.9rem;
+    padding: 0.8rem;
     background: rgba(10, 14, 39, 0.5);
     border: 1px solid rgba(79, 125, 255, 0.15);
     border-left: 4px solid var(--primary-blue);
     border-radius: 5px;
+    margin-bottom: 0.8rem;
     word-break: break-word;
-    animation: slideIn 0.3s ease;
 }
 
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.campanhas-col-titulos > div:last-child,
+.campanhas-col-headlines > div:last-child,
+.campanhas-col-descricoes > div:last-child,
+.campanhas-col-sitelinks > div:last-child {
+    margin-bottom: 0;
 }
 
 .campanhas-col-titulos > div > div:first-child,
@@ -207,100 +180,30 @@
 .campanhas-col-sitelinks > div > div:first-child {
     font-weight: 600;
     color: var(--text-white);
-    margin-bottom: 0.4rem;
-    line-height: 1.4;
-    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+    font-size: 0.85rem;
 }
 
 .campanhas-col-titulos > div > div:nth-child(2),
 .campanhas-col-headlines > div > div:nth-child(2),
 .campanhas-col-descricoes > div > div:nth-child(2),
-.campanhas-col-sitelinks > div > div:nth-child(2),
-.campanhas-col-sitelinks > div > div:nth-child(3),
-.campanhas-col-sitelinks > div > div:nth-child(4) {
+.campanhas-col-sitelinks > div > div:nth-child(2) {
     color: rgba(255, 255, 255, 0.5);
-    font-size: 0.8rem;
-    margin-top: 0.3rem;
+    font-size: 0.75rem;
 }
 
-/* ===== SCROLLBAR ===== */
+/* SCROLLBAR */
 .campanhas-col-titulos::-webkit-scrollbar,
 .campanhas-col-headlines::-webkit-scrollbar,
 .campanhas-col-descricoes::-webkit-scrollbar,
 .campanhas-col-sitelinks::-webkit-scrollbar {
-    width: 6px;
-}
-
-.campanhas-col-titulos::-webkit-scrollbar-track,
-.campanhas-col-headlines::-webkit-scrollbar-track,
-.campanhas-col-descricoes::-webkit-scrollbar-track,
-.campanhas-col-sitelinks::-webkit-scrollbar-track {
-    background: rgba(10, 14, 39, 0.3);
+    width: 5px;
 }
 
 .campanhas-col-titulos::-webkit-scrollbar-thumb,
 .campanhas-col-headlines::-webkit-scrollbar-thumb,
 .campanhas-col-descricoes::-webkit-scrollbar-thumb,
 .campanhas-col-sitelinks::-webkit-scrollbar-thumb {
-    background: rgba(79, 125, 255, 0.35);
-    border-radius: 3px;
-}
-
-.campanhas-col-titulos::-webkit-scrollbar-thumb:hover,
-.campanhas-col-headlines::-webkit-scrollbar-thumb:hover,
-.campanhas-col-descricoes::-webkit-scrollbar-thumb:hover,
-.campanhas-col-sitelinks::-webkit-scrollbar-thumb:hover {
-    background: rgba(79, 125, 255, 0.55);
-}
-
-/* ===== RESPONSIVIDADE ===== */
-@media (max-width: 1600px) {
-    .campanhas-container {
-        grid-template-columns: 250px 1fr 1fr 1fr;
-        gap: 1rem;
-        padding: 1rem;
-    }
-    
-    .campanhas-col-titulos,
-    .campanhas-col-headlines,
-    .campanhas-col-descricoes,
-    .campanhas-col-sitelinks {
-        max-height: 60vh;
-        padding: 1rem;
-    }
-}
-
-@media (max-width: 1200px) {
-    .campanhas-container {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    .campanhas-col-inputs {
-        position: relative;
-        top: auto;
-    }
-    
-    .campanhas-col-titulos,
-    .campanhas-col-headlines,
-    .campanhas-col-descricoes,
-    .campanhas-col-sitelinks {
-        max-height: 50vh;
-    }
-}
-
-@media (max-width: 768px) {
-    .campanhas-header {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: flex-start;
-    }
-    
-    .campanhas-header h2 {
-        font-size: 1.1rem;
-    }
-    
-    .campanhas-container {
-        padding: 0.75rem;
-    }
+    background: rgba(79, 125, 255, 0.3);
+    border-radius: 5px;
 }
