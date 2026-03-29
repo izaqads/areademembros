@@ -23,7 +23,7 @@
           "titulo": "AULAO - Páginas no Claude",
           "duracao": "40:00",
           "tipo": "youtube",
-          "videoId": "kSCVRFuSrTs",
+          "videoId": "kSCVRFuSrTs&t=2s",
           "descricao": "Aula completa sobre como criar páginas no Claude",
           "assistida": false
         }
@@ -31,21 +31,21 @@
     },
     {
       "id": 2,
-      "titulo": "Básico de como eu subo minhas campanhas no Youtube Shorts - google Ads",
-      "descricao": "Subindo uma campanha do shorts do zero em call",
-      "emoji": "🥷",
-      "duracao": "20 minutos",
+      "titulo": "Aula Privada com Bifi",
+      "descricao": "Descrição da aula 2",
+      "emoji": "🎯",
+      "duracao": "1 hora",
       "nivel": "Iniciante",
       "acessos": 0,
       "ativa": true,
       "licoes": [
         {
           "id": 1,
-          "titulo": "Básico de como eu subo minhas campanhas no Youtube Shorts - google Ads",
-          "duracao": "20:00",
+          "titulo": "Aula Privada com Bifi",
+          "duracao": "60:00",
           "tipo": "youtube",
-          "videoId": "m2OBA813oEc",
-          "descricao": "Subindo uma campanha do shorts do zero em call",
+          "videoId": "hwXQcKG6eS0",
+          "descricao": "Descrição da aula 2",
           "assistida": false
         }
       ]
