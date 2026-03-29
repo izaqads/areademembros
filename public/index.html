@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Área de Membros</title>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
     <style>
         * {
             margin: 0;
@@ -1160,10 +1160,7 @@
                 // Renderizar aulas
                 coursesGrid.innerHTML = config.aulas.map(aula => `
                     <div class="course-card" onclick="openAula(${aula.id})">
-                        <div class="course-image">${aula.lottieFile
-                            ? `<lottie-player src="${aula.lottieFile}" background="transparent" speed="1" style="width:120px;height:120px" autoplay loop></lottie-player>`
-                            : aula.emoji
-                        }</div>
+                        <div class="course-image">${aula.lottieFile ? '<lottie-player src="' + aula.lottieFile + '" background="transparent" speed="1" style="width:120px;height:120px" autoplay loop></lottie-player>' : aula.emoji}</div>
                         <div class="course-body">
                             <div class="course-title">${aula.titulo}</div>
                             <p class="course-desc">${aula.descricao}</p>
@@ -1577,11 +1574,13 @@
             html += '</div>';
             return html;
         }
+
+        function mostrarErroAnuncio(mensagem) {
             const errorDiv = document.getElementById('adsError');
             errorDiv.textContent = mensagem;
             errorDiv.style.display = 'block';
             document.getElementById('adsResult').style.display = 'none';
-            
+
             // Se for erro de API não disponível, desabilitar botão
             if (mensagem.includes('não disponível') || mensagem.includes('Configure')) {
                 document.getElementById('adsGenerateBtn').disabled = true;
