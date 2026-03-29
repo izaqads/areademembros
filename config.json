@@ -55,6 +55,7 @@
       "titulo": "Aula Privada com Bifi",
       "descricao": "Descrição da aula 3",
       "emoji": "🎯",
+      "lottieFile": "/lottie-bifi.json",
       "duracao": "1 hora",
       "nivel": "Iniciante",
       "acessos": 0,
