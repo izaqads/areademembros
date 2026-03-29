@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Área de Membros</title>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <style>
         * {
             margin: 0;
@@ -275,44 +276,7 @@
         }
 
         .aulas-section.active {
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* ===== LAYOUT 2 COLUNAS (AULAS + IA) ===== */
-        .aulas-content-wrapper {
-            display: flex;
-            gap: 2rem;
-            flex: 1;
-            padding: 2rem;
-        }
-
-        .aulas-column {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .ia-column {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            background: rgba(26, 31, 46, 0.4);
-            border: 1px solid rgba(79, 125, 255, 0.2);
-            border-radius: 12px;
-            padding: 1.5rem;
-        }
-
-        .ia-column-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--primary-blue);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
+            display: block;
         }
 
         .header {
@@ -397,41 +361,30 @@
             border-radius: 12px;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.4s ease;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .course-card:hover {
-            border-color: rgba(79, 125, 255, 0.5);
-            transform: translateY(-12px);
-            box-shadow: 0 20px 40px rgba(79, 125, 255, 0.25);
+            border-color: rgba(79, 125, 255, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(79, 125, 255, 0.15);
             background: rgba(26, 31, 46, 0.95);
         }
 
         .course-image {
             aspect-ratio: 16/9;
-            background: linear-gradient(135deg, #4F7DFF 0%, #6B5FD9 50%, #5EC4D7 100%);
+            background: linear-gradient(135deg, rgba(79, 125, 255, 0.08), rgba(107, 95, 217, 0.08));
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 3.5rem;
             border-bottom: 1px solid var(--border-light);
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-            overflow: hidden;
-            animation: pulseGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 rgba(79, 125, 255, 0.4); }
-            50% { box-shadow: 0 0 20px 10px rgba(79, 125, 255, 0.2); }
-            100% { box-shadow: 0 0 0 0 rgba(79, 125, 255, 0); }
+            transition: background 0.4s ease;
         }
 
         .course-card:hover .course-image {
-            background: linear-gradient(135deg, #5a88ff 0%, #7a6fe6 50%, #6dd4e0 100%);
-            transform: scale(1.1) rotate(1deg);
-            filter: brightness(1.2) saturate(1.3);
+            background: linear-gradient(135deg, rgba(79, 125, 255, 0.12), rgba(107, 95, 217, 0.12));
         }
 
         .course-body {
@@ -939,26 +892,12 @@
                 height: 300px;
             }
 
-            /* Responsividade para 2 colunas */
-            .aulas-content-wrapper {
-                flex-direction: column;
-                gap: 2rem;
-                padding: 1rem;
-            }
-
-            .aulas-column,
-            .ia-column {
-                flex: 1;
-                width: 100%;
-            }
-
             .comments-section,
             .rating-section {
                 padding: 1.5rem;
             }
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 </head>
 <body>
     <!-- Login -->
@@ -1041,150 +980,25 @@
     <!-- Aulas -->
     <div class="aulas-section" id="aulasSection">
         <div class="header">
-            <div class="header-title">Área de Membros</div>
+            <div class="header-title">Suas Aulas</div>
             <div class="header-right">
                 <span id="userName"></span>
-                <button class="logout-btn" onclick="router.navigate('campanhas')" style="background: rgba(106, 90, 205, 0.2); border: 1px solid rgba(106, 90, 205, 0.4); margin-right: 1rem;">📊 Campanhas</button>
                 <button class="logout-btn" onclick="handleLogout()">Sair</button>
             </div>
         </div>
 
-        <div class="aulas-content-wrapper">
-            <!-- COLUNA ESQUERDA - AULAS -->
-            <div class="aulas-column">
-                <div>
-                    <h2 style="color: var(--primary-blue); font-size: 1.2rem; margin-bottom: 0.5rem;">📚 Suas Aulas</h2>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Clique em uma aula para começar</p>
-                </div>
-                <div class="courses-grid" id="coursesGrid"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- SESSÃO DE AULA DETALHADA -->
-    <div class="aula-detalhe-section" id="aulaDetalheSection" style="display: none; flex: 1; flex-direction: column; position: relative; z-index: 1;">
-        <div class="aula-detalhe-header" style="background: rgba(15, 20, 25, 0.95); border-bottom: 1px solid rgba(42, 48, 64, 0.5); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center;">
-            <h2 id="aulaDetalheTitle" style="color: var(--primary-blue); margin: 0; font-size: 1.3rem;"></h2>
-            <div>
-                <button onclick="router.navigate('campanhas')" style="background: rgba(106, 90, 205, 0.1); border: 1px solid rgba(106, 90, 205, 0.3); color: rgba(106, 90, 205, 0.8); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600; margin-right: 1rem;">📊 Campanhas</button>
-                <button onclick="voltarAulas()" style="background: rgba(79, 125, 255, 0.1); border: 1px solid rgba(79, 125, 255, 0.3); color: var(--primary-blue); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">← Voltar</button>
-            </div>
-        </div>
-        <div class="aula-detalhe-content" id="aulaDetalheContent" style="flex: 1; overflow-y: auto; padding: 2rem;"></div>
-    </div>
-
-    <!-- MÓDULO DE CAMPANHAS - SEPARADO -->
-    <div class="campanhas-module-section" id="campanhasSection" style="display: none; flex: 1; flex-direction: column; background: var(--bg-dark); overflow: hidden;">
-        <div class="campanhas-header" style="background: rgba(15, 20, 25, 0.95); border-bottom: 1px solid rgba(79, 125, 255, 0.15); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
-            <h2 style="color: var(--primary-blue); margin: 0; font-size: 1.2rem; font-weight: 700;">🤖 Gerador de Campanhas Google Ads</h2>
-            <button onclick="voltarAulas()" style="padding: 0.6rem 1.2rem; background: rgba(79, 125, 255, 0.1); border: 1px solid rgba(79, 125, 255, 0.3); color: var(--primary-blue); border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">← Voltar</button>
-        </div>
-        
-        <div style="display: flex; flex: 1; gap: 1.5rem; padding: 1.5rem; overflow: hidden; width: 100%;">
-            <!-- COLUNA 1: INPUTS -->
-            <div style="flex: 0 0 280px; background: rgba(26, 31, 46, 0.7); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 8px; padding: 1.5rem; height: fit-content; display: flex; flex-direction: column; gap: 1rem;">
-                <h3 style="color: var(--primary-blue); font-size: 0.9rem; margin: 0; font-weight: 700;">⚙️ Configurações</h3>
-                
-                <div>
-                    <label style="color: var(--text-light); font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">📌 Palavras-chave</label>
-                    <input type="text" id="campanhas-keywords" placeholder="Ex: sapato confortável" style="width: 100%; padding: 0.7rem; background: rgba(10, 14, 39, 0.8); border: 1px solid rgba(79, 125, 255, 0.25); border-radius: 5px; color: var(--text-white); font-size: 0.85rem; margin-bottom: 0.8rem;">
-                </div>
-                
-                <div>
-                    <label style="color: var(--text-light); font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">🌐 Idioma</label>
-                    <select id="campanhas-language" style="width: 100%; padding: 0.7rem; background: rgba(10, 14, 39, 0.8); border: 1px solid rgba(79, 125, 255, 0.25); border-radius: 5px; color: var(--text-white); font-size: 0.85rem; margin-bottom: 0.8rem;">
-                        <option value="Português Brasileiro">Português Brasileiro</option>
-                        <option value="English American">Inglês Americano</option>
-                        <option value="Español">Espanhol</option>
-                        <option value="Français">Francês</option>
-                    </select>
-                </div>
-                
-                <button onclick="gerarCampanhaPrincipal()" style="padding: 0.8rem; background: var(--primary-blue); border: none; color: white; border-radius: 5px; cursor: pointer; font-weight: 700; font-size: 0.85rem; transition: all 0.3s;">🚀 Gerar Campanha</button>
-                <div id="campanhas-loading" style="display: none; color: var(--text-muted); font-size: 0.8rem; text-align: center; padding: 0.6rem; background: rgba(79, 125, 255, 0.05); border-radius: 5px;">⏳ Gerando...</div>
-            </div>
-            
-            <!-- COLUNAS DE RESULTADOS -->
-            <div style="display: flex; flex: 1; gap: 1.5rem; overflow: hidden; width: calc(100% - 300px);">
-                <!-- TÍTULOS -->
-                <div style="flex: 1; background: rgba(26, 31, 46, 0.7); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 8px; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column;">
-                    <h3 style="color: var(--primary-blue); font-size: 0.9rem; margin: 0 0 1rem 0; font-weight: 700; padding-bottom: 0.8rem; border-bottom: 2px solid rgba(79, 125, 255, 0.2); flex-shrink: 0;">📌 Títulos (30 chars)</h3>
-                    <div id="campanhas-titulos"></div>
-                </div>
-                
-                <!-- HEADLINES -->
-                <div style="flex: 1; background: rgba(26, 31, 46, 0.7); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 8px; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column;">
-                    <h3 style="color: var(--primary-blue); font-size: 0.9rem; margin: 0 0 1rem 0; font-weight: 700; padding-bottom: 0.8rem; border-bottom: 2px solid rgba(79, 125, 255, 0.2); flex-shrink: 0;">🎯 Headlines (30 chars)</h3>
-                    <div id="campanhas-headlines"></div>
-                </div>
-                
-                <!-- DESCRIÇÕES -->
-                <div style="flex: 1; background: rgba(26, 31, 46, 0.7); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 8px; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column;">
-                    <h3 style="color: var(--primary-blue); font-size: 0.9rem; margin: 0 0 1rem 0; font-weight: 700; padding-bottom: 0.8rem; border-bottom: 2px solid rgba(79, 125, 255, 0.2); flex-shrink: 0;">📝 Descrições (90 chars)</h3>
-                    <div id="campanhas-descricoes"></div>
-                </div>
-                
-                <!-- SITELINKS -->
-                <div style="flex: 1; background: rgba(26, 31, 46, 0.7); border: 1px solid rgba(79, 125, 255, 0.2); border-radius: 8px; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column;">
-                    <h3 style="color: var(--primary-blue); font-size: 0.9rem; margin: 0 0 1rem 0; font-weight: 700; padding-bottom: 0.8rem; border-bottom: 2px solid rgba(79, 125, 255, 0.2); flex-shrink: 0;">🔗 Sitelinks (25 chars)</h3>
-                    <div id="campanhas-sitelinks"></div>
-                </div>
-            </div>
+        <div class="container">
+            <h1>Bem-vindo!</h1>
+            <p class="container-subtitle">Aulas disponíveis para você</p>
+            <div class="courses-grid" id="coursesGrid"></div>
         </div>
     </div>
 
     <script>
-        const API_URL = 'https://areademembros-izaqads.com/api';
+        const API_URL = 'https://areademembros-nfqo.onrender.com/api';
         let config = {};
         let currentUser = {};
         let currentAulaId = null;
-
-        // ===== SISTEMA DE ROTAS =====
-        const router = {
-            navigate: (rota) => {
-                window.history.pushState({ rota }, '', `/${rota}`);
-                router.render(rota);
-            },
-            
-            render: (rota) => {
-                // Esconder todas as seções
-                const loginSection = document.getElementById('loginSection');
-                const aulasSection = document.getElementById('aulasSection');
-                const aulaDetalheSection = document.getElementById('aulaDetalheSection');
-                const campanhasSection = document.getElementById('campanhasSection');
-                
-                if (loginSection) loginSection.style.display = 'none';
-                if (aulasSection) aulasSection.style.display = 'none';
-                if (aulaDetalheSection) aulaDetalheSection.style.display = 'none';
-                if (campanhasSection) campanhasSection.style.display = 'none';
-                
-                // Mostrar seção correta baseado na rota
-                if (rota.startsWith('aula/')) {
-                    const aulaId = parseInt(rota.split('/')[1]);
-                    openAula(aulaId);
-                } else if (rota === 'aulas' || rota === '') {
-                    if (aulasSection) {
-                        aulasSection.style.display = 'flex';
-                        aulasSection.classList.add('active');
-                    }
-                } else if (rota === 'campanhas') {
-                    if (campanhasSection) {
-                        campanhasSection.style.display = 'flex';
-                        campanhasSection.classList.add('active');
-                    }
-                } else if (rota === 'login') {
-                    if (loginSection) {
-                        loginSection.style.display = 'flex';
-                        loginSection.classList.remove('hidden');
-                    }
-                }
-            }
-        };
-        
-        window.addEventListener('popstate', (e) => {
-            const rota = e.state?.rota || 'aulas';
-            router.render(rota);
-        });
 
         // ===== TAB SWITCHING =====
         document.getElementById('loginTabBtn').addEventListener('click', () => {
@@ -1318,32 +1132,11 @@
 
         // ===== LOGOUT =====
         async function handleLogout() {
-            try {
-                await fetch(`${API_URL}/auth/logout`, {
-                    method: 'POST',
-                    credentials: 'include'
-                });
-            } catch (err) {
-                console.error('Erro ao fazer logout:', err);
-            }
-            
-            // Mostrar login novamente
-            const loginSection = document.getElementById('loginSection');
-            const aulasSection = document.getElementById('aulasSection');
-            
-            if (loginSection) {
-                loginSection.style.display = 'flex';
-                loginSection.classList.remove('hidden');
-            }
-            if (aulasSection) {
-                aulasSection.style.display = 'none';
-                aulasSection.classList.remove('active');
-            }
-            
-            // Limpar formulários
-            document.getElementById('loginForm').reset();
-            document.getElementById('registerForm').reset();
-            console.log('✅ Logout realizado');
+            await fetch(`${API_URL}/auth/logout`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+            location.reload();
         }
 
         // ===== LOAD AULAS =====
@@ -1353,68 +1146,35 @@
             const coursesGrid = document.getElementById('coursesGrid');
 
             try {
-                console.log('🔄 Carregando aulas...');
-                
                 // Carregar config
                 const configResponse = await fetch(`${API_URL}/config`);
                 if (!configResponse.ok) throw new Error('Erro ao carregar config');
                 
-                config = await configResponse.json();
-                console.log('✅ Config carregado');
+                config = await configResponse.json(); // IMPORTANTE: Salvar em variável GLOBAL
+                console.log('✅ Config carregado:', config);
+
+                // Atualizar elementos
+                document.getElementById('logoEmoji').textContent = config.plataforma.logo;
+                document.getElementById('platformaNome').textContent = config.plataforma.nome;
 
                 // Renderizar aulas
                 coursesGrid.innerHTML = config.aulas.map(aula => `
                     <div class="course-card" onclick="openAula(${aula.id})">
-                        <div class="course-image"><div id="lottieAnimation${aula.id}" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"></div></div>
+                        <div class="course-image">${aula.lottieFile
+                            ? `<lottie-player src="${aula.lottieFile}" background="transparent" speed="1" style="width:120px;height:120px" autoplay loop></lottie-player>`
+                            : aula.emoji
+                        }</div>
                         <div class="course-body">
                             <div class="course-title">${aula.titulo}</div>
                             <p class="course-desc">${aula.descricao}</p>
                             <p class="course-meta">${aula.licoes.length} aula${aula.licoes.length > 1 ? 's' : ''} • ${aula.duracao}</p>
                         </div>
                     </div>
-                `).join('') + `
-                    <!-- MÓDULO DE CAMPANHAS -->
-                    <div class="course-card" onclick="router.navigate('campanhas')" style="cursor: pointer; border: 2px solid rgba(106, 90, 205, 0.3); background: linear-gradient(135deg, rgba(106, 90, 205, 0.1) 0%, rgba(79, 125, 255, 0.05) 100%);">
-                        <div class="course-image" style="background: linear-gradient(135deg, rgba(106, 90, 205, 0.2), rgba(79, 125, 255, 0.1)); display: flex; align-items: center; justify-content: center; font-size: 3rem;">📊</div>
-                        <div class="course-body">
-                            <div class="course-title">Gerador de Campanhas</div>
-                            <p class="course-desc">Crie campanhas Google Ads otimizadas com IA</p>
-                            <p class="course-meta" style="color: rgba(106, 90, 205, 0.8); font-weight: 600;">→ Acessar Módulo</p>
-                        </div>
-                    </div>
-                `;
+                `).join('');
 
-                // Inicializar animações Lottie para ambas as aulas
-                setTimeout(() => {
-                    if (window.lottie) {
-                        config.aulas.forEach(aula => {
-                            const lottieContainer = document.getElementById(`lottieAnimation${aula.id}`);
-                            if (lottieContainer) {
-                                const animationFile = aula.id === 1 ? '/animation1.json' : aula.id === 2 ? '/animation2.json' : null;
-                                if (animationFile) {
-                                    window.lottie.loadAnimation({
-                                        container: lottieContainer,
-                                        renderer: 'svg',
-                                        loop: true,
-                                        autoplay: true,
-                                        path: animationFile
-                                    });
-                                }
-                            }
-                        });
-                    }
-                }, 100);
-
-                // GARANTIR transição visual
-                if (loginSection) {
-                    loginSection.style.display = 'none';
-                    loginSection.classList.add('hidden');
-                }
-                if (aulasSection) {
-                    aulasSection.style.display = 'flex';
-                    aulasSection.classList.add('active');
-                }
-                
+                // Mostrar aulas, esconder login
+                if (loginSection) loginSection.classList.add('hidden');
+                if (aulasSection) aulasSection.classList.add('active');
                 console.log('✅ Aulas carregadas com sucesso!');
                 
             } catch (err) {
@@ -1503,6 +1263,7 @@
 
         // ===== OPEN AULA =====
         function openAula(aulaId) {
+            // Validar que config existe
             if (!config || !config.aulas) {
                 console.error('❌ Config não carregado');
                 alert('Erro ao carregar aulas. Recarregue a página.');
@@ -1517,41 +1278,84 @@
                 return;
             }
 
-            // ATUALIZAR URL
-            window.history.pushState({ rota: `aula/${aulaId}` }, '', `/aula/${aulaId}`);
-
             const primeiraLicao = aula.licoes[0];
             
-            document.getElementById('aulaDetalheTitle').textContent = primeiraLicao.titulo;
-            
-            const html = `<div class="aula-header"><h2>${primeiraLicao.titulo}</h2><p>${primeiraLicao.descricao}</p></div><div class="video-container">${primeiraLicao.tipo === 'youtube' ? `<iframe src="https://www.youtube.com/embed/${primeiraLicao.videoId}" frameborder="0" allowfullscreen></iframe>` : `<video controls><source src="${primeiraLicao.videoId}" type="video/mp4"></video>`}</div><div class="rating-section"><div class="rating-title">⭐ Avalie esta Aula</div><div class="stars-container" id="starsContainer"></div><p class="rating-text">Sua avaliação nos ajuda a melhorar!</p><div id="ratingDisplay"></div></div><div class="comments-section"><div class="comments-title">💬 Comentários e Feedback</div><div class="comment-form"><textarea class="comment-textarea" id="commentInput" placeholder="Deixe seu feedback ou comentário..."></textarea><button class="comment-button" onclick="submitComment()">Enviar Comentário</button></div><div class="comments-list" id="commentsList"></div></div>`;
+            const html = `
+                <div class="aula-header">
+                    <h2>${primeiraLicao.titulo}</h2>
+                    <p>${primeiraLicao.descricao}</p>
+                </div>
 
-            document.getElementById('aulaDetalheContent').innerHTML = html;
-            
-            const aulasSection = document.getElementById('aulasSection');
-            const aulaDetalheSection = document.getElementById('aulaDetalheSection');
-            
-            if (aulasSection) aulasSection.style.display = 'none';
-            if (aulaDetalheSection) aulaDetalheSection.style.display = 'flex';
-            
+                <div class="video-container">
+                    ${primeiraLicao.tipo === 'youtube' 
+                        ? `<iframe src="https://www.youtube.com/embed/${primeiraLicao.videoId}" frameborder="0" allowfullscreen></iframe>`
+                        : `<video controls><source src="${primeiraLicao.videoId}" type="video/mp4"></video>`
+                    }
+                </div>
+
+                <div class="rating-section">
+                    <div class="rating-title">⭐ Avalie esta Aula</div>
+                    <div class="stars-container" id="starsContainer"></div>
+                    <p class="rating-text">Sua avaliação nos ajuda a melhorar!</p>
+                    <div id="ratingDisplay"></div>
+                </div>
+
+                <div class="comments-section">
+                    <div class="comments-title">💬 Comentários e Feedback</div>
+                    
+                    <div class="comment-form">
+                        <textarea class="comment-textarea" id="commentInput" placeholder="Deixe seu feedback ou comentário..."></textarea>
+                        <button class="comment-button" onclick="submitComment()">Enviar Comentário</button>
+                    </div>
+
+                    <div class="comments-list" id="commentsList"></div>
+                </div>
+
+                <!-- GERADOR DE ANÚNCIOS -->
+                <div class="ads-generator-section">
+                    <div class="ads-title">🎯 Gerador de Anúncios Google Ads</div>
+                    
+                    <div class="ads-form">
+                        <div class="form-group-ads">
+                            <label for="adsKeywords">Palavras-chave do Anúncio</label>
+                            <input type="text" id="adsKeywords" placeholder="Ex: sapato confortável para mulheres" />
+                        </div>
+
+                        <div class="form-group-ads">
+                            <label for="adsLanguage">Idioma</label>
+                            <select id="adsLanguage">
+                                <option value="Português Brasileiro">Português Brasileiro</option>
+                                <option value="Inglês Americano">Inglês Americano</option>
+                                <option value="Espanhol">Espanhol</option>
+                                <option value="Francês">Francês</option>
+                                <option value="Italiano">Italiano</option>
+                                <option value="Alemão">Alemão</option>
+                            </select>
+                        </div>
+
+                        <button class="ads-button" onclick="gerarAnuncio()" id="adsGenerateBtn">Gerar Anúncio</button>
+                    </div>
+
+                    <div id="adsResult" style="display: none;">
+                        <div class="ads-result-title">📌 Seu Anúncio Gerado:</div>
+                        <div class="ads-result" id="adsContent"></div>
+                    </div>
+
+                    <div id="adsLoading" class="ads-loading" style="display: none;">
+                        <span class="spinner-small"></span>
+                        Gerando seu anúncio...
+                    </div>
+
+                    <div id="adsError" class="ads-error" style="display: none;"></div>
+                </div>
+
+                <button class="back-button" onclick="backToAulas()" style="margin-top: 2rem;">← Voltar às Aulas</button>
+            `;
+
+            const container = document.querySelector('.container');
+            container.innerHTML = html;
             renderStars(aulaId);
             renderComments(aulaId);
-        }
-        
-        function voltarAulas() {
-            // Esconder seções
-            const aulaDetalheSection = document.getElementById('aulaDetalheSection');
-            const aulasSection = document.getElementById('aulasSection');
-            const campanhasSection = document.getElementById('campanhasSection');
-            
-            if (aulaDetalheSection) aulaDetalheSection.style.display = 'none';
-            if (campanhasSection) campanhasSection.style.display = 'none';
-            if (aulasSection) aulasSection.style.display = 'flex';
-            
-            // Atualizar URL
-            window.history.pushState({ rota: 'aulas' }, '', '/aulas');
-            
-            console.log('✅ Voltado para aulas');
         }
 
         function submitComment() {
@@ -1568,6 +1372,23 @@
             renderComments(currentAulaId);
         }
 
+        function backToAulas() {
+            // Restaura a estrutura original
+            const container = document.querySelector('.container');
+            container.innerHTML = `
+                <div class="header">
+                    <div>
+                        <h1 id="platformaNome" style="display: inline; margin-right: 1rem;"></h1>
+                        <span id="userName" style="color: var(--text-muted);"></span>
+                    </div>
+                    <button class="logout-btn" onclick="handleLogout()">Sair</button>
+                </div>
+                <div class="courses-grid" id="coursesGrid"></div>
+            `;
+            
+            // Recarrega as aulas
+            loadAulas();
+        }
 
         // ===== GERADOR DE ANÚNCIOS =====
         async function gerarAnuncio() {
@@ -1614,8 +1435,7 @@
             }
         }
 
-        // ===== GERADOR DE ANÚNCIOS NA HOME =====
-        async function gerarAnuncio() {
+        function formatarAnuncioEmColunas(textoAnuncio) {
             // Separar as seções
             const secoes = {};
             const regex = /---(TÍTULOS|HEADLINES|DESCRIÇÕES|SITE LINKS)---/g;
@@ -1757,6 +1577,17 @@
             html += '</div>';
             return html;
         }
+            const errorDiv = document.getElementById('adsError');
+            errorDiv.textContent = mensagem;
+            errorDiv.style.display = 'block';
+            document.getElementById('adsResult').style.display = 'none';
+            
+            // Se for erro de API não disponível, desabilitar botão
+            if (mensagem.includes('não disponível') || mensagem.includes('Configure')) {
+                document.getElementById('adsGenerateBtn').disabled = true;
+                document.getElementById('adsGenerateBtn').textContent = '⚠️ Serviço indisponível';
+            }
+        }
 
         // ===== HELPERS =====
         function showError(elementId, message) {
@@ -1773,210 +1604,20 @@
             setTimeout(() => element.classList.remove('show'), 5000);
         }
 
-        // ===== GERADOR DE CAMPANHAS MODULAR =====
-        async function gerarCampanhaPrincipal() {
-            const palavrasChave = document.getElementById('campanhas-keywords').value.trim();
-            const idioma = document.getElementById('campanhas-language').value;
-            const loadingDiv = document.getElementById('campanhas-loading');
-
-            if (!palavrasChave) {
-                alert('Preencha as palavras-chave!');
-                return;
-            }
-
-            // Mostrar loading
-            loadingDiv.style.display = 'block';
-
-            try {
-                const response = await fetch(`${API_URL}/generate-ads`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ 
-                        palavrasChave: palavrasChave,
-                        idioma: idioma 
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.sucesso || data.anuncio) {
-                    preencherColunasCampanha(data.anuncio);
-                } else {
-                    alert('Erro ao gerar campanha: ' + (data.error || 'Desconhecido'));
-                }
-            } catch (err) {
-                console.error('Erro:', err);
-                alert('Erro ao conectar com servidor: ' + err.message);
-            } finally {
-                loadingDiv.style.display = 'none';
-            }
-        }
-
-        function preencherColunasCampanha(textoAnuncio) {
-            // Parse do texto retornado pela IA
-            const secoes = {};
-            const regex = /---(TÍTULOS|HEADLINES|DESCRIÇÕES|SITE LINKS)---/g;
-            const partes = textoAnuncio.split(regex);
-            
-            for (let i = 1; i < partes.length; i += 2) {
-                const nomeSeccao = partes[i].trim();
-                const conteudoSeccao = partes[i + 1] ? partes[i + 1].trim() : '';
-                secoes[nomeSeccao] = conteudoSeccao;
-            }
-
-            // PREENCHER COLUNA DE TÍTULOS
-            const titulosDiv = document.getElementById('campanhas-titulos');
-            titulosDiv.innerHTML = '';
-            if (secoes['TÍTULOS']) {
-                const titulos = secoes['TÍTULOS'].split('\n').filter(t => t.trim());
-                titulos.forEach(titulo => {
-                    const match = titulo.match(/^\d+\.\s*(.+)$/);
-                    if (match) {
-                        const texto = match[1].trim();
-                        const chars = texto.length;
-                        const item = document.createElement('div');
-                        item.style.cssText = 'padding: 0.75rem; background: rgba(10, 14, 39, 0.5); border-left: 3px solid var(--primary-blue); border-radius: 4px;';
-                        item.innerHTML = `<div style="font-weight: 600; color: var(--text-white);">${texto}</div><div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">${chars}/30 ${chars > 30 ? '❌' : '✓'}</div>`;
-                        titulosDiv.appendChild(item);
-                    }
-                });
-            }
-
-            // PREENCHER COLUNA DE HEADLINES
-            const headlinesDiv = document.getElementById('campanhas-headlines');
-            headlinesDiv.innerHTML = '';
-            if (secoes['HEADLINES']) {
-                const headlines = secoes['HEADLINES'].split('\n').filter(h => h.trim());
-                headlines.forEach(headline => {
-                    const match = headline.match(/^\d+\.\s*(.+)$/);
-                    if (match) {
-                        const texto = match[1].trim();
-                        const chars = texto.length;
-                        const item = document.createElement('div');
-                        item.style.cssText = 'padding: 0.75rem; background: rgba(10, 14, 39, 0.5); border-left: 3px solid var(--primary-blue); border-radius: 4px;';
-                        item.innerHTML = `<div style="font-weight: 600; color: var(--text-white);">${texto}</div><div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">${chars}/30 ${chars > 30 ? '❌' : '✓'}</div>`;
-                        headlinesDiv.appendChild(item);
-                    }
-                });
-            }
-
-            // PREENCHER COLUNA DE DESCRIÇÕES
-            const descricoesDi = document.getElementById('campanhas-descricoes');
-            descricoesDi.innerHTML = '';
-            if (secoes['DESCRIÇÕES']) {
-                const descricoes = secoes['DESCRIÇÕES'].split('\n').filter(d => d.trim());
-                descricoes.forEach(desc => {
-                    const match = desc.match(/^\d+\.\s*(.+)$/);
-                    if (match) {
-                        const texto = match[1].trim();
-                        const chars = texto.length;
-                        const item = document.createElement('div');
-                        item.style.cssText = 'padding: 0.75rem; background: rgba(10, 14, 39, 0.5); border-left: 3px solid var(--primary-blue); border-radius: 4px;';
-                        item.innerHTML = `<div style="font-weight: 600; color: var(--text-white);">${texto}</div><div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">${chars}/90 ${chars > 90 ? '❌' : '✓'}</div>`;
-                        descricoesDi.appendChild(item);
-                    }
-                });
-            }
-
-            // PREENCHER COLUNA DE SITELINKS
-            const sitelinksDiv = document.getElementById('campanhas-sitelinks');
-            sitelinksDiv.innerHTML = '';
-            if (secoes['SITE LINKS']) {
-                const lines = secoes['SITE LINKS'].split('\n').filter(l => l.trim());
-                let currentLink = {};
-                
-                lines.forEach(line => {
-                    line = line.trim();
-                    if (line.startsWith(('1.', '2.', '3.', '4.'))) {
-                        if (currentLink.texto) {
-                            renderSiteLink(sitelinksDiv, currentLink);
-                        }
-                        const match = line.match(/^\d+\.\s*Texto:\s*(.+)$/);
-                        if (match) {
-                            currentLink = { texto: match[1].trim() };
-                        }
-                    } else if (line.startsWith('Descrição 1:')) {
-                        const match = line.match(/Descrição 1:\s*(.+)$/);
-                        if (match) currentLink.desc1 = match[1].trim();
-                    } else if (line.startsWith('Descrição 2:')) {
-                        const match = line.match(/Descrição 2:\s*(.+)$/);
-                        if (match) currentLink.desc2 = match[1].trim();
-                    }
-                });
-                if (currentLink.texto) {
-                    renderSiteLink(sitelinksDiv, currentLink);
-                }
-            }
-        }
-
-        function renderSiteLink(container, link) {
-            const item = document.createElement('div');
-            item.style.cssText = 'padding: 0.75rem; background: rgba(10, 14, 39, 0.5); border-left: 3px solid var(--primary-blue); border-radius: 4px; margin-bottom: 0.75rem;';
-            
-            const textoChars = link.texto?.length || 0;
-            const desc1Chars = link.desc1?.length || 0;
-            const desc2Chars = link.desc2?.length || 0;
-            
-            item.innerHTML = `
-                <div style="font-weight: 600; color: var(--text-white); margin-bottom: 0.25rem;">${link.texto || 'N/A'}</div>
-                <div style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.25rem;">${textoChars}/25 ${textoChars > 25 ? '❌' : '✓'}</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">Desc 1: ${desc1Chars}/35 ${desc1Chars > 35 ? '❌' : '✓'}</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">Desc 2: ${desc2Chars}/35 ${desc2Chars > 35 ? '❌' : '✓'}</div>
-            `;
-            container.appendChild(item);
-        }
-
         window.addEventListener('load', () => {
-            // Obter rota atual da URL
-            const path = window.location.pathname.split('/').filter(p => p);
-            const rota = path.length > 0 ? path.join('/') : 'login';
-            
-            // Verificar se usuário está autenticado
-            const user = JSON.parse(localStorage.getItem('user'));
-            
+            // Mostrar login na inicialização
             const loginSection = document.getElementById('loginSection');
             const aulasSection = document.getElementById('aulasSection');
-            const aulaDetalheSection = document.getElementById('aulaDetalheSection');
-            const campanhasSection = document.getElementById('campanhasSection');
             
-            if (user) {
-                // Usuário autenticado - carregar aulas
-                carregarAulas();
-                
-                // Esconder login
-                if (loginSection) {
-                    loginSection.style.display = 'none';
-                }
-                
-                // Renderizar rota apropriada
-                if (rota.startsWith('aula/')) {
-                    const aulaId = parseInt(rota.split('/')[1]);
-                    openAula(aulaId);
-                } else if (rota === 'campanhas') {
-                    if (campanhasSection) campanhasSection.style.display = 'flex';
-                } else {
-                    // Default: aulas
-                    if (aulasSection) aulasSection.style.display = 'flex';
-                }
-            } else {
-                // Usuário não autenticado - mostrar login
-                if (loginSection) {
-                    loginSection.style.display = 'flex';
-                    loginSection.classList.remove('hidden');
-                }
-                if (aulasSection) {
-                    aulasSection.style.display = 'none';
-                }
-                if (aulaDetalheSection) {
-                    aulaDetalheSection.style.display = 'none';
-                }
-                if (campanhasSection) {
-                    campanhasSection.style.display = 'none';
-                }
+            if (loginSection) {
+                loginSection.style.display = 'flex';
+                loginSection.classList.remove('hidden');
             }
             
-            console.log('✅ Página carregada - Rota:', rota);
+            if (aulasSection) {
+                aulasSection.style.display = 'none';
+                aulasSection.classList.remove('active');
+            }
         });
     </script>
 </body>
