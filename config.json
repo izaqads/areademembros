@@ -31,8 +31,29 @@
     },
     {
       "id": 2,
+      "titulo": "Subindo minhas campanhas no Youtube Shorts",
+      "descricao": "Aprenda a subir suas campanhas no Youtube Shorts",
+      "emoji": "📱",
+      "duracao": "1 hora",
+      "nivel": "Iniciante",
+      "acessos": 0,
+      "ativa": true,
+      "licoes": [
+        {
+          "id": 1,
+          "titulo": "Subindo minhas campanhas no Youtube Shorts",
+          "duracao": "60:00",
+          "tipo": "youtube",
+          "videoId": "m2OBA813oEc",
+          "descricao": "Aprenda a subir suas campanhas no Youtube Shorts",
+          "assistida": false
+        }
+      ]
+    },
+    {
+      "id": 3,
       "titulo": "Aula Privada com Bifi",
-      "descricao": "Descrição da aula 2",
+      "descricao": "Descrição da aula 3",
       "emoji": "🎯",
       "duracao": "1 hora",
       "nivel": "Iniciante",
@@ -45,7 +66,7 @@
           "duracao": "60:00",
           "tipo": "youtube",
           "videoId": "hwXQcKG6eS0",
-          "descricao": "Descrição da aula 2",
+          "descricao": "Descrição da aula 3",
           "assistida": false
         }
       ]
