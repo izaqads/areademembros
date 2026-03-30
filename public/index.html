@@ -1373,20 +1373,12 @@
         }
 
         function backToAulas() {
-            // Restaura a estrutura original
             const container = document.querySelector('.container');
             container.innerHTML = `
-                <div class="header">
-                    <div>
-                        <h1 id="platformaNome" style="display: inline; margin-right: 1rem;"></h1>
-                        <span id="userName" style="color: var(--text-muted);"></span>
-                    </div>
-                    <button class="logout-btn" onclick="handleLogout()">Sair</button>
-                </div>
+                <h1>Bem-vindo!</h1>
+                <p class="container-subtitle">Aulas disponíveis para você</p>
                 <div class="courses-grid" id="coursesGrid"></div>
             `;
-            
-            // Recarrega as aulas
             loadAulas();
         }
 
