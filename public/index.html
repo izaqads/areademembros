@@ -1171,7 +1171,10 @@
 
                 // Mostrar aulas, esconder login
                 if (loginSection) loginSection.classList.add('hidden');
-                if (aulasSection) aulasSection.classList.add('active');
+                if (aulasSection) {
+                    aulasSection.style.display = 'block';
+                    aulasSection.classList.add('active');
+                }
                 console.log('✅ Aulas carregadas com sucesso!');
                 
             } catch (err) {
